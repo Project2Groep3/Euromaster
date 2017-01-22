@@ -1,2 +1,2 @@
 # Euromaster
-Repo to store the code and files for the Euromaster game
+Repo to store the code and files for the Euromaster game from Project 2
