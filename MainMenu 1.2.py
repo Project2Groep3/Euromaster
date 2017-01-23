@@ -1,5 +1,7 @@
-import pygame, sys, time, random
+import pygame, sys, time, random, psycopgp2
 from pygame.locals import *
+
+
 
 pygame.init()
 
