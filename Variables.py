@@ -21,6 +21,7 @@ FPS = 30
 FPSCLOCK = pygame.time.Clock()
 
 AmountOfPlayers = 0
+paused = False
 
 # Resolution
 WINDOWWIDTH = 1024
