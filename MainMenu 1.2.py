@@ -24,18 +24,27 @@ DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
 X_1_2 = int(WINDOWWIDTH / 2)
 X_1_3 = int(WINDOWWIDTH / 3)
 X_1_4 = int(WINDOWWIDTH / 4)
+X_1_5 = int(WINDOWWIDTH / 5)
 X_2_3 = int(WINDOWWIDTH / 3 * 2)
+X_2_4 = int(WINDOWWIDTH / 4 * 2)
+X_2_5 = int(WINDOWWIDTH / 5 * 2)
 X_3_4 = int(WINDOWWIDTH / 4 * 3)
+X_3_5 = int(WINDOWWIDTH / 5 * 3)
+X_4_4 = int(WINDOWWIDTH / 4 * 4)
+X_4_5 = int(WINDOWWIDTH / 5 * 4)
 
 Y_1_2 = int(WINDOWHEIGHT / 2)
 Y_1_3 = int(WINDOWHEIGHT / 3)
 Y_1_4 = int(WINDOWHEIGHT / 4)
 Y_2_3 = int(WINDOWHEIGHT / 3 * 2)
+Y_3_4 = int(WINDOWHEIGHT / 4 * 3)
 
 # Colors
 WHITE = (255, 255, 255)
-GREEN = (0, 255, 0)
+LIGHTGREEN = (0, 255, 0)
+GREEN = (34, 177, 76)
 BLUE = (0, 0, 128)
+
 RED = (255, 0, 0)
 YELLOW = (255, 255, 0)
 BLACK = (0, 0, 0)
@@ -155,7 +164,7 @@ class Tile:
         if self.Category == "Sport":
             pygame.draw.circle(DISPLAYSURF, BLUE, (self.DrawPos.X, self.DrawPos.Y), 10, 0)
         elif self.Category == "Geografie":
-            pygame.draw.circle(DISPLAYSURF, GREEN, (self.DrawPos.X, self.DrawPos.Y), 10, 0)
+            pygame.draw.circle(DISPLAYSURF, LIGHTGREEN, (self.DrawPos.X, self.DrawPos.Y), 10, 0)
         elif self.Category == "Entertainment":
             pygame.draw.circle(DISPLAYSURF, RED, (self.DrawPos.X, self.DrawPos.Y), 10, 0)
         elif self.Category == "Geschiedenis":
@@ -168,6 +177,23 @@ class Tile:
     def get_attributes(self):
         return self.Category, self.Position.X, self.Position.Y, self.DrawPos.X, self.DrawPos.Y
 
+
+def text_to_button(msg, color, buttonX, buttonY, buttonWidth, buttonHeight, size = "small"):
+    textSurf, textRect = text_objects(msg,color,size)
+    textRect.center = ((buttonX+(buttonWidth/2)), buttonY+(buttonHeight/2))
+    DISPLAYSURF.blit(textSurf, textRect)
+
+
+def text_objects(text, color, size = "small"):
+    global textSurface
+    if size == "small":
+        textSurface = fontObjSmall.render(text, True, color)
+    elif size == "medium":
+        textSurface = fontObjMedium.render(text, True, color)
+    elif size == "large":
+        textSurface = fontObjLarge.render(text, True, color)
+
+    return textSurface, textSurface.get_rect()
 
 
 # def player_names():
@@ -317,29 +343,43 @@ def show_dice():
         FPSCLOCK.tick(FPS / 2)
 
 
-# def show_game():
-#     gamed = True
-#
-#     DISPLAYSURF.fill(WHITE)
-#     DISPLAYSURF.blit(backGroundImage, (0, 0))
-#
-#
-#     while gamed:
-#
-#         for event in pygame.event.get():
-#             if event.type == pygame.QUIT:
-#                 pygame.quit()
-#                 quit()
-#
-#             if event.type == pygame.KEYDOWN:
-#                 if event.key == pygame.K_ESCAPE:
-#                     gamed = False
-#
-#         pygame.display.update()
-#         FPSCLOCK.tick(FPS / 2)
+def show_buttons(): # function that shows button screen test
+    buttoned = True
 
-#Function that shows Main menu
-def show_main_menu():
+    while buttoned:
+
+        DISPLAYSURF.fill(WHITE)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+
+
+        cur = pygame.mouse.get_pos()
+
+        if 140 + 120 > cur[0] > 140 and 500 + 50 > cur[1] > 500:
+            pygame.draw.rect(DISPLAYSURF, LIGHTGREEN, (140, 500, 120, 50))
+        else:
+            pygame.draw.rect(DISPLAYSURF, GREEN, (140, 500, 120, 50))
+
+
+        # pygame.draw.rect(DISPLAYSURF, GREEN, (340, 500, 120, 50))
+        # pygame.draw.rect(DISPLAYSURF, GREEN, (540, 500, 120, 50))
+        #
+        # text_to_button("Start Game", BLACK, 150, 500, 100, 50)
+        # text_to_button("Instructions", BLACK, 350, 500, 100, 50)
+
+
+
+        pygame.display.update()
+        FPSCLOCK.tick(FPS/2)
+
+
+
+
+def show_main_menu(): #Function that shows Main menu
 
     pygame.init()
     menud = True
@@ -399,7 +439,7 @@ def show_main_menu():
                     menud = False
 
                 elif event.key == pygame.K_l:
-                    show_dice()
+                    show_buttons()
 
                 elif event.key == pygame.K_h:
                     show_highscore_menu()
@@ -533,14 +573,14 @@ def show_icon_menu():
 
     textPlayerIcon = fontObjLarge.render('Choose your icon!', True, BLACK, None)
     textPlayerIconRect = textPlayerIcon.get_rect()
-    textPlayerIconRect.center = (WINDOWWIDTH / 2, (WINDOWHEIGHT / 7))
+    textPlayerIconRect.center = (WINDOWWIDTH / 2, (WINDOWHEIGHT / 4 - 100))
 
     DISPLAYSURF.blit(textPlayerIcon, textPlayerIconRect)
 
-    DISPLAYSURF.blit(playerIcon_female1, (X_1_4, Y_1_4))
-    DISPLAYSURF.blit(playerIcon_female2, (X_2_3, Y_1_4))
-    DISPLAYSURF.blit(playerIcon_male1, (X_1_4, Y_2_3))
-    DISPLAYSURF.blit(playerIcon_male2, (X_2_3, Y_2_3))
+    DISPLAYSURF.blit(playerIcon_female1, (X_1_5-100, Y_1_2-100))
+    DISPLAYSURF.blit(playerIcon_female2, (X_2_5-100, Y_1_2-100))
+    DISPLAYSURF.blit(playerIcon_male1, (X_3_5-100, Y_1_2-100))
+    DISPLAYSURF.blit(playerIcon_male2, (X_4_5-100, Y_1_2-100))
 
 
     pygame.display.update()
@@ -630,6 +670,9 @@ def show_pause():
     paused = True
 
     while paused:
+        DISPLAYSURF.fill(WHITE)
+        DISPLAYSURF.blit(backGroundImage, (0, 0))
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -642,12 +685,38 @@ def show_pause():
                     pygame.quit()
                     quit()
 
-        DISPLAYSURF.fill(WHITE)
 
-        textPauseMenu = fontObjLarge.render('Press C to continue or E to Exit Game!', True, BLACK, None)
+
+        textPauseMenu = fontObjLarge.render('Welcome to the Pause Menu.', True, BLACK, None)
         textPauseMenuRect = textPauseMenu.get_rect()
         textPauseMenuRect.center = (X_1_2, WINDOWHEIGHT / 4)
 
+        cur = pygame.mouse.get_pos()
+
+        if X_1_2 + 150 > cur[0] > X_1_2 and Y_1_2-50 + 50 > cur[1] > Y_1_2-50:
+            pygame.draw.rect(DISPLAYSURF, LIGHTGREEN, (X_1_2-50, Y_1_2-50, 150, 50))
+        else:
+            pygame.draw.rect(DISPLAYSURF, GREEN, (X_1_2-50, Y_1_2-50, 150, 50))
+
+        if X_1_2 + 150 > cur[0] > X_1_2 and Y_1_2+50 + 50 > cur[1] > Y_1_2+50:
+            pygame.draw.rect(DISPLAYSURF, LIGHTGREEN, (X_1_2-50, Y_1_2+50, 150, 50))
+        else:
+            pygame.draw.rect(DISPLAYSURF, GREEN, (X_1_2-50, Y_1_2+50, 150, 50))
+
+        if X_1_2 + 150 > cur[0] > X_1_2 and Y_1_2+150 + 50 > cur[1] > Y_1_2+150:
+            pygame.draw.rect(DISPLAYSURF, LIGHTGREEN, (X_1_2-50, Y_1_2+150, 150, 50))
+        else:
+            pygame.draw.rect(DISPLAYSURF, GREEN, (X_1_2-50, Y_1_2+150, 150, 50))
+
+
+        DISPLAYSURF.blit(textPauseMenu, textPauseMenuRect)
+        text_to_button("Resume Game", BLACK, X_1_2-50, Y_1_2-50, 150, 50)
+
+        DISPLAYSURF.blit(textPauseMenu, textPauseMenuRect)
+        text_to_button("Main Menu", BLACK, X_1_2 - 50, Y_1_2 + 50, 150, 50)
+
+        DISPLAYSURF.blit(textPauseMenu, textPauseMenuRect)
+        text_to_button("Exit Game", BLACK, X_1_2 - 50, Y_1_2 + 150, 150, 50)
 
         pygame.display.update()
         FPSCLOCK.tick(FPS/2)
