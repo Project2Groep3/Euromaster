@@ -4,6 +4,8 @@ from pygame.locals import *
 
 pygame.init()
 
+
+
 fontObjLarge = pygame.font.Font('freesansbold.ttf', 32)
 fontObjMedium = pygame.font.Font('freesansbold.ttf', 24)
 fontObjSmall = pygame.font.Font('freesansbold.ttf', 18)
@@ -115,6 +117,33 @@ class Tile:
         return self.Category, self.Position.X, self.Position.Y, self.DrawPos.X, self.DrawPos.Y
 
 
+
+def button(text, x, y, width, height, inactive_color, active_color, action = None):
+    cur = pygame.mouse.get_pos()
+    click = pygame.mouse.get_pressed()
+    # print(click)
+    if x + width > cur[0] > x and y + height > cur[1] > y:
+        pygame.draw.rect(DISPLAYSURF, active_color, (x, y, width, height))
+        if click[0] == 1 and action != None:
+            if action == "Exit Game":
+                pygame.quit()
+                quit()
+
+            if action == show_main_menu:
+                show_main_menu()
+
+            if action == show_gameplay:
+                show_gameplay()
+
+
+
+    else:
+        pygame.draw.rect(DISPLAYSURF, inactive_color, (x, y, width, height))
+
+    text_to_button(text, BLACK, x, y, width, height)
+
+
+
 def text_to_button(msg, color, buttonX, buttonY, buttonWidth, buttonHeight, size="small"):
     textSurf, textRect = text_objects(msg, color, size)
     textRect.center = ((buttonX + (buttonWidth / 2)), buttonY + (buttonHeight / 2))
@@ -131,14 +160,6 @@ def text_objects(text, color, size="small"):
         textSurface = fontObjLarge.render(text, True, color)
 
     return textSurface, textSurface.get_rect()
-
-
-# def player_names():
-
-
-
-# def who_starts():
-
 
 
 # Function that generates tiles on the map
@@ -309,7 +330,7 @@ def show_main_menu():  # Function that shows Main menu
 
     pygame.init()
     menud = True
-
+    paused = False
     pygame.display.set_caption('Euromaster')
 
     while menud:
@@ -528,6 +549,7 @@ def show_icon_menu():
 
 # Function for the main game loop
 def show_gameplay():
+    global gameplayed
     gameplayed = True
 
     currentPlayer = 0
@@ -586,6 +608,7 @@ def show_gameplay():
 
 # Function that shows the pause menu
 def show_pause():
+
     paused = True
 
     while paused:
@@ -628,16 +651,16 @@ def show_pause():
 
 
         DISPLAYSURF.blit(textPauseMenu, textPauseMenuRect)
-        button("Resume Game", X_1_2 - 50, Y_1_2 - 50, 150, 50, GREEN, LIGHT_GREEN)
 
-        DISPLAYSURF.blit(textPauseMenu, textPauseMenuRect)
-        button("Main Menu", X_1_2 - 50, Y_1_2 + 50, 150, 50, YELLOW, LIGHT_YELLOW)
+        button("Resume Game", X_1_2 - 50, Y_1_2 - 50, 150, 50, GREEN, LIGHT_GREEN, action = show_gameplay)
 
-        DISPLAYSURF.blit(textPauseMenu, textPauseMenuRect)
-        button("Exit Game", X_1_2 - 50, Y_1_2 + 150, 150, 50, RED, LIGHT_RED)
+        button("Main Menu", X_1_2 - 50, Y_1_2 + 50, 150, 50, YELLOW, LIGHT_YELLOW, action = show_main_menu)
+
+        button("Exit Game", X_1_2 - 50, Y_1_2 + 150, 150, 50, RED, LIGHT_RED, action = "Exit Game")
 
         pygame.display.update()
         FPSCLOCK.tick(FPS / 2)
+
 
 
 show_main_menu()
