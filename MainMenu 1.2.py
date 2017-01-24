@@ -5,22 +5,30 @@ from pygame.locals import *
 
 pygame.init()
 
+#Frames per second
 FPS = 30
 FPSCLOCK = pygame.time.Clock()
 
+
 AmountOfPlayers = 0
 
-WINDOWWIDTH = 1366
+#Resolution
+WINDOWWIDTH = 1024
 WINDOWHEIGHT = 768
 
+#Declaring displaysurf
 DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
 
+
+#scales of the screen
 X_1_2 = int(WINDOWWIDTH / 2)
 X_1_3 = int(WINDOWWIDTH / 3)
+X_2_3 = int(WINDOWWIDTH / 3 * 2)
 
 Y_1_2 = int(WINDOWHEIGHT / 2)
 Y_1_3 = int(WINDOWHEIGHT / 3)
 Y_1_4 = int(WINDOWHEIGHT / 4)
+Y_2_3 = int(WINDOWHEIGHT / 3 * 2)
 
 # Colors
 WHITE = (255, 255, 255)
@@ -33,16 +41,15 @@ TURQUOISE = (174, 243, 227)
 CORAL = (255, 127, 80)
 LIGHT_CORAL = (250, 127, 80)
 
-
+# Loading images
 backGroundImage = pygame.image.load('images/MainMenu.png')
 instructionsImage = pygame.image.load('images/Instructions.png')
 gameBackground = pygame.image.load("images/gamebg1.png")
 
-playerIcon1 = pygame.image.load("images/playericon1.png")
-playerIcon2 = pygame.image.load("images/playericon2.png")
-playerIcon3 = pygame.image.load("images/playericon3.png")
-playerIcon4 = pygame.image.load("images/playericon4.png")
-
+playerIcon_male1 = pygame.image.load("images/icon_male1.png")
+playerIcon_male2 = pygame.image.load("images/icon_male2.png")
+playerIcon_female1 = pygame.image.load("images/icon_female1.png")
+playerIcon_female2 = pygame.image.load("images/icon_female2.png")
 
 diceImage1 = pygame.image.load('images/dice1.jpg')
 diceImage2 = pygame.image.load('images/dice2.jpg')
@@ -55,13 +62,13 @@ fontObjLarge = pygame.font.Font('freesansbold.ttf', 32)
 fontObjMedium = pygame.font.Font('freesansbold.ttf', 24)
 fontObjSmall = pygame.font.Font('freesansbold.ttf', 18)
 
-
+#Vector class and position
 class Vector2:
     def __init__(self, x, y):
         self.X = x
         self.Y = y
 
-
+#Player class
 class Player:
     def __init__(self, playerID=0, name="", icon=None, category="", posX=0, posY=0, correctanswers=0, iconX=0, iconY=0):
         self.PlayerID = playerID
@@ -108,13 +115,13 @@ class Player:
             self.Position.X = 7
 
         if self.PlayerIcon == "a":
-            self.PlayerIcon = playerIcon1
+            self.PlayerIcon = playerIcon_male1
         elif self.PlayerIcon == "b":
-            self.PlayerIcon = playerIcon2
+            self.PlayerIcon = playerIcon_male2
         elif self.PlayerIcon == "c":
-            self.PlayerIcon = playerIcon3
+            self.PlayerIcon = playerIcon_female1
         elif self.PlayerIcon == "d":
-            self.PlayerIcon = playerIcon4
+            self.PlayerIcon = playerIcon_female2
 
     def icon_match(self):
         for key in tile_list:
@@ -125,15 +132,16 @@ class Player:
     def draw_icon(self):
         DISPLAYSURF.blit(self.PlayerIcon, (self.IconPosition.X, self.IconPosition.Y))
 
-
+#Making objects of playerclass
 player1 = Player()
 player2 = Player()
 player3 = Player()
 player4 = Player()
 
+#List of playerobjects
 PlayerList = [player1, player2, player3, player4]
 
-
+#Tile class
 class Tile:
     def __init__(self, category, posX, posY, drawX, drawY):
         self.Category = category
@@ -168,7 +176,7 @@ class Tile:
 
 
 
-
+# Function that generates tiles on the map
 def generate_tiles():
     n = 640
     i = 60
@@ -200,7 +208,7 @@ def generate_tiles():
     # for key in tile_list:
     #     tile_list[key].draw_tile()
 
-
+# Class tools with dices etc
 class Tools():
     def __init__(self):
         self.Value = 0
@@ -239,10 +247,10 @@ class Tools():
 
         return self.DiceImage
 
-
+# Object of tools class
 Tools1 = Tools()
 
-
+# Function that shows the screen how many players u want to play with
 def how_many_icons(AmountOfPlayers):
     global ActivePlayers
     ActivePlayers = []
@@ -262,7 +270,7 @@ def how_many_icons(AmountOfPlayers):
         print(PlayerList[k].PlayerID, PlayerList[k].PlayerName, PlayerList[k].PlayerIcon)
 
 
-
+# Function that shows when it's a player turn
 def show_turn(currentPlayer):
     showed = True
     abc = PlayerList[currentPlayer].PlayerName
@@ -285,6 +293,7 @@ def show_turn(currentPlayer):
         showed = False
         FPSCLOCK.tick(FPS / 2)
 
+# Function that displays dice result on the screen
 def show_dice():
     diced = True
 
@@ -327,8 +336,9 @@ def show_dice():
 #         pygame.display.update()
 #         FPSCLOCK.tick(FPS / 2)
 
-
+#Function that shows Main menu
 def show_main_menu():
+
     pygame.init()
     menud = True
 
@@ -395,7 +405,7 @@ def show_main_menu():
         pygame.display.update()
         FPSCLOCK.tick(FPS)
 
-
+# Function that shows the instruction menu
 def show_instructions_menu():
     instructions = True
 
@@ -418,6 +428,7 @@ def show_instructions_menu():
         pygame.display.update()
         FPSCLOCK.tick(FPS / 2)
 
+#Function that shows the highscore menu
 def show_highscore_menu():
     highscored = True
 
@@ -445,6 +456,7 @@ def show_highscore_menu():
         pygame.display.update()
         FPSCLOCK.tick(FPS / 2)
 
+# Function that shows menu where u can pick the amount of players
 def show_players_menu():
     chooseplayers = True
 
@@ -506,10 +518,10 @@ def show_players_menu():
                     chooseplayers = False
 
 
-
         pygame.display.update()
         FPSCLOCK.tick(FPS / 2)
 
+#Function that shows menu where players pick their icon
 def show_icon_menu():
     global iconed
     iconed = True
@@ -517,11 +529,17 @@ def show_icon_menu():
     DISPLAYSURF.fill(WHITE)
     DISPLAYSURF.blit(backGroundImage, (0, 0))
 
-    textPlayerIcon = fontObjLarge.render('Choose player name and icon', True, BLACK, None)
+    textPlayerIcon = fontObjLarge.render('Choose your icon!', True, BLACK, None)
     textPlayerIconRect = textPlayerIcon.get_rect()
     textPlayerIconRect.center = (WINDOWWIDTH / 2, WINDOWHEIGHT / 4)
 
     DISPLAYSURF.blit(textPlayerIcon, textPlayerIconRect)
+
+    DISPLAYSURF.blit(playerIcon_female1, (X_1_3, Y_1_3))
+    DISPLAYSURF.blit(playerIcon_female2, (X_2_3, Y_1_3))
+    DISPLAYSURF.blit(playerIcon_male1, (X_1_3, Y_2_3))
+    DISPLAYSURF.blit(playerIcon_male2, (X_2_3, Y_2_3))
+
 
     pygame.display.update()
 
@@ -543,7 +561,7 @@ def show_icon_menu():
         pygame.display.update()
         FPSCLOCK.tick(FPS / 2)
 
-
+#Function for the main game loop
 def show_gameplay():
     gameplayed = True
 
@@ -604,7 +622,7 @@ def show_gameplay():
             FPSCLOCK.tick(FPS / 2)
 
 
-
+#Function that shows the pause menu
 def show_pause():
 
     paused = True
