@@ -14,7 +14,7 @@ class Vector2: # Vector Class
         self.Y = y
 
 class Player: # Player Class
-    def __init__(self, playerID=0, name="", icon=None, category="", posX=0, posY=0, correctanswers=0, iconX=0, iconY=0):
+    def __init__(self, playerID=0, name="", icon=None, category="", posX=0, posY=0, correctanswers=0, iconX=0, iconY=0, direction = ""):
         self.PlayerID = playerID
         self.PlayerName = name
         self.PlayerIcon = icon
@@ -22,6 +22,7 @@ class Player: # Player Class
         self.Position = Vector2(posX, posY)
         self.CorrectAnswers = correctanswers
         self.IconPosition = Vector2(iconX, iconY)
+        self.Direction = direction
 
     def move_right(self):
         # self.Position.X += Tools1.steps()
@@ -250,9 +251,6 @@ def how_many_icons(AmountOfPlayers): # amount of players screen
     for players in range(len(ActivePlayers)):
         j += 1
         PlayerList[players].PlayerID = j
-        # PlayerList[players].PlayerName = input("Player" + str(j) + " Please type in your name: ")
-        # PlayerList[players].Category = input("Choose a Category: ")
-        # PlayerList[players].PlayerIcon = input("Choose an Icon!")
 
     for k in range(len(ActivePlayers)):
         PlayerList[k].update_icon()
@@ -263,17 +261,18 @@ def how_many_icons(AmountOfPlayers): # amount of players screen
 def show_turn(currentPlayer): # shows whose turn it is
     showed = True
     abc = PlayerList[currentPlayer].PlayerName
-
     while showed:
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
-                # print(event.unicode)
+
                 if event.key == pygame.K_ESCAPE:
                     showed = False
 
         textYourTurn = fontObjLarge.render("Hey {} it's your turn!".format(abc), True, BLACK, None)
         textYourTurnRect = textYourTurn.get_rect()
         textYourTurnRect.center = (WINDOWWIDTH / 2, WINDOWHEIGHT / 5)
+
+
 
         DISPLAYSURF.blit(textYourTurn, textYourTurnRect)
 
@@ -342,8 +341,28 @@ def choose_icon(): # loops show_icon_menu for all active players
 #
 # def who_starts():
 
+def pick_direction():
+    directed = True
+
+    while directed:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            if event.type == pygame.KEYDOWN:
+
+                if event.key == pygame.K_ESCAPE:
+                    directed = False
+
+        button("Up", X_1_2 - 50, Y_1_2 - 100, 150, 50, GREEN, LIGHT_GREEN, action=show_gameplay)
+        button("Down", X_1_2 - 50, Y_1_2, 150, 50, GREEN, LIGHT_GREEN, action=show_gameplay)
+        button("Right", X_1_2 + 25, Y_1_2 - 50, 150, 50, GREEN, LIGHT_GREEN, action=show_gameplay)
+        button("Left", X_1_2 - 125, Y_1_2 - 50, 150, 50, GREEN, LIGHT_GREEN, action=show_gameplay)
 
 
+        pygame.display.update()
+        FPSCLOCK.tick(FPS / 2)
 
 def show_dice(): # shows dice result on screen
     diced = True
@@ -642,7 +661,7 @@ def show_icon_menu(players): # shows screen where players pick their icons
     DISPLAYSURF.fill(WHITE)
     DISPLAYSURF.blit(backGroundImage, (0, 0))
 
-    textPlayerIcon = fontObjLarge.render('Hey {} pick your character!'.format(playerName), True, BLACK, None)
+    textPlayerIcon = fontObjLarge.render('Hey {} please click on your preferred character!'.format(playerName), True, BLACK, None)
     textPlayerIconRect = textPlayerIcon.get_rect()
     textPlayerIconRect.center = (WINDOWWIDTH / 2, (WINDOWHEIGHT / 4 - 100))
 
@@ -658,6 +677,9 @@ def show_icon_menu(players): # shows screen where players pick their icons
     while iconed:
 
         for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = event.pos
                 if playerIcon_female1.get_rect(center=(X_1_5 - 100, Y_1_2 - 100)).collidepoint(x, y):
@@ -676,9 +698,7 @@ def show_icon_menu(players): # shows screen where players pick their icons
                     playerIcon = "d"
                     iconed = False
 
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
+
 
         pygame.display.update()
         FPSCLOCK.tick(FPS / 2)
@@ -722,15 +742,33 @@ def show_gameplay(): # loop for gameplay
                     if currentPlayer < len(ActivePlayers) - 1:
                         currentPlayer += 1
                         show_turn(currentPlayer)
-                        print(currentPlayer)
+                        pick_direction()
+
+
                     else:
                         currentPlayer = 0
                         show_turn(currentPlayer)
-                        print(currentPlayer)
+                        pick_direction()
+
+
+
+
 
         generate_tiles()
         # DISPLAYSURF.fill(WHITE)
         DISPLAYSURF.blit(gameBackground, (0, 0))
+
+        abc = PlayerList[currentPlayer].PlayerName
+
+        textWhoseTurn = fontObjLarge.render("It's:  {} turn!".format(abc), True, BLACK, None)
+        textWhoseTurnRect = textWhoseTurn.get_rect()
+        textWhoseTurnRect.center = (X_1_4 - 130, Y_1_4-100)
+
+
+        DISPLAYSURF.blit(textWhoseTurn, textWhoseTurnRect)
+
+
+        pygame.display.update()
 
         for key in tile_list:
             tile_list[key].draw_tile()
