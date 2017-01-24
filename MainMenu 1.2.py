@@ -436,7 +436,7 @@ def show_instructions_menu1():
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    instructions = False
+                    instructions1 = False
                 if event.key == pygame.K_q:
                     pygame.quit()
                     quit()

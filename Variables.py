@@ -50,7 +50,6 @@ Y_2_3 = int(WINDOWHEIGHT / 3 * 2)
 Y_3_4 = int(WINDOWHEIGHT / 4 * 3)
 
 backGroundImage = pygame.image.load('images/MainMenu.png')
-instructionsImage = pygame.image.load('images/Instructions.png')
 gameBackground = pygame.image.load("images/gamebg1.png")
 
 playerIcon_male1 = pygame.image.load("images/icon_male1.png")
