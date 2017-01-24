@@ -34,8 +34,8 @@ CORAL = (255, 127, 80)
 LIGHT_CORAL = (250, 127, 80)
 
 
+# Images
 backGroundImage = pygame.image.load('MainMenu.png')
-instructionsImage = pygame.image.load('Instructions.png')
 gameBackground = pygame.image.load("gamebg1.png")
 
 playerIcon1 = pygame.image.load("playericon1.png")
@@ -50,6 +50,14 @@ diceImage3 = pygame.image.load('dice3.jpg')
 diceImage4 = pygame.image.load('dice4.jpg')
 diceImage5 = pygame.image.load('dice5.jpg')
 diceImage6 = pygame.image.load('dice6.jpg')
+
+instructionsImage = pygame.image.load('Instructions.png')
+instructionsImageNED1 = pygame.image.load('NEDERLANDS-instructionsimg1.png')
+instructionsImageNED2 = pygame.image.load('NEDERLANDS-instructionsimg2.png')
+instructionsImageNED3 = pygame.image.load('NEDERLANDS-instructionsimg3.png')
+instructionsImageEN1 = pygame.image.load('ENGELS-instructionsimg1.png')
+instructionsImageEN2 = pygame.image.load('ENGELS-instructionsimg2.png')
+instructionsImageEN3 = pygame.image.load('ENGELS-instructionsimg3.png')
 
 fontObjLarge = pygame.font.Font('freesansbold.ttf', 32)
 fontObjMedium = pygame.font.Font('freesansbold.ttf', 24)
@@ -552,7 +560,6 @@ def show_instructions_menu():
     instructions = True
 
     while instructions:
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -565,10 +572,105 @@ def show_instructions_menu():
                     pygame.quit()
                     quit()
 
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x,y = event.pos
+                if instructionsImage.get_rect().collidepoint(x, y):
+                    instructions = False
+                    show_instructions_menu1()
+
         DISPLAYSURF.fill(WHITE)
         DISPLAYSURF.blit(instructionsImage, (0, 0))
         pygame.display.update()
         FPSCLOCK.tick(FPS / 2)
+
+
+def show_instructions_menu1():
+    instructions1 = True
+
+
+    while instructions1:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    instructions = False
+                if event.key == pygame.K_q:
+                    pygame.quit()
+                    quit()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x,y = event.pos
+                if instructionsImageNED1.get_rect().collidepoint(x, y):
+                    instructions1 = False
+                    show_instructions_menu2()
+
+
+        DISPLAYSURF.fill(WHITE)
+        DISPLAYSURF.blit(instructionsImageNED1, (0, 0))
+        pygame.display.update()
+        FPSCLOCK.tick(FPS / 2)
+
+
+def show_instructions_menu2():
+    instructions2 = True
+
+
+    while instructions2:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    instructions = False
+                if event.key == pygame.K_q:
+                    pygame.quit()
+                    quit()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x,y = event.pos
+                if instructionsImageNED2.get_rect().collidepoint(x, y):
+                    instructions2 = False
+                    show_instructions_menu3()
+
+
+        DISPLAYSURF.fill(WHITE)
+        DISPLAYSURF.blit(instructionsImageNED2, (0, 0))
+        pygame.display.update()
+        FPSCLOCK.tick(FPS / 2)
+
+def show_instructions_menu3():
+    instructions3 = True
+
+
+    while instructions3:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    instructions = False
+                if event.key == pygame.K_q:
+                    pygame.quit()
+                    quit()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x,y = event.pos
+                if instructionsImageNED3.get_rect().collidepoint(x, y):
+                    instructions3 = False
+                    show_instructions_menu()
+
+        DISPLAYSURF.fill(WHITE)
+        DISPLAYSURF.blit(instructionsImageNED3, (0, 0))
+        pygame.display.update()
+        FPSCLOCK.tick(FPS / 2)
+
 
 
 def show_main_menu():
