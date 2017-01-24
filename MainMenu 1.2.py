@@ -5,7 +5,7 @@ from pygame.locals import *
 pygame.init()
 
 
-
+#Fonts
 fontObjLarge = pygame.font.Font('freesansbold.ttf', 32)
 fontObjMedium = pygame.font.Font('freesansbold.ttf', 24)
 fontObjSmall = pygame.font.Font('freesansbold.ttf', 18)
