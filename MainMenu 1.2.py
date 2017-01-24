@@ -23,7 +23,9 @@ DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
 #scales of the screen
 X_1_2 = int(WINDOWWIDTH / 2)
 X_1_3 = int(WINDOWWIDTH / 3)
+X_1_4 = int(WINDOWWIDTH / 4)
 X_2_3 = int(WINDOWWIDTH / 3 * 2)
+X_3_4 = int(WINDOWWIDTH / 4 * 3)
 
 Y_1_2 = int(WINDOWHEIGHT / 2)
 Y_1_3 = int(WINDOWHEIGHT / 3)
@@ -126,8 +128,8 @@ class Player:
     def icon_match(self):
         for key in tile_list:
             if self.Position.X == tile_list[key].Position.X and self.Position.Y == tile_list[key].Position.Y:
-                self.IconPosition.X = tile_list[key].DrawX
-                self.IconPosition.Y = tile_list[key].DrawY
+                self.IconPosition.X = tile_list[key].DrawPos.X
+                self.IconPosition.Y = tile_list[key].DrawPos.Y
 
     def draw_icon(self):
         DISPLAYSURF.blit(self.PlayerIcon, (self.IconPosition.X, self.IconPosition.Y))
@@ -146,25 +148,25 @@ class Tile:
     def __init__(self, category, posX, posY, drawX, drawY):
         self.Category = category
         self.Position = Vector2(posX, posY)
-        self.DrawX = drawX
-        self.DrawY = drawY
+        self.DrawPos = Vector2(drawX, drawY)
+
 
     def draw_tile(self):
         if self.Category == "Sport":
-            pygame.draw.circle(DISPLAYSURF, BLUE, (self.DrawX, self.DrawY), 10, 0)
+            pygame.draw.circle(DISPLAYSURF, BLUE, (self.DrawPos.X, self.DrawPos.Y), 10, 0)
         elif self.Category == "Geografie":
-            pygame.draw.circle(DISPLAYSURF, GREEN, (self.DrawX, self.DrawY), 10, 0)
+            pygame.draw.circle(DISPLAYSURF, GREEN, (self.DrawPos.X, self.DrawPos.Y), 10, 0)
         elif self.Category == "Entertainment":
-            pygame.draw.circle(DISPLAYSURF, RED, (self.DrawX, self.DrawY), 10, 0)
+            pygame.draw.circle(DISPLAYSURF, RED, (self.DrawPos.X, self.DrawPos.Y), 10, 0)
         elif self.Category == "Geschiedenis":
-            pygame.draw.circle(DISPLAYSURF, YELLOW, (self.DrawX, self.DrawY), 10, 0)
+            pygame.draw.circle(DISPLAYSURF, YELLOW, (self.DrawPos.X, self.DrawPos.Y), 10, 0)
         elif self.Category == "Win":
-            pygame.draw.circle(DISPLAYSURF, BLACK, (self.DrawX, self.DrawY), 13, 0)
+            pygame.draw.circle(DISPLAYSURF, BLACK, (self.DrawPos.X, self.DrawPos.Y), 13, 0)
         elif self.Category == "Bottom":
-            pygame.draw.circle(DISPLAYSURF, BLACK, (self.DrawX, self.DrawY), 10, 0)
+            pygame.draw.circle(DISPLAYSURF, BLACK, (self.DrawPos.X, self.DrawPos.Y), 10, 0)
 
     def get_attributes(self):
-        return self.Category, self.Position.X, self.Position.Y, self.DrawX, self.DrawY
+        return self.Category, self.Position.X, self.Position.Y, self.DrawPos.X, self.DrawPos.Y
 
 
 
@@ -531,13 +533,13 @@ def show_icon_menu():
 
     textPlayerIcon = fontObjLarge.render('Choose your icon!', True, BLACK, None)
     textPlayerIconRect = textPlayerIcon.get_rect()
-    textPlayerIconRect.center = (WINDOWWIDTH / 2, WINDOWHEIGHT / 4)
+    textPlayerIconRect.center = (WINDOWWIDTH / 2, (WINDOWHEIGHT / 7))
 
     DISPLAYSURF.blit(textPlayerIcon, textPlayerIconRect)
 
-    DISPLAYSURF.blit(playerIcon_female1, (X_1_3, Y_1_3))
-    DISPLAYSURF.blit(playerIcon_female2, (X_2_3, Y_1_3))
-    DISPLAYSURF.blit(playerIcon_male1, (X_1_3, Y_2_3))
+    DISPLAYSURF.blit(playerIcon_female1, (X_1_4, Y_1_4))
+    DISPLAYSURF.blit(playerIcon_female2, (X_2_3, Y_1_4))
+    DISPLAYSURF.blit(playerIcon_male1, (X_1_4, Y_2_3))
     DISPLAYSURF.blit(playerIcon_male2, (X_2_3, Y_2_3))
 
 
