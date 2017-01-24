@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-import pygame, sys, time, random
-
-=======
 import pygame, sys, time, random, psycopg2
->>>>>>> origin/master
 from pygame.locals import *
 
 
