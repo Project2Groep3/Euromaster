@@ -1,10 +1,10 @@
 import pygame, sys, time, random, psycopg2
+from Variables import *
 from pygame.locals import *
-
-
 
 pygame.init()
 
+Euromaster-Aya
 FPS = 30
 FPSCLOCK = pygame.time.Clock()
 
@@ -59,17 +59,20 @@ instructionsImageEN1 = pygame.image.load('ENGELS-instructionsimg1.png')
 instructionsImageEN2 = pygame.image.load('ENGELS-instructionsimg2.png')
 instructionsImageEN3 = pygame.image.load('ENGELS-instructionsimg3.png')
 
+
 fontObjLarge = pygame.font.Font('freesansbold.ttf', 32)
 fontObjMedium = pygame.font.Font('freesansbold.ttf', 24)
 fontObjSmall = pygame.font.Font('freesansbold.ttf', 18)
 
 
+# Vector class and position
 class Vector2:
     def __init__(self, x, y):
         self.X = x
         self.Y = y
 
 
+# Player class
 class Player:
     def __init__(self, playerID=0, name="", icon=None, category="", posX=0, posY=0, correctanswers=0, iconX=0, iconY=0):
         self.PlayerID = playerID
@@ -79,7 +82,6 @@ class Player:
         self.Position = Vector2(posX, posY)
         self.CorrectAnswers = correctanswers
         self.IconPosition = Vector2(iconX, iconY)
-
 
     def move_right(self):
         # self.Position.X += Tools1.steps()
@@ -116,56 +118,75 @@ class Player:
             self.Position.X = 7
 
         if self.PlayerIcon == "a":
-            self.PlayerIcon = playerIcon1
+            self.PlayerIcon = playerIcon_male1
         elif self.PlayerIcon == "b":
-            self.PlayerIcon = playerIcon2
+            self.PlayerIcon = playerIcon_male2
         elif self.PlayerIcon == "c":
-            self.PlayerIcon = playerIcon3
+            self.PlayerIcon = playerIcon_female1
         elif self.PlayerIcon == "d":
-            self.PlayerIcon = playerIcon4
+            self.PlayerIcon = playerIcon_female2
 
     def icon_match(self):
         for key in tile_list:
             if self.Position.X == tile_list[key].Position.X and self.Position.Y == tile_list[key].Position.Y:
-                self.IconPosition.X = tile_list[key].DrawX
-                self.IconPosition.Y = tile_list[key].DrawY
+                self.IconPosition.X = tile_list[key].DrawPos.X
+                self.IconPosition.Y = tile_list[key].DrawPos.Y
 
     def draw_icon(self):
         DISPLAYSURF.blit(self.PlayerIcon, (self.IconPosition.X, self.IconPosition.Y))
 
 
+# Making objects of playerclass
 player1 = Player()
 player2 = Player()
 player3 = Player()
 player4 = Player()
 
+# List of playerobjects
 PlayerList = [player1, player2, player3, player4]
 
 
+# Tile class
 class Tile:
     def __init__(self, category, posX, posY, drawX, drawY):
         self.Category = category
         self.Position = Vector2(posX, posY)
-        self.DrawX = drawX
-        self.DrawY = drawY
+        self.DrawPos = Vector2(drawX, drawY)
 
     def draw_tile(self):
         if self.Category == "Sport":
-            pygame.draw.circle(DISPLAYSURF, BLUE, (self.DrawX, self.DrawY), 10, 0)
+            pygame.draw.circle(DISPLAYSURF, BLUE, (self.DrawPos.X, self.DrawPos.Y), 10, 0)
         elif self.Category == "Geografie":
-            pygame.draw.circle(DISPLAYSURF, GREEN, (self.DrawX, self.DrawY), 10, 0)
+            pygame.draw.circle(DISPLAYSURF, LIGHT_GREEN, (self.DrawPos.X, self.DrawPos.Y), 10, 0)
         elif self.Category == "Entertainment":
-            pygame.draw.circle(DISPLAYSURF, RED, (self.DrawX, self.DrawY), 10, 0)
+            pygame.draw.circle(DISPLAYSURF, RED, (self.DrawPos.X, self.DrawPos.Y), 10, 0)
         elif self.Category == "Geschiedenis":
-            pygame.draw.circle(DISPLAYSURF, YELLOW, (self.DrawX, self.DrawY), 10, 0)
+            pygame.draw.circle(DISPLAYSURF, YELLOW, (self.DrawPos.X, self.DrawPos.Y), 10, 0)
         elif self.Category == "Win":
-            pygame.draw.circle(DISPLAYSURF, BLACK, (self.DrawX, self.DrawY), 13, 0)
+            pygame.draw.circle(DISPLAYSURF, BLACK, (self.DrawPos.X, self.DrawPos.Y), 13, 0)
         elif self.Category == "Bottom":
-            pygame.draw.circle(DISPLAYSURF, BLACK, (self.DrawX, self.DrawY), 10, 0)
+            pygame.draw.circle(DISPLAYSURF, BLACK, (self.DrawPos.X, self.DrawPos.Y), 10, 0)
 
     def get_attributes(self):
-        return self.Category, self.Position.X, self.Position.Y, self.DrawX, self.DrawY
+        return self.Category, self.Position.X, self.Position.Y, self.DrawPos.X, self.DrawPos.Y
 
+
+def text_to_button(msg, color, buttonX, buttonY, buttonWidth, buttonHeight, size="small"):
+    textSurf, textRect = text_objects(msg, color, size)
+    textRect.center = ((buttonX + (buttonWidth / 2)), buttonY + (buttonHeight / 2))
+    DISPLAYSURF.blit(textSurf, textRect)
+
+
+def text_objects(text, color, size="small"):
+    global textSurface
+    if size == "small":
+        textSurface = fontObjSmall.render(text, True, color)
+    elif size == "medium":
+        textSurface = fontObjMedium.render(text, True, color)
+    elif size == "large":
+        textSurface = fontObjLarge.render(text, True, color)
+
+    return textSurface, textSurface.get_rect()
 
 
 # def player_names():
@@ -176,7 +197,7 @@ class Tile:
 
 
 
-
+# Function that generates tiles on the map
 def generate_tiles():
     n = 640
     i = 60
@@ -209,6 +230,7 @@ def generate_tiles():
     #     tile_list[key].draw_tile()
 
 
+# Class tools with dices etc
 class Tools():
     def __init__(self):
         self.Value = 0
@@ -248,12 +270,11 @@ class Tools():
         return self.DiceImage
 
 
+# Object of tools class
 Tools1 = Tools()
 
 
-
-
-
+# Function that shows the screen how many players u want to play with
 def how_many_icons(AmountOfPlayers):
     global ActivePlayers
     ActivePlayers = []
@@ -273,7 +294,7 @@ def how_many_icons(AmountOfPlayers):
         print(PlayerList[k].PlayerID, PlayerList[k].PlayerName, PlayerList[k].PlayerIcon)
 
 
-
+# Function that shows when it's a player turn
 def show_turn(currentPlayer):
     showed = True
     abc = PlayerList[currentPlayer].PlayerName
@@ -281,7 +302,7 @@ def show_turn(currentPlayer):
     while showed:
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
-            # print(event.unicode)
+                # print(event.unicode)
                 if event.key == pygame.K_ESCAPE:
                     showed = False
 
@@ -296,11 +317,12 @@ def show_turn(currentPlayer):
         showed = False
         FPSCLOCK.tick(FPS / 2)
 
+
+# Function that displays dice result on the screen
 def show_dice():
     diced = True
 
     while diced:
-
         textDiceResult = fontObjLarge.render('The result of your dice is:', True, BLACK, WHITE)
         textDiceResultRect = textDiceResult.get_rect()
         textDiceResultRect.center = (WINDOWWIDTH / 2, WINDOWHEIGHT / 4)
@@ -309,7 +331,6 @@ def show_dice():
 
         DISPLAYSURF.blit(Tools1.show_dice_image(), (WINDOWWIDTH / 2, WINDOWHEIGHT / 2))
 
-
         pygame.display.update()
 
         time.sleep(1)
@@ -317,89 +338,123 @@ def show_dice():
         FPSCLOCK.tick(FPS / 2)
 
 
-# def show_game():
-#     gamed = True
-#
-#     DISPLAYSURF.fill(WHITE)
-#     DISPLAYSURF.blit(backGroundImage, (0, 0))
-#
-#
-#     while gamed:
-#
-#         for event in pygame.event.get():
-#             if event.type == pygame.QUIT:
-#                 pygame.quit()
-#                 quit()
-#
-#             if event.type == pygame.KEYDOWN:
-#                 if event.key == pygame.K_ESCAPE:
-#                     gamed = False
-#
-#         pygame.display.update()
-#         FPSCLOCK.tick(FPS / 2)
+def show_buttons():  # function that shows button screen test
+    buttoned = True
+
+    while buttoned:
+
+        DISPLAYSURF.fill(WHITE)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        cur = pygame.mouse.get_pos()
+
+        if 140 + 120 > cur[0] > 140 and 500 + 50 > cur[1] > 500:
+            pygame.draw.rect(DISPLAYSURF, LIGHT_GREEN, (140, 500, 120, 50))
+        else:
+            pygame.draw.rect(DISPLAYSURF, GREEN, (140, 500, 120, 50))
+
+        pygame.display.update()
+        FPSCLOCK.tick(FPS / 2)
 
 
-def show_gameplay():
-    gameplayed = True
+def show_main_menu():  # Function that shows Main menu
 
-    currentPlayer = 0
+    pygame.init()
+    menud = True
+
+    pygame.display.set_caption('Euromaster')
+
+    while menud:
+
+        DISPLAYSURF.fill(WHITE)
+
+        textWelcome = fontObjLarge.render('Welcome to Euromaster!', True, BLACK, None)
+        textWelcomeRect = textWelcome.get_rect()
+        textWelcomeRect.center = (WINDOWWIDTH / 2, WINDOWHEIGHT / 4)
+
+        menuKnopStart = fontObjSmall.render('Press S to Start Game', True, BLACK, None)
+        menuKnopStartRect = menuKnopStart.get_rect()
+        menuKnopStartRect.center = (WINDOWWIDTH / 2, WINDOWHEIGHT / 1.80)
+
+        menuKnopLoadGame = fontObjSmall.render('Press L to Load Game', True, BLACK, None)
+        menuKnopLoadGameRect = menuKnopLoadGame.get_rect()
+        menuKnopLoadGameRect.center = (WINDOWWIDTH / 2, WINDOWHEIGHT / 1.65)
+
+        menuKnopInstructions = fontObjSmall.render('Press I for Instructions', True, BLACK, None)
+        menuKnopInstructionsRect = menuKnopInstructions.get_rect()
+        menuKnopInstructionsRect.center = (WINDOWWIDTH / 2, WINDOWHEIGHT / 1.53)
+
+        menuKnopHighscores = fontObjSmall.render('Press H for Highscores', True, BLACK, None)
+        menuKnopHighscoresRect = menuKnopHighscores.get_rect()
+        menuKnopHighscoresRect.center = (WINDOWWIDTH / 2, WINDOWHEIGHT / 1.42)
+
+        menuKnopExitGame = fontObjSmall.render('Press E to Exit Game', True, BLACK, None)
+        menuKnopExitGameRect = menuKnopExitGame.get_rect()
+        menuKnopExitGameRect.center = (WINDOWWIDTH / 2, WINDOWHEIGHT / 1.33)
+
+        DISPLAYSURF.blit(backGroundImage, (0, 0))
+        DISPLAYSURF.blit(textWelcome, textWelcomeRect)
+        DISPLAYSURF.blit(menuKnopStart, menuKnopStartRect)
+        DISPLAYSURF.blit(menuKnopLoadGame, menuKnopLoadGameRect)
+        DISPLAYSURF.blit(menuKnopInstructions, menuKnopInstructionsRect)
+        DISPLAYSURF.blit(menuKnopHighscores, menuKnopHighscoresRect)
+        DISPLAYSURF.blit(menuKnopExitGame, menuKnopExitGameRect)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_e:
+                    pygame.quit()
+                    sys.exit()
+
+                elif event.key == pygame.K_i:
+                    show_instructions_menu()
+
+                elif event.key == pygame.K_s:
+                    menud = False
+
+                elif event.key == pygame.K_l:
+                    show_buttons()
+
+                elif event.key == pygame.K_h:
+                    show_highscore_menu()
+
+        pygame.display.update()
+        FPSCLOCK.tick(FPS)
 
 
-    while gameplayed:
+# Function that shows the instruction menu
+def show_instructions_menu():
+    instructions = True
 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
+    while instructions:
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    instructions = False
+                if event.key == pygame.K_q:
                     pygame.quit()
                     quit()
 
-                if event.type == pygame.KEYDOWN:
-                    # print(event.unicode)
-                    if event.key == pygame.K_ESCAPE:
-                        gameplayed = False
-                    elif event.key == pygame.K_UP:
-                        PlayerList[currentPlayer].move_up()
-
-                    elif event.key == pygame.K_DOWN:
-                        PlayerList[currentPlayer].move_down()
-
-                    elif event.key == pygame.K_RIGHT:
-                        PlayerList[currentPlayer].move_right()
-
-                    elif event.key == pygame.K_LEFT:
-                        PlayerList[currentPlayer].move_left()
-
-                    elif event.key == pygame.K_p:
-                        show_pause()
-
-                    elif event.key == pygame.K_r:
-                        show_dice()
-                    elif event.key == pygame.K_d:
-                        if currentPlayer < len(ActivePlayers) - 1:
-                            currentPlayer += 1
-                            show_turn(currentPlayer)
-                            print(currentPlayer)
-                        else:
-                            currentPlayer = 0
-                            show_turn(currentPlayer)
-                            print(currentPlayer)
+        DISPLAYSURF.fill(WHITE)
+        DISPLAYSURF.blit(instructionsImage, (0, 0))
+        pygame.display.update()
+        FPSCLOCK.tick(FPS / 2)
 
 
-            generate_tiles()
-            # DISPLAYSURF.fill(WHITE)
-            DISPLAYSURF.blit(gameBackground, (0, 0))
-
-            for key in tile_list:
-                tile_list[key].draw_tile()
-
-            for k in range(len(ActivePlayers)):
-                PlayerList[k].draw_icon()
-
-
-            pygame.display.update()
-            FPSCLOCK.tick(FPS / 2)
-
-
-
+# Function that shows the highscore menu
 def show_highscore_menu():
     highscored = True
 
@@ -428,6 +483,7 @@ def show_highscore_menu():
         FPSCLOCK.tick(FPS / 2)
 
 
+# Function that shows menu where u can pick the amount of players
 def show_players_menu():
     chooseplayers = True
 
@@ -470,9 +526,8 @@ def show_players_menu():
                 quit()
 
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    chooseplayers = False
-                elif event.key == pygame.K_1:
+
+                if event.key == pygame.K_1:
                     AmountOfPlayers = 1
                     chooseplayers = False
 
@@ -488,12 +543,11 @@ def show_players_menu():
                     AmountOfPlayers = 4
                     chooseplayers = False
 
-
-
         pygame.display.update()
         FPSCLOCK.tick(FPS / 2)
 
 
+# Function that shows menu where players pick their icon
 def show_icon_menu():
     global iconed
     iconed = True
@@ -501,11 +555,16 @@ def show_icon_menu():
     DISPLAYSURF.fill(WHITE)
     DISPLAYSURF.blit(backGroundImage, (0, 0))
 
-    textPlayerIcon = fontObjLarge.render('Choose player name and icon', True, BLACK, None)
+    textPlayerIcon = fontObjLarge.render('Choose your icon!', True, BLACK, None)
     textPlayerIconRect = textPlayerIcon.get_rect()
-    textPlayerIconRect.center = (WINDOWWIDTH / 2, WINDOWHEIGHT / 4)
+    textPlayerIconRect.center = (WINDOWWIDTH / 2, (WINDOWHEIGHT / 4 - 100))
 
     DISPLAYSURF.blit(textPlayerIcon, textPlayerIconRect)
+
+    DISPLAYSURF.blit(playerIcon_female1, (X_1_5 - 100, Y_1_2 - 100))
+    DISPLAYSURF.blit(playerIcon_female2, (X_2_5 - 100, Y_1_2 - 100))
+    DISPLAYSURF.blit(playerIcon_male1, (X_3_5 - 100, Y_1_2 - 100))
+    DISPLAYSURF.blit(playerIcon_male2, (X_4_5 - 100, Y_1_2 - 100))
 
     pygame.display.update()
 
@@ -519,41 +578,41 @@ def show_icon_menu():
                 pygame.quit()
                 quit()
 
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    iconed = False
-
-
         pygame.display.update()
         FPSCLOCK.tick(FPS / 2)
 
 
-def show_pause():
+# Function for the main game loop
+def show_gameplay():
+    gameplayed = True
 
-    paused = True
+    currentPlayer = 0
 
-    while paused:
+    while gameplayed:
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
 
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    paused = False
-                elif event.key == pygame.K_e:
-                    pygame.quit()
-                    quit()
+                # print(event.unicode)
+                # if event.key == pygame.K_ESCAPE:
+                #     gameplayed = False
+                if event.key == pygame.K_UP:
+                    PlayerList[currentPlayer].move_up()
 
-        DISPLAYSURF.fill(WHITE)
+                elif event.key == pygame.K_DOWN:
+                    PlayerList[currentPlayer].move_down()
 
-        textPauseMenu = fontObjLarge.render('Press C to continue or E to Exit Game!', True, BLACK, None)
-        textPauseMenuRect = textPauseMenu.get_rect()
-        textPauseMenuRect.center = (X_1_2, WINDOWHEIGHT / 4)
+                elif event.key == pygame.K_RIGHT:
+                    PlayerList[currentPlayer].move_right()
 
+                elif event.key == pygame.K_LEFT:
+                    PlayerList[currentPlayer].move_left()
 
-        pygame.display.update()
-        FPSCLOCK.tick(FPS/2)
+                elif event.key == pygame.K_p:
+                    show_pause()
 
 
 def show_instructions_menu():
@@ -565,12 +624,29 @@ def show_instructions_menu():
                 pygame.quit()
                 quit()
 
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    instructions = False
-                if event.key == pygame.K_q:
-                    pygame.quit()
-                    quit()
+                elif event.key == pygame.K_r:
+                    show_dice()
+                elif event.key == pygame.K_d:
+                    if currentPlayer < len(ActivePlayers) - 1:
+                        currentPlayer += 1
+                        show_turn(currentPlayer)
+                        print(currentPlayer)
+                    else:
+                        currentPlayer = 0
+                        show_turn(currentPlayer)
+                        print(currentPlayer)
+
+        generate_tiles()
+        # DISPLAYSURF.fill(WHITE)
+        DISPLAYSURF.blit(gameBackground, (0, 0))
+
+        for key in tile_list:
+            tile_list[key].draw_tile()
+
+
+        for k in range(len(ActivePlayers)):
+            PlayerList[k].draw_icon()
+
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 x,y = event.pos
@@ -580,6 +656,7 @@ def show_instructions_menu():
 
         DISPLAYSURF.fill(WHITE)
         DISPLAYSURF.blit(instructionsImage, (0, 0))
+
         pygame.display.update()
         FPSCLOCK.tick(FPS / 2)
 
@@ -681,67 +758,63 @@ def show_main_menu():
 
     while menud:
 
+# Function that shows the pause menu
+def show_pause():
+    paused = True
+
+
+    while paused:
         DISPLAYSURF.fill(WHITE)
-
-        textWelcome = fontObjLarge.render('Welcome to Euromaster!', True, BLACK, None)
-        textWelcomeRect = textWelcome.get_rect()
-        textWelcomeRect.center = (WINDOWWIDTH / 2, WINDOWHEIGHT / 4)
-
-        menuKnopStart = fontObjSmall.render('Press S to Start Game', True, BLACK, None)
-        menuKnopStartRect = menuKnopStart.get_rect()
-        menuKnopStartRect.center = (WINDOWWIDTH / 2, WINDOWHEIGHT / 1.80)
-
-        menuKnopLoadGame = fontObjSmall.render('Press L to Load Game', True, BLACK, None)
-        menuKnopLoadGameRect = menuKnopLoadGame.get_rect()
-        menuKnopLoadGameRect.center = (WINDOWWIDTH / 2, WINDOWHEIGHT / 1.65)
-
-        menuKnopInstructions = fontObjSmall.render('Press I for Instructions', True, BLACK, None)
-        menuKnopInstructionsRect = menuKnopInstructions.get_rect()
-        menuKnopInstructionsRect.center = (WINDOWWIDTH / 2, WINDOWHEIGHT / 1.53)
-
-        menuKnopHighscores = fontObjSmall.render('Press H for Highscores', True, BLACK, None)
-        menuKnopHighscoresRect = menuKnopHighscores.get_rect()
-        menuKnopHighscoresRect.center = (WINDOWWIDTH / 2, WINDOWHEIGHT / 1.42)
-
-        menuKnopExitGame = fontObjSmall.render('Press E to Exit Game', True, BLACK, None)
-        menuKnopExitGameRect = menuKnopExitGame.get_rect()
-        menuKnopExitGameRect.center = (WINDOWWIDTH / 2, WINDOWHEIGHT / 1.33)
-
         DISPLAYSURF.blit(backGroundImage, (0, 0))
-        DISPLAYSURF.blit(textWelcome, textWelcomeRect)
-        DISPLAYSURF.blit(menuKnopStart, menuKnopStartRect)
-        DISPLAYSURF.blit(menuKnopLoadGame, menuKnopLoadGameRect)
-        DISPLAYSURF.blit(menuKnopInstructions, menuKnopInstructionsRect)
-        DISPLAYSURF.blit(menuKnopHighscores, menuKnopHighscoresRect)
-        DISPLAYSURF.blit(menuKnopExitGame, menuKnopExitGameRect)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-                sys.exit()
+                quit()
 
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_e:
+                if event.key == pygame.K_ESCAPE:
+                    paused = False
+                elif event.key == pygame.K_e:
                     pygame.quit()
-                    sys.exit()
+                    quit()
 
-                elif event.key == pygame.K_i:
-                    show_instructions_menu()
+        textPauseMenu = fontObjLarge.render('Welcome to the Pause Menu.', True, BLACK, None)
+        textPauseMenuRect = textPauseMenu.get_rect()
+        textPauseMenuRect.center = (X_1_2, WINDOWHEIGHT / 4)
 
-                elif event.key == pygame.K_s:
-                    menud = False
+        # old code, made to function
+        # cur = pygame.mouse.get_pos()
+        #
+        # if X_1_2 + 150 > cur[0] > X_1_2 and Y_1_2-50 + 50 > cur[1] > Y_1_2-50:
+        #     pygame.draw.rect(DISPLAYSURF, LIGHT_GREEN, (X_1_2-50, Y_1_2-50, 150, 50))
+        # else:
+        #     pygame.draw.rect(DISPLAYSURF, GREEN, (X_1_2-50, Y_1_2-50, 150, 50))
+        #
+        # if X_1_2 + 150 > cur[0] > X_1_2 and Y_1_2+50 + 50 > cur[1] > Y_1_2+50:
+        #     pygame.draw.rect(DISPLAYSURF, LIGHT_GREEN, (X_1_2-50, Y_1_2+50, 150, 50))
+        # else:
+        #     pygame.draw.rect(DISPLAYSURF, GREEN, (X_1_2-50, Y_1_2+50, 150, 50))
+        #
+        # if X_1_2 + 150 > cur[0] > X_1_2 and Y_1_2+150 + 50 > cur[1] > Y_1_2+150:
+        #     pygame.draw.rect(DISPLAYSURF, LIGHT_GREEN, (X_1_2-50, Y_1_2+150, 150, 50))
+        # else:
+        #     pygame.draw.rect(DISPLAYSURF, GREEN, (X_1_2-50, Y_1_2+150, 150, 50))
 
-                elif event.key == pygame.K_l:
-                    show_dice()
 
-                elif event.key == pygame.K_h:
-                    show_highscore_menu()
+        DISPLAYSURF.blit(textPauseMenu, textPauseMenuRect)
+        button("Resume Game", X_1_2 - 50, Y_1_2 - 50, 150, 50, GREEN, LIGHT_GREEN)
+
+        DISPLAYSURF.blit(textPauseMenu, textPauseMenuRect)
+        button("Main Menu", X_1_2 - 50, Y_1_2 + 50, 150, 50, YELLOW, LIGHT_YELLOW)
+
+        DISPLAYSURF.blit(textPauseMenu, textPauseMenuRect)
+        button("Exit Game", X_1_2 - 50, Y_1_2 + 150, 150, 50, RED, LIGHT_RED)
 
         pygame.display.update()
-        FPSCLOCK.tick(FPS)
+        FPSCLOCK.tick(FPS / 2)
 
 
 show_main_menu()
 show_players_menu()
 show_icon_menu()
-
