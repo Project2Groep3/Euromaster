@@ -419,6 +419,93 @@ def show_instructions_menu():
         FPSCLOCK.tick(FPS / 2)
 
 
+def show_instructions_menu1():
+    instructions1 = True
+
+
+    while instructions1:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    instructions = False
+                if event.key == pygame.K_q:
+                    pygame.quit()
+                    quit()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x,y = event.pos
+                if instructionsImageNED1.get_rect().collidepoint(x, y):
+                    instructions1 = False
+                    show_instructions_menu2()
+
+
+        DISPLAYSURF.fill(WHITE)
+        DISPLAYSURF.blit(instructionsImageNED1, (0, 0))
+        pygame.display.update()
+        FPSCLOCK.tick(FPS / 2)
+
+
+def show_instructions_menu2():
+    instructions2 = True
+
+
+    while instructions2:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    instructions = False
+                if event.key == pygame.K_q:
+                    pygame.quit()
+                    quit()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x,y = event.pos
+                if instructionsImageNED2.get_rect().collidepoint(x, y):
+                    instructions2 = False
+                    show_instructions_menu3()
+
+
+        DISPLAYSURF.fill(WHITE)
+        DISPLAYSURF.blit(instructionsImageNED2, (0, 0))
+        pygame.display.update()
+        FPSCLOCK.tick(FPS / 2)
+
+def show_instructions_menu3():
+    instructions3 = True
+
+
+    while instructions3:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    instructions = False
+                if event.key == pygame.K_q:
+                    pygame.quit()
+                    quit()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x,y = event.pos
+                if instructionsImageNED3.get_rect().collidepoint(x, y):
+                    instructions3 = False
+                    show_instructions_menu()
+
+        DISPLAYSURF.fill(WHITE)
+        DISPLAYSURF.blit(instructionsImageNED3, (0, 0))
+        pygame.display.update()
+        FPSCLOCK.tick(FPS / 2)
+
 # Function that shows the highscore menu
 def show_highscore_menu():
     highscored = True
