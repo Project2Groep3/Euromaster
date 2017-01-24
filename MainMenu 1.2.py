@@ -412,6 +412,11 @@ def show_instructions_menu():
                 if event.key == pygame.K_q:
                     pygame.quit()
                     quit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x,y = event.pos
+                if instructionsImage.get_rect().collidepoint(x, y):
+                    instructions = False
+                    show_instructions_menu1()
 
         DISPLAYSURF.fill(WHITE)
         DISPLAYSURF.blit(instructionsImage, (0, 0))
