@@ -142,6 +142,7 @@ class Tile: # tiles for the map
 
     def draw_tile(self):
         if self.Category == "Sport":
+
             pygame.draw.circle(DISPLAYSURF, BLUE, (self.DrawPos.X, self.DrawPos.Y), 10, 0)
         elif self.Category == "Geografie":
             pygame.draw.circle(DISPLAYSURF, LIGHT_GREEN, (self.DrawPos.X, self.DrawPos.Y), 10, 0)
@@ -205,7 +206,6 @@ def text_objects(text, color, size="small"): # makes textboxes
         textSurface = fontObjLarge.render(text, True, color)
 
     return textSurface, textSurface.get_rect()
-
 
 
 def generate_tiles(): # Function that generates tiles on the map
@@ -706,32 +706,6 @@ def show_icon_menu(players): # shows screen where players pick their icons
     return playerIcon
 
 
-def timer():
-    frame_count = 0
-    start_time = 50
-    total_seconds = frame_count // FPS
-    minutes = total_seconds // 60
-    seconds = total_seconds % 60
-
-    output_string = ""
-
-    text = fontObjLarge.render(output_string, True, BLACK)
-    DISPLAYSURF.blit(text, [910, 10])
-
-    total_seconds = start_time - (frame_count // FPS)
-    if total_seconds < 0:
-        total_seconds = 0
-
-    minutes = total_seconds // 60
-    seconds = total_seconds % 60
-    output_string = "{0:02}:{1:02}".format(minutes, seconds)
-
-    text = fontObjLarge.render(output_string, True, BLACK)
-    DISPLAYSURF.blit(text, [960, 10])
-
-    frame_count += 1
-
-
 def show_gameplay(): # loop for gameplay
     global gameplayed
     gameplayed = True
@@ -741,12 +715,11 @@ def show_gameplay(): # loop for gameplay
     while gameplayed:
 
         for event in pygame.event.get():
+            print(event)
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
-
             if event.type == pygame.KEYDOWN:
-
                 if event.key == pygame.K_UP:
                     PlayerList[currentPlayer].move_up()
 
@@ -882,4 +855,3 @@ how_many_icons(AmountOfPlayers)
 # who_starts()
 
 show_gameplay()
-timer()
