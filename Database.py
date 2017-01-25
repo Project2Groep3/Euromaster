@@ -1,24 +1,11 @@
-import psycopg2
+import psycopg2 as p
 
-def interact_with_database(command):
-    # Connect and set up cursor
-    connection = psycopg2.connect("dbname=euromast user=velid")
-    cursor = connection.cursor()
+con = p.connect("dbname='euromast' user='postgres' host='localhost' password='Drakenadem97'")
+cur = con.cursor()
+cur.execute("select * from op_questions where category = 'Sport'")
+rows = cur.fetchall()
 
-    # Execute the command
-    cursor.execute(command)
-    connection.commit()
 
-    # Save results
-    results = None
-    try:
-        results = cursor.fetchall()
-    except psycopg2.ProgrammingError:
-        # Nothing to fetch
-        pass
+for r in rows:
+    print(r)
 
-    # Close connection
-    cursor.close()
-    connection.close()
-
-    return results

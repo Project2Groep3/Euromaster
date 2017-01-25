@@ -1,5 +1,6 @@
-import pygame, sys, time, random, psycopg2
+import sys, time, random
 from Variables import *
+from Database import *
 from pygame.locals import *
 
 pygame.init()
@@ -705,7 +706,32 @@ def show_icon_menu(players): # shows screen where players pick their icons
     return playerIcon
 
 
+def timer():
+    frame_count = 0
+    start_time = 50
+    total_seconds = frame_count // FPS
+    minutes = total_seconds // 60
+    seconds = total_seconds % 60
 
+    output_string = ""
+
+    text = fontObjLarge.render(output_string, True, BLACK)
+    DISPLAYSURF.blit(text, [910, 10])
+
+    total_seconds = start_time - (frame_count // FPS)
+    if total_seconds < 0:
+        total_seconds = 0
+
+    minutes = total_seconds // 60
+    seconds = total_seconds % 60
+    output_string = "{0:02}:{1:02}".format(minutes, seconds)
+
+    text = fontObjLarge.render(output_string, True, BLACK)
+    DISPLAYSURF.blit(text, [960, 10])
+
+    frame_count += 1
+    
+timer()
 def show_gameplay(): # loop for gameplay
     global gameplayed
     gameplayed = True
