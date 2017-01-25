@@ -21,13 +21,14 @@ FPS = 30
 FPSCLOCK = pygame.time.Clock()
 
 AmountOfPlayers = 0
+paused = False
 
 # Resolution
 WINDOWWIDTH = 1024
 WINDOWHEIGHT = 768
 
 # Declaring displaysurf
-DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
+DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH,WINDOWHEIGHT), pygame.FULLSCREEN)
 
 
 # scales of the screen

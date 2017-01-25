@@ -4,23 +4,17 @@ from pygame.locals import *
 
 pygame.init()
 
-
-#Fonts
-fontObjLarge = pygame.font.Font('freesansbold.ttf', 32)
+fontObjLarge = pygame.font.Font('freesansbold.ttf', 32) #declaring fonts
 fontObjMedium = pygame.font.Font('freesansbold.ttf', 24)
 fontObjSmall = pygame.font.Font('freesansbold.ttf', 18)
 
-
-# Vector class and position
-class Vector2:
+class Vector2: # Vector Class
     def __init__(self, x, y):
         self.X = x
         self.Y = y
 
-
-# Player class
-class Player:
-    def __init__(self, playerID=0, name="", icon=None, category="", posX=0, posY=0, correctanswers=0, iconX=0, iconY=0):
+class Player: # Player Class
+    def __init__(self, playerID=0, name="", icon=None, category="", posX=0, posY=0, correctanswers=0, iconX=0, iconY=0, direction = ""):
         self.PlayerID = playerID
         self.PlayerName = name
         self.PlayerIcon = icon
@@ -28,6 +22,7 @@ class Player:
         self.Position = Vector2(posX, posY)
         self.CorrectAnswers = correctanswers
         self.IconPosition = Vector2(iconX, iconY)
+        self.Direction = direction
 
     def move_right(self):
         # self.Position.X += Tools1.steps()
@@ -64,13 +59,13 @@ class Player:
             self.Position.X = 7
 
         if self.PlayerIcon == "a":
-            self.PlayerIcon = playerIcon_male1
-        elif self.PlayerIcon == "b":
-            self.PlayerIcon = playerIcon_male2
-        elif self.PlayerIcon == "c":
             self.PlayerIcon = playerIcon_female1
-        elif self.PlayerIcon == "d":
+        elif self.PlayerIcon == "b":
             self.PlayerIcon = playerIcon_female2
+        elif self.PlayerIcon == "c":
+            self.PlayerIcon = playerIcon_male1
+        elif self.PlayerIcon == "d":
+            self.PlayerIcon = playerIcon_male2
 
     def icon_match(self):
         for key in tile_list:
@@ -82,18 +77,63 @@ class Player:
         DISPLAYSURF.blit(self.PlayerIcon, (self.IconPosition.X, self.IconPosition.Y))
 
 
-# Making objects of playerclass
-player1 = Player()
+
+player1 = Player() # Making objects of playerclass
 player2 = Player()
 player3 = Player()
 player4 = Player()
 
-# List of playerobjects
-PlayerList = [player1, player2, player3, player4]
+
+PlayerList = [player1, player2, player3, player4] # List of playerobjects
 
 
-# Tile class
-class Tile:
+class Tools(): #Tools class
+    def __init__(self):
+        self.Value = 0
+        self.DiceImage = ""
+        self.DiceResult = 0
+        self.QuestionType = ""
+
+    def dice(self):
+        self.DiceResult = random.randint(1, 6)
+
+    def steps(self):
+        if self.DiceResult == 1 or self.DiceResult == 2:
+            return 1
+        elif self.DiceResult == 3 or self.DiceResult == 4:
+            return 2
+        elif self.DiceResult == 5 or self.DiceResult == 5:
+            return 3
+
+    def question_type(self):
+        if self.DiceResult == 1 or self.DiceResult == 3 or self.DiceResult == 5:
+            self.QuestionType = "Open"
+        elif self.DiceResult == 2 or self.DiceResult == 4 or self.DiceResult == 6:
+            self.QuestionType = "MC"
+
+    def timer(self):
+        for i in range(50, 0, -1):
+            time.sleep(1)
+
+    def show_dice_image(self):
+        if self.DiceResult == 1:
+            self.DiceImage = diceImage1
+        elif self.DiceResult == 2:
+            self.DiceImage = diceImage2
+        elif self.DiceResult == 3:
+            self.DiceImage = diceImage3
+        elif self.DiceResult == 4:
+            self.DiceImage = diceImage4
+        elif self.DiceResult == 5:
+            self.DiceImage = diceImage5
+        elif self.DiceResult == 6:
+            self.DiceImage = diceImage6
+
+        return self.DiceImage
+
+Tools1 = Tools() # making tools object
+
+class Tile: # tiles for the map
     def __init__(self, category, posX, posY, drawX, drawY):
         self.Category = category
         self.Position = Vector2(posX, posY)
@@ -117,8 +157,7 @@ class Tile:
         return self.Category, self.Position.X, self.Position.Y, self.DrawPos.X, self.DrawPos.Y
 
 
-
-def button(text, x, y, width, height, inactive_color, active_color, action = None):
+def button(text, x, y, width, height, inactive_color, active_color, action=None): # makes buttons
     cur = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
     # print(click)
@@ -130,11 +169,17 @@ def button(text, x, y, width, height, inactive_color, active_color, action = Non
                 quit()
 
             if action == show_main_menu:
+                
                 show_main_menu()
+
+            if action == show_instructions_menu:
+                show_instructions_menu()
+
+            if action == show_highscore_menu:
+                show_highscore_menu()
 
             if action == show_gameplay:
                 show_gameplay()
-
 
 
     else:
@@ -143,14 +188,13 @@ def button(text, x, y, width, height, inactive_color, active_color, action = Non
     text_to_button(text, BLACK, x, y, width, height)
 
 
-
-def text_to_button(msg, color, buttonX, buttonY, buttonWidth, buttonHeight, size="small"):
+def text_to_button(msg, color, buttonX, buttonY, buttonWidth, buttonHeight, size="small"): # puts text in buttons
     textSurf, textRect = text_objects(msg, color, size)
     textRect.center = ((buttonX + (buttonWidth / 2)), buttonY + (buttonHeight / 2))
     DISPLAYSURF.blit(textSurf, textRect)
 
 
-def text_objects(text, color, size="small"):
+def text_objects(text, color, size="small"): # makes textboxes
     global textSurface
     if size == "small":
         textSurface = fontObjSmall.render(text, True, color)
@@ -162,8 +206,8 @@ def text_objects(text, color, size="small"):
     return textSurface, textSurface.get_rect()
 
 
-# Function that generates tiles on the map
-def generate_tiles():
+
+def generate_tiles(): # Function that generates tiles on the map
     n = 640
     i = 60
     global tile_list
@@ -191,56 +235,9 @@ def generate_tiles():
     tile_list.update(
         {'top_tile': Tile("Win", 1, 16, X_1_2 + 40, 30), 'bottom_tile': Tile("Bottom", 0, 0, X_1_2 + 40, 660)})
 
-    # for key in tile_list:
-    #     tile_list[key].draw_tile()
 
 
-# Class tools with dices etc
-class Tools():
-    def __init__(self):
-        self.Value = 0
-        self.DiceImage = ""
-        self.DiceResult = self.dice()
-
-    def dice(self):
-        return random.randint(1, 6)
-
-    def steps(self):
-        DiceResult = self.dice()
-        if DiceResult == 1 or DiceResult == 2:
-            return 1
-        elif DiceResult == 3 or DiceResult == 4:
-            return 2
-        elif DiceResult == 5 or DiceResult == 5:
-            return 3
-
-    def timer(self):
-        for i in range(50, 0, -1):
-            time.sleep(1)
-
-    def show_dice_image(self):
-        if self.DiceResult == 1:
-            self.DiceImage = diceImage1
-        elif self.DiceResult == 2:
-            self.DiceImage = diceImage2
-        elif self.DiceResult == 3:
-            self.DiceImage = diceImage3
-        elif self.DiceResult == 4:
-            self.DiceImage = diceImage4
-        elif self.DiceResult == 5:
-            self.DiceImage = diceImage5
-        elif self.DiceResult == 6:
-            self.DiceImage = diceImage6
-
-        return self.DiceImage
-
-
-# Object of tools class
-Tools1 = Tools()
-
-
-# Function that shows the screen how many players u want to play with
-def how_many_icons(AmountOfPlayers):
+def how_many_icons(AmountOfPlayers): # amount of players screen
     global ActivePlayers
     ActivePlayers = []
     for i in range(AmountOfPlayers):
@@ -250,30 +247,28 @@ def how_many_icons(AmountOfPlayers):
     for players in range(len(ActivePlayers)):
         j += 1
         PlayerList[players].PlayerID = j
-        PlayerList[players].PlayerName = input("Player" + str(j) + " Please type in your name: ")
-        # PlayerList[players].Category = input("Choose a Category: ")
-        PlayerList[players].PlayerIcon = input("Choose an Icon!")
 
     for k in range(len(ActivePlayers)):
         PlayerList[k].update_icon()
         print(PlayerList[k].PlayerID, PlayerList[k].PlayerName, PlayerList[k].PlayerIcon)
 
 
-# Function that shows when it's a player turn
-def show_turn(currentPlayer):
+
+def show_turn(currentPlayer): # shows whose turn it is
     showed = True
     abc = PlayerList[currentPlayer].PlayerName
-
     while showed:
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
-                # print(event.unicode)
+
                 if event.key == pygame.K_ESCAPE:
                     showed = False
 
         textYourTurn = fontObjLarge.render("Hey {} it's your turn!".format(abc), True, BLACK, None)
         textYourTurnRect = textYourTurn.get_rect()
         textYourTurnRect.center = (WINDOWWIDTH / 2, WINDOWHEIGHT / 5)
+
+
 
         DISPLAYSURF.blit(textYourTurn, textYourTurnRect)
 
@@ -283,8 +278,89 @@ def show_turn(currentPlayer):
         FPSCLOCK.tick(FPS / 2)
 
 
-# Function that displays dice result on the screen
-def show_dice():
+def input_name(players): # takes input name
+    currentPlayer = players + 1
+    name = ""
+    font = pygame.font.Font(None, 50)
+    named = True
+    while named:
+        for evt in pygame.event.get():
+            if evt.type == KEYDOWN:
+                if evt.unicode.isalpha():
+                    name += evt.unicode
+                elif evt.key == K_BACKSPACE:
+                    name = name[:-1]
+                elif evt.key == K_RETURN:
+                    named = False
+                    return name
+            elif evt.type == QUIT:
+                return
+
+        DISPLAYSURF.fill(WHITE)
+        DISPLAYSURF.blit(backGroundImage, (0, 0))
+        textEnterName = fontObjLarge.render("Player{} please type in your name and press enter.".format(currentPlayer),
+                                            True, BLACK, None)
+        textEnterNameRect = textEnterName.get_rect()
+        textEnterNameRect.center = (WINDOWWIDTH / 2, WINDOWHEIGHT / 5)
+
+        block = font.render(name, True, BLACK)
+        rect = block.get_rect()
+        rect.center = DISPLAYSURF.get_rect().center
+        DISPLAYSURF.blit(block, rect)
+        DISPLAYSURF.blit(textEnterName, textEnterNameRect)
+        pygame.display.update()
+
+
+def enter_name(): #loops input_name() for all active players
+    entered = True
+    j = 0
+
+    while entered:
+        for players in range(AmountOfPlayers):
+            PlayerList[players].PlayerName = input_name(players)
+            print(PlayerList[players].PlayerName)
+
+        entered = False
+
+
+def choose_icon(): # loops show_icon_menu for all active players
+    chosen = True
+
+    while chosen:
+        for players in range(AmountOfPlayers):
+            PlayerList[players].PlayerIcon = show_icon_menu(players)
+            print(PlayerList[players].PlayerName)
+
+        chosen = False
+
+
+#
+# def who_starts():
+
+def pick_direction():
+    directed = True
+
+    while directed:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            if event.type == pygame.KEYDOWN:
+
+                if event.key == pygame.K_ESCAPE:
+                    directed = False
+
+        button("Up", X_1_2 - 50, Y_1_2 - 100, 150, 50, GREEN, LIGHT_GREEN, action=show_gameplay)
+        button("Down", X_1_2 - 50, Y_1_2, 150, 50, GREEN, LIGHT_GREEN, action=show_gameplay)
+        button("Right", X_1_2 + 25, Y_1_2 - 50, 150, 50, GREEN, LIGHT_GREEN, action=show_gameplay)
+        button("Left", X_1_2 - 125, Y_1_2 - 50, 150, 50, GREEN, LIGHT_GREEN, action=show_gameplay)
+
+
+        pygame.display.update()
+        FPSCLOCK.tick(FPS / 2)
+
+def show_dice(): # shows dice result on screen
     diced = True
 
     while diced:
@@ -303,7 +379,7 @@ def show_dice():
         FPSCLOCK.tick(FPS / 2)
 
 
-def show_buttons():  # function that shows button screen test
+def show_buttons():  # shows buttons on screen
     buttoned = True
 
     while buttoned:
@@ -326,11 +402,10 @@ def show_buttons():  # function that shows button screen test
         FPSCLOCK.tick(FPS / 2)
 
 
-def show_main_menu():  # Function that shows Main menu
+def show_main_menu():  # shows main menu
 
     pygame.init()
     menud = True
-    paused = False
     pygame.display.set_caption('Euromaster')
 
     while menud:
@@ -395,8 +470,8 @@ def show_main_menu():  # Function that shows Main menu
         FPSCLOCK.tick(FPS)
 
 
-# Function that shows the instruction menu
-def show_instructions_menu():
+
+def show_instructions_menu(): # instruction screen 1
     instructions = True
 
     while instructions:
@@ -409,11 +484,12 @@ def show_instructions_menu():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     instructions = False
+                    show_main_menu()
                 if event.key == pygame.K_q:
                     pygame.quit()
                     quit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                x,y = event.pos
+                x, y = event.pos
                 if instructionsImage.get_rect().collidepoint(x, y):
                     instructions = False
                     show_instructions_menu1()
@@ -424,9 +500,8 @@ def show_instructions_menu():
         FPSCLOCK.tick(FPS / 2)
 
 
-def show_instructions_menu1():
+def show_instructions_menu1(): # instructionscreen 2
     instructions1 = True
-
 
     while instructions1:
         for event in pygame.event.get():
@@ -437,16 +512,16 @@ def show_instructions_menu1():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     instructions1 = False
+                    show_main_menu()
                 if event.key == pygame.K_q:
                     pygame.quit()
                     quit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                x,y = event.pos
+                x, y = event.pos
                 if instructionsImageNED1.get_rect().collidepoint(x, y):
                     instructions1 = False
                     show_instructions_menu2()
-
 
         DISPLAYSURF.fill(WHITE)
         DISPLAYSURF.blit(instructionsImageNED1, (0, 0))
@@ -454,9 +529,8 @@ def show_instructions_menu1():
         FPSCLOCK.tick(FPS / 2)
 
 
-def show_instructions_menu2():
+def show_instructions_menu2(): #instructionscreen 3
     instructions2 = True
-
 
     while instructions2:
         for event in pygame.event.get():
@@ -466,26 +540,26 @@ def show_instructions_menu2():
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    instructions = False
+                    instructions2 = False
+                    show_main_menu()
                 if event.key == pygame.K_q:
                     pygame.quit()
                     quit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                x,y = event.pos
+                x, y = event.pos
                 if instructionsImageNED2.get_rect().collidepoint(x, y):
                     instructions2 = False
                     show_instructions_menu3()
-
 
         DISPLAYSURF.fill(WHITE)
         DISPLAYSURF.blit(instructionsImageNED2, (0, 0))
         pygame.display.update()
         FPSCLOCK.tick(FPS / 2)
 
-def show_instructions_menu3():
-    instructions3 = True
 
+def show_instructions_menu3(): # instruction screen 4
+    instructions3 = True
 
     while instructions3:
         for event in pygame.event.get():
@@ -495,13 +569,14 @@ def show_instructions_menu3():
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    instructions = False
+                    instructions3 = False
+                    show_main_menu()
                 if event.key == pygame.K_q:
                     pygame.quit()
                     quit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                x,y = event.pos
+                x, y = event.pos
                 if instructionsImageNED3.get_rect().collidepoint(x, y):
                     instructions3 = False
                     show_instructions_menu()
@@ -511,38 +586,10 @@ def show_instructions_menu3():
         pygame.display.update()
         FPSCLOCK.tick(FPS / 2)
 
-# Function that shows the highscore menu
-def show_highscore_menu():
-    highscored = True
 
-    DISPLAYSURF.fill(WHITE)
-    DISPLAYSURF.blit(backGroundImage, (0, 0))
-
-    textHighscore = fontObjLarge.render('Highscores', True, BLACK, None)
-    textHighscoreRect = textHighscore.get_rect()
-    textHighscoreRect.center = (WINDOWWIDTH / 2, WINDOWHEIGHT / 4)
-
-    DISPLAYSURF.blit(textHighscore, textHighscoreRect)
-
-    while highscored:
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-
-            if event.type == pygame.KEYDOWN:
-                # print(event.unicode)
-                if event.key == pygame.K_ESCAPE:
-                    highscored = False
-
-        pygame.display.update()
-        FPSCLOCK.tick(FPS / 2)
-
-
-# Function that shows menu where u can pick the amount of players
-def show_players_menu():
+def show_players_menu(): # choose amount of players u want to play with
     chooseplayers = True
+
 
     global AmountOfPlayers
 
@@ -604,15 +651,17 @@ def show_players_menu():
         FPSCLOCK.tick(FPS / 2)
 
 
-# Function that shows menu where players pick their icon
-def show_icon_menu():
+
+def show_icon_menu(players): # shows screen where players pick their icons
     global iconed
     iconed = True
+
+    playerName = PlayerList[players].PlayerName
 
     DISPLAYSURF.fill(WHITE)
     DISPLAYSURF.blit(backGroundImage, (0, 0))
 
-    textPlayerIcon = fontObjLarge.render('Choose your icon!', True, BLACK, None)
+    textPlayerIcon = fontObjLarge.render('Hey {} please click on your preferred character!'.format(playerName), True, BLACK, None)
     textPlayerIconRect = textPlayerIcon.get_rect()
     textPlayerIconRect.center = (WINDOWWIDTH / 2, (WINDOWHEIGHT / 4 - 100))
 
@@ -625,22 +674,39 @@ def show_icon_menu():
 
     pygame.display.update()
 
-    how_many_icons(AmountOfPlayers)
-    show_gameplay()
-
     while iconed:
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x, y = event.pos
+                if playerIcon_female1.get_rect(center=(X_1_5 - 100, Y_1_2 - 100)).collidepoint(x, y):
+                    playerIcon = "a"
+                    iconed = False
+
+                if playerIcon_female2.get_rect(center=(X_2_5 - 100, Y_1_2 - 100)).collidepoint(x, y):
+                    playerIcon = "b"
+                    iconed = False
+
+                if playerIcon_male1.get_rect(center=(X_3_5 - 100, Y_1_2 - 100)).collidepoint(x, y):
+                    playerIcon = "c"
+                    iconed = False
+
+                if playerIcon_male2.get_rect(center=(X_4_5 - 100, Y_1_2 - 100)).collidepoint(x, y):
+                    playerIcon = "d"
+                    iconed = False
+
+
 
         pygame.display.update()
         FPSCLOCK.tick(FPS / 2)
+    return playerIcon
 
 
-# Function for the main game loop
-def show_gameplay():
+
+def show_gameplay(): # loop for gameplay
     global gameplayed
     gameplayed = True
 
@@ -654,9 +720,7 @@ def show_gameplay():
                 quit()
 
             if event.type == pygame.KEYDOWN:
-                # print(event.unicode)
-                # if event.key == pygame.K_ESCAPE:
-                #     gameplayed = False
+
                 if event.key == pygame.K_UP:
                     PlayerList[currentPlayer].move_up()
 
@@ -678,15 +742,33 @@ def show_gameplay():
                     if currentPlayer < len(ActivePlayers) - 1:
                         currentPlayer += 1
                         show_turn(currentPlayer)
-                        print(currentPlayer)
+                        pick_direction()
+
+
                     else:
                         currentPlayer = 0
                         show_turn(currentPlayer)
-                        print(currentPlayer)
+                        pick_direction()
+
+
+
+
 
         generate_tiles()
         # DISPLAYSURF.fill(WHITE)
         DISPLAYSURF.blit(gameBackground, (0, 0))
+
+        abc = PlayerList[currentPlayer].PlayerName
+
+        textWhoseTurn = fontObjLarge.render("It's:  {} turn!".format(abc), True, BLACK, None)
+        textWhoseTurnRect = textWhoseTurn.get_rect()
+        textWhoseTurnRect.center = (X_1_4 - 130, Y_1_4-100)
+
+
+        DISPLAYSURF.blit(textWhoseTurn, textWhoseTurnRect)
+
+
+        pygame.display.update()
 
         for key in tile_list:
             tile_list[key].draw_tile()
@@ -698,9 +780,37 @@ def show_gameplay():
         FPSCLOCK.tick(FPS / 2)
 
 
-# Function that shows the pause menu
-def show_pause():
 
+
+def show_highscore_menu(): # shows highscore screen
+    highscored = True
+
+    DISPLAYSURF.fill(WHITE)
+    DISPLAYSURF.blit(backGroundImage, (0, 0))
+
+    textHighscore = fontObjLarge.render('Highscores', True, BLACK, None)
+    textHighscoreRect = textHighscore.get_rect()
+    textHighscoreRect.center = (WINDOWWIDTH / 2, WINDOWHEIGHT / 4)
+
+    DISPLAYSURF.blit(textHighscore, textHighscoreRect)
+
+    while highscored:
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            if event.type == pygame.KEYDOWN:
+                # print(event.unicode)
+                if event.key == pygame.K_ESCAPE:
+                    highscored = False
+
+        pygame.display.update()
+        FPSCLOCK.tick(FPS / 2)
+
+def show_pause(): # shows pause menu, is bugged atm
+    global paused
     paused = True
 
     while paused:
@@ -723,38 +833,25 @@ def show_pause():
         textPauseMenuRect = textPauseMenu.get_rect()
         textPauseMenuRect.center = (X_1_2, WINDOWHEIGHT / 4)
 
-        # old code, made to function
-        # cur = pygame.mouse.get_pos()
-        #
-        # if X_1_2 + 150 > cur[0] > X_1_2 and Y_1_2-50 + 50 > cur[1] > Y_1_2-50:
-        #     pygame.draw.rect(DISPLAYSURF, LIGHT_GREEN, (X_1_2-50, Y_1_2-50, 150, 50))
-        # else:
-        #     pygame.draw.rect(DISPLAYSURF, GREEN, (X_1_2-50, Y_1_2-50, 150, 50))
-        #
-        # if X_1_2 + 150 > cur[0] > X_1_2 and Y_1_2+50 + 50 > cur[1] > Y_1_2+50:
-        #     pygame.draw.rect(DISPLAYSURF, LIGHT_GREEN, (X_1_2-50, Y_1_2+50, 150, 50))
-        # else:
-        #     pygame.draw.rect(DISPLAYSURF, GREEN, (X_1_2-50, Y_1_2+50, 150, 50))
-        #
-        # if X_1_2 + 150 > cur[0] > X_1_2 and Y_1_2+150 + 50 > cur[1] > Y_1_2+150:
-        #     pygame.draw.rect(DISPLAYSURF, LIGHT_GREEN, (X_1_2-50, Y_1_2+150, 150, 50))
-        # else:
-        #     pygame.draw.rect(DISPLAYSURF, GREEN, (X_1_2-50, Y_1_2+150, 150, 50))
-
 
         DISPLAYSURF.blit(textPauseMenu, textPauseMenuRect)
 
-        button("Resume Game", X_1_2 - 50, Y_1_2 - 50, 150, 50, GREEN, LIGHT_GREEN, action = show_gameplay)
+        button("Resume Game", X_1_2 - 50, Y_1_2 - 50, 150, 50, GREEN, LIGHT_GREEN, action=show_gameplay)
 
-        button("Main Menu", X_1_2 - 50, Y_1_2 + 50, 150, 50, YELLOW, LIGHT_YELLOW, action = show_main_menu)
+        button("Main Menu", X_1_2 - 50, Y_1_2 + 50, 150, 50, YELLOW, LIGHT_YELLOW, action=show_main_menu)
 
-        button("Exit Game", X_1_2 - 50, Y_1_2 + 150, 150, 50, RED, LIGHT_RED, action = "Exit Game")
+        button("Exit Game", X_1_2 - 50, Y_1_2 + 150, 150, 50, RED, LIGHT_RED, action="Exit Game")
 
         pygame.display.update()
         FPSCLOCK.tick(FPS / 2)
 
 
-
 show_main_menu()
+
 show_players_menu()
-show_icon_menu()
+enter_name()
+choose_icon()
+how_many_icons(AmountOfPlayers)
+# who_starts()
+
+show_gameplay()
