@@ -24,6 +24,7 @@ class Player: # Player Class
         self.CorrectAnswers = correctanswers
         self.IconPosition = Vector2(iconX, iconY)
         self.Direction = direction
+        self.Score = 0
 
     def move_right(self):
         # self.Position.X += Tools1.steps()
@@ -158,35 +159,6 @@ class Tile: # tiles for the map
         return self.Category, self.Position.X, self.Position.Y, self.DrawPos.X, self.DrawPos.Y
 
 
-def button(text, x, y, width, height, inactive_color, active_color, action=None): # makes buttons
-    cur = pygame.mouse.get_pos()
-    click = pygame.mouse.get_pressed()
-
-    if x + width > cur[0] > x and y + height > cur[1] > y:
-        pygame.draw.rect(DISPLAYSURF, active_color, (x, y, width, height))
-        if click[0] == 1 and action != None:
-            if action == "Exit Game":
-                pygame.quit()
-                quit()
-
-            if action == show_main_menu:
-                show_main_menu()
-
-            if action == show_instructions_menu:
-                show_instructions_menu()
-
-            if action == show_highscore_menu:
-                show_highscore_menu()
-
-            if action == show_gameplay:
-                show_gameplay()
-
-
-    else:
-        pygame.draw.rect(DISPLAYSURF, inactive_color, (x, y, width, height))
-
-    text_to_button(text, BLACK, x, y, width, height)
-
 
 def text_to_button(msg, color, buttonX, buttonY, buttonWidth, buttonHeight, size="small"): # puts text in buttons
     textSurf, textRect = text_objects(msg, color, size)
@@ -257,7 +229,6 @@ def show_turn(currentPlayer): # shows whose turn it is
     while showed:
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
-
                 if event.key == pygame.K_ESCAPE:
                     showed = False
 
@@ -342,10 +313,10 @@ def pick_direction():
                 if event.key == pygame.K_ESCAPE:
                     directed = False
 
-        button("Up", X_1_2 - 50, Y_1_2 - 100, 150, 50, GREEN, LIGHT_GREEN, action=show_gameplay)
-        button("Down", X_1_2 - 50, Y_1_2, 150, 50, GREEN, LIGHT_GREEN, action=show_gameplay)
-        button("Right", X_1_2 + 25, Y_1_2 - 50, 150, 50, GREEN, LIGHT_GREEN, action=show_gameplay)
-        button("Left", X_1_2 - 125, Y_1_2 - 50, 150, 50, GREEN, LIGHT_GREEN, action=show_gameplay)
+        # button("Up", X_1_2 - 50, Y_1_2 - 100, 150, 50, GREEN, LIGHT_GREEN, action=show_gameplay)
+        # button("Down", X_1_2 - 50, Y_1_2, 150, 50, GREEN, LIGHT_GREEN, action=show_gameplay)
+        # button("Right", X_1_2 + 25, Y_1_2 - 50, 150, 50, GREEN, LIGHT_GREEN, action=show_gameplay)
+        # button("Left", X_1_2 - 125, Y_1_2 - 50, 150, 50, GREEN, LIGHT_GREEN, action=show_gameplay)
 
 
         pygame.display.update()
@@ -382,35 +353,21 @@ def show_main_menu():  # shows main menu
 
         textWelcome = fontObjLarge.render('Welcome to Euromaster!', True, BLACK, None)
         textWelcomeRect = textWelcome.get_rect()
-        textWelcomeRect.center = (WINDOWWIDTH / 2, WINDOWHEIGHT / 4)
+        textWelcomeRect.center = (X_1_2, Y_1_4)
 
-        menuKnopStart = fontObjSmall.render('Press S to Start Game', True, BLACK, None)
-        menuKnopStartRect = menuKnopStart.get_rect()
-        menuKnopStartRect.center = (WINDOWWIDTH / 2, WINDOWHEIGHT / 1.80)
-
-        menuKnopLoadGame = fontObjSmall.render('Press L to Load Game', True, BLACK, None)
-        menuKnopLoadGameRect = menuKnopLoadGame.get_rect()
-        menuKnopLoadGameRect.center = (WINDOWWIDTH / 2, WINDOWHEIGHT / 1.65)
-
-        menuKnopInstructions = fontObjSmall.render('Press I for Instructions', True, BLACK, None)
-        menuKnopInstructionsRect = menuKnopInstructions.get_rect()
-        menuKnopInstructionsRect.center = (WINDOWWIDTH / 2, WINDOWHEIGHT / 1.53)
-
-        menuKnopHighscores = fontObjSmall.render('Press H for Highscores', True, BLACK, None)
-        menuKnopHighscoresRect = menuKnopHighscores.get_rect()
-        menuKnopHighscoresRect.center = (WINDOWWIDTH / 2, WINDOWHEIGHT / 1.42)
-
-        menuKnopExitGame = fontObjSmall.render('Press E to Exit Game', True, BLACK, None)
-        menuKnopExitGameRect = menuKnopExitGame.get_rect()
-        menuKnopExitGameRect.center = (WINDOWWIDTH / 2, WINDOWHEIGHT / 1.33)
+        menuKnopStart = fontObjMedium.render('Start Game', True, BLACK, LIGHT_CORAL)
+        menuKnopLoadGame = fontObjMedium.render('Load Game', True, BLACK, LIGHT_CORAL)
+        menuKnopInstructions = fontObjMedium.render('Instructions', True, BLACK,LIGHT_CORAL)
+        menuKnopHighscores = fontObjMedium.render('Highscores', True, BLACK, LIGHT_CORAL)
+        menuKnopExitGame = fontObjMedium.render('Exit Game', True, BLACK, LIGHT_CORAL)
 
         DISPLAYSURF.blit(backGroundImage, (0, 0))
         DISPLAYSURF.blit(textWelcome, textWelcomeRect)
-        DISPLAYSURF.blit(menuKnopStart, menuKnopStartRect)
-        DISPLAYSURF.blit(menuKnopLoadGame, menuKnopLoadGameRect)
-        DISPLAYSURF.blit(menuKnopInstructions, (menuKnopInstructionsRect))
-        DISPLAYSURF.blit(menuKnopHighscores, menuKnopHighscoresRect)
-        DISPLAYSURF.blit(menuKnopExitGame, menuKnopExitGameRect)
+        DISPLAYSURF.blit(menuKnopStart, (X_1_2-50, Y_1_2))
+        DISPLAYSURF.blit(menuKnopLoadGame, (X_1_2-50, Y_1_2+50))
+        DISPLAYSURF.blit(menuKnopInstructions, (X_1_2-50, Y_1_2 + 100))
+        DISPLAYSURF.blit(menuKnopHighscores, (X_1_2-50, Y_1_2 + 150))
+        DISPLAYSURF.blit(menuKnopExitGame, (X_1_2-50, Y_1_2 + 200))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -418,20 +375,25 @@ def show_main_menu():  # shows main menu
                 sys.exit()
 
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_e:
+                if event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     sys.exit()
 
-                elif event.key == pygame.K_i:
-                    show_instructions_menu()
-
-                elif event.key == pygame.K_s:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x, y = event.pos
+                if menuKnopStart.get_rect(center=(X_1_2-50, Y_1_2)).collidepoint(x, y):
                     menud = False
-
-                # elif event.key == pygame.K_l:
-
-                elif event.key == pygame.K_h:
+                    show_gameplay()
+                elif menuKnopInstructions.get_rect(center=(X_1_2-50, Y_1_2 + 100)).collidepoint(x, y):
+                    menud = False
+                    show_instructions_menu()
+                elif menuKnopHighscores.get_rect(center=(X_1_2-50, Y_1_2 + 150)).collidepoint(x, y):
+                    menud = False
                     show_highscore_menu()
+                elif menuKnopExitGame.get_rect(center=(X_1_2-50, Y_1_2 + 200)).collidepoint(x, y):
+                    pygame.quit()
+                    sys.exit()
+
 
         pygame.display.update()
         FPSCLOCK.tick(FPS)
@@ -559,7 +521,7 @@ def show_players_menu(): # choose amount of players u want to play with
 
     global AmountOfPlayers
 
-    textChoosePlayers = fontObjLarge.render('# of Players?', True, BLACK, CORAL)
+    textChoosePlayers = fontObjLarge.render('How many players?', True, BLACK, CORAL)
     textChoosePlayers1 = fontObjMedium.render('1 Player', True, BLACK, LIGHT_CORAL)
     textChoosePlayers2 = fontObjMedium.render('2 Players', True, BLACK, LIGHT_CORAL)
     textChoosePlayers3 = fontObjMedium.render('3 Players', True, BLACK, LIGHT_CORAL)
@@ -574,16 +536,16 @@ def show_players_menu(): # choose amount of players u want to play with
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = event.pos
-                if textChoosePlayers1.get_rect(center=(X_1_2, Y_1_2)).collidepoint(x, y):
+                if textChoosePlayers1.get_rect(center=(X_1_2-50, Y_1_2)).collidepoint(x, y):
                     AmountOfPlayers = 1
                     chooseplayers = False
-                if textChoosePlayers2.get_rect(center=(X_1_2, Y_1_2+50)).collidepoint(x, y):
+                if textChoosePlayers2.get_rect(center=(X_1_2-50, Y_1_2+50)).collidepoint(x, y):
                     AmountOfPlayers = 2
                     chooseplayers = False
-                if textChoosePlayers3.get_rect(center=(X_1_2, Y_1_2+100)).collidepoint(x, y):
+                if textChoosePlayers3.get_rect(center=(X_1_2-50, Y_1_2+100)).collidepoint(x, y):
                     AmountOfPlayers = 3
                     chooseplayers = False
-                if textChoosePlayers4.get_rect(center=(X_1_2, Y_1_2+150)).collidepoint(x, y):
+                if textChoosePlayers4.get_rect(center=(X_1_2-50, Y_1_2+150)).collidepoint(x, y):
                     AmountOfPlayers = 4
                     chooseplayers = False
 
@@ -593,10 +555,10 @@ def show_players_menu(): # choose amount of players u want to play with
 
 
         DISPLAYSURF.blit(textChoosePlayers, (X_1_2-100, Y_1_4))
-        DISPLAYSURF.blit(textChoosePlayers1, (X_1_2, Y_1_2))
-        DISPLAYSURF.blit(textChoosePlayers2, (X_1_2, Y_1_2 + 50))
-        DISPLAYSURF.blit(textChoosePlayers3, (X_1_2, Y_1_2 + 100))
-        DISPLAYSURF.blit(textChoosePlayers4, (X_1_2, Y_1_2 + 150))
+        DISPLAYSURF.blit(textChoosePlayers1, (X_1_2-50, Y_1_2))
+        DISPLAYSURF.blit(textChoosePlayers2, (X_1_2-50, Y_1_2 + 50))
+        DISPLAYSURF.blit(textChoosePlayers3, (X_1_2-50, Y_1_2 + 100))
+        DISPLAYSURF.blit(textChoosePlayers4, (X_1_2-50, Y_1_2 + 150))
 
         pygame.display.update()
         FPSCLOCK.tick(FPS / 2)
@@ -685,6 +647,11 @@ def show_gameplay(): # loop for gameplay
     global gameplayed
     gameplayed = True
 
+    show_players_menu()
+    enter_name()
+    choose_icon()
+    how_many_icons(AmountOfPlayers)
+
     currentPlayer = 0
 
     while gameplayed:
@@ -696,19 +663,7 @@ def show_gameplay(): # loop for gameplay
 
             if event.type == pygame.KEYDOWN:
 
-                if event.key == pygame.K_UP:
-                    PlayerList[currentPlayer].move_up()
-
-                elif event.key == pygame.K_DOWN:
-                    PlayerList[currentPlayer].move_down()
-
-                elif event.key == pygame.K_RIGHT:
-                    PlayerList[currentPlayer].move_right()
-
-                elif event.key == pygame.K_LEFT:
-                    PlayerList[currentPlayer].move_left()
-
-                elif event.key == pygame.K_p:
+                if event.key == pygame.K_p:
                     show_pause()
 
                 elif event.key == pygame.K_r:
@@ -719,14 +674,13 @@ def show_gameplay(): # loop for gameplay
                         show_turn(currentPlayer)
                         pick_direction()
 
-
                     else:
                         currentPlayer = 0
                         show_turn(currentPlayer)
                         pick_direction()
 
         generate_tiles()
-        # DISPLAYSURF.fill(WHITE)
+
         DISPLAYSURF.blit(gameBackground, (0, 0))
 
         abc = PlayerList[currentPlayer].PlayerName
@@ -756,6 +710,7 @@ def show_gameplay(): # loop for gameplay
 def show_highscore_menu(): # shows highscore screen
     highscored = True
 
+
     DISPLAYSURF.fill(WHITE)
     DISPLAYSURF.blit(backGroundImage, (0, 0))
 
@@ -781,7 +736,17 @@ def show_highscore_menu(): # shows highscore screen
 
 def show_pause(): # shows pause menu, is bugged atm
     global paused
+    global gameplayed
     paused = True
+
+
+    textPauseMenu = fontObjLarge.render('Welcome to the Pause Menu', True, BLACK, None)
+    textPauseMenuRect = textPauseMenu.get_rect()
+    textPauseMenuRect.center = (X_1_2, WINDOWHEIGHT / 4)
+
+    textResumeGame = fontObjMedium.render('Resume Game', True, BLACK, LIGHT_CORAL)
+    textMainMenu = fontObjMedium.render('Main Menu', True, BLACK, LIGHT_CORAL)
+    textExitGame = fontObjMedium.render("Exit Game", True, BLACK, LIGHT_CORAL)
 
     while paused:
         DISPLAYSURF.fill(WHITE)
@@ -795,33 +760,32 @@ def show_pause(): # shows pause menu, is bugged atm
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     paused = False
-                elif event.key == pygame.K_e:
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x, y = event.pos
+                if textResumeGame.get_rect(center=(X_1_2-50, Y_1_2)).collidepoint(x, y):
+                    paused = False
+
+                elif textMainMenu.get_rect(center=(X_1_2-50, Y_1_2 +50)).collidepoint(x, y):
+                    show_main_menu()
+                    paused = False
+                    gameplayed = False
+
+
+                elif textExitGame.get_rect(center=(X_1_2 - 50, Y_1_2 + 100)).collidepoint(x, y):
                     pygame.quit()
                     quit()
 
-        textPauseMenu = fontObjLarge.render('Welcome to the Pause Menu.', True, BLACK, None)
-        textPauseMenuRect = textPauseMenu.get_rect()
-        textPauseMenuRect.center = (X_1_2, WINDOWHEIGHT / 4)
 
 
         DISPLAYSURF.blit(textPauseMenu, textPauseMenuRect)
+        DISPLAYSURF.blit(textResumeGame, (X_1_2-50, Y_1_2))
+        DISPLAYSURF.blit(textMainMenu, (X_1_2-50, Y_1_2 +50))
+        DISPLAYSURF.blit(textExitGame, (X_1_2 - 50, Y_1_2 + 100))
 
-        button("Resume Game", X_1_2 - 50, Y_1_2 - 50, 150, 50, GREEN, LIGHT_GREEN, action=show_gameplay)
-
-        button("Main Menu", X_1_2 - 50, Y_1_2 + 50, 150, 50, YELLOW, LIGHT_YELLOW, action=show_main_menu)
-
-        button("Exit Game", X_1_2 - 50, Y_1_2 + 150, 150, 50, RED, LIGHT_RED, action="Exit Game")
 
         pygame.display.update()
         FPSCLOCK.tick(FPS / 2)
 
 
 show_main_menu()
-
-show_players_menu()
-enter_name()
-choose_icon()
-how_many_icons(AmountOfPlayers)
-# who_starts()
-
-show_gameplay()
