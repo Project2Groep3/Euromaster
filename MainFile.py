@@ -131,7 +131,6 @@ class Tools(): #Tools class
             self.DiceImage = diceImage6
 
         return self.DiceImage
-
 Tools1 = Tools() # making tools object
 
 class Tile: # tiles for the map
@@ -715,7 +714,6 @@ def show_gameplay(): # loop for gameplay
     while gameplayed:
 
         for event in pygame.event.get():
-            print(event)
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
