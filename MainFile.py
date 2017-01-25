@@ -730,8 +730,8 @@ def timer():
     DISPLAYSURF.blit(text, [960, 10])
 
     frame_count += 1
-    
-timer()
+
+
 def show_gameplay(): # loop for gameplay
     global gameplayed
     gameplayed = True
@@ -764,6 +764,7 @@ def show_gameplay(): # loop for gameplay
 
                 elif event.key == pygame.K_r:
                     show_dice()
+
                 elif event.key == pygame.K_d:
                     if currentPlayer < len(ActivePlayers) - 1:
                         currentPlayer += 1
@@ -786,7 +787,7 @@ def show_gameplay(): # loop for gameplay
 
         abc = PlayerList[currentPlayer].PlayerName
 
-        textWhoseTurn = fontObjLarge.render("It's:  {} turn!".format(abc), True, BLACK, None)
+        textWhoseTurn = fontObjLarge.render("It's:  {}'s turn!".format(abc), True, BLACK, None)
         textWhoseTurnRect = textWhoseTurn.get_rect()
         textWhoseTurnRect.center = (X_1_4 - 130, Y_1_4-100)
 
@@ -881,3 +882,4 @@ how_many_icons(AmountOfPlayers)
 # who_starts()
 
 show_gameplay()
+timer()
