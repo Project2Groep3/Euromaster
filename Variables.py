@@ -7,10 +7,10 @@ GREEN = (34, 177, 76)
 LIGHT_GREEN = (0, 255, 0)
 BLUE = (0, 0, 128)
 LIGHT_BLUE = ()
-RED = (255, 0, 0)
-LIGHT_RED = ()
-YELLOW = (255, 255, 0)
-LIGHT_YELLOW = ()
+RED = (200, 0, 0)
+LIGHT_RED = (255, 0, 0)
+YELLOW = (200, 200, 0)
+LIGHT_YELLOW = (255, 255, 0)
 
 TURQUOISE = (174, 243, 227)
 CORAL = (255, 127, 80)
@@ -21,13 +21,15 @@ FPS = 30
 FPSCLOCK = pygame.time.Clock()
 
 AmountOfPlayers = 0
+paused = False
 
 # Resolution
 WINDOWWIDTH = 1024
 WINDOWHEIGHT = 768
 
 # Declaring displaysurf
-DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
+DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH,WINDOWHEIGHT), pygame.FULLSCREEN)
+
 
 # scales of the screen
 X_1_2 = int(WINDOWWIDTH / 2)
@@ -49,7 +51,6 @@ Y_2_3 = int(WINDOWHEIGHT / 3 * 2)
 Y_3_4 = int(WINDOWHEIGHT / 4 * 3)
 
 backGroundImage = pygame.image.load('images/MainMenu.png')
-instructionsImage = pygame.image.load('images/Instructions.png')
 gameBackground = pygame.image.load("images/gamebg1.png")
 
 playerIcon_male1 = pygame.image.load("images/icon_male1.png")
@@ -63,4 +64,12 @@ diceImage3 = pygame.image.load('images/dice3.jpg')
 diceImage4 = pygame.image.load('images/dice4.jpg')
 diceImage5 = pygame.image.load('images/dice5.jpg')
 diceImage6 = pygame.image.load('images/dice6.jpg')
+
+instructionsImage = pygame.image.load('images/Instructions.png')
+instructionsImageNED1 = pygame.image.load('images/NEDERLANDS-instructionsimg1.png')
+instructionsImageNED2 = pygame.image.load('images/NEDERLANDS-instructionsimg2.png')
+instructionsImageNED3 = pygame.image.load('images/NEDERLANDS-instructionsimg3.png')
+instructionsImageEN1 = pygame.image.load('images/ENGELS-instructionsimg1.png')
+instructionsImageEN2 = pygame.image.load('images/ENGELS-instructionsimg2.png')
+instructionsImageEN3 = pygame.image.load('images/ENGELS-instructionsimg3.png')
 
