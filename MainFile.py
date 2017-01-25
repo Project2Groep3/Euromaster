@@ -235,10 +235,6 @@ def generate_tiles(): # Function that generates tiles on the map
     tile_list.update(
         {'top_tile': Tile("Win", 1, 16, X_1_2 + 40, 30), 'bottom_tile': Tile("Bottom", 0, 0, X_1_2 + 40, 660)})
 
-    # for key in tile_list:
-    #     tile_list[key].draw_tile()
-
-
 
 
 def how_many_icons(AmountOfPlayers): # amount of players screen
@@ -488,6 +484,7 @@ def show_instructions_menu(): # instruction screen 1
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     instructions = False
+                    show_main_menu()
                 if event.key == pygame.K_q:
                     pygame.quit()
                     quit()
@@ -515,6 +512,7 @@ def show_instructions_menu1(): # instructionscreen 2
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     instructions1 = False
+                    show_main_menu()
                 if event.key == pygame.K_q:
                     pygame.quit()
                     quit()
@@ -543,6 +541,7 @@ def show_instructions_menu2(): #instructionscreen 3
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     instructions2 = False
+                    show_main_menu()
                 if event.key == pygame.K_q:
                     pygame.quit()
                     quit()
@@ -570,7 +569,8 @@ def show_instructions_menu3(): # instruction screen 4
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    instructions = False
+                    instructions3 = False
+                    show_main_menu()
                 if event.key == pygame.K_q:
                     pygame.quit()
                     quit()
@@ -587,7 +587,7 @@ def show_instructions_menu3(): # instruction screen 4
         FPSCLOCK.tick(FPS / 2)
 
 
-def show_players_menu(): # amount of players u want to play with
+def show_players_menu(): # choose amount of players u want to play with
     chooseplayers = True
 
 
