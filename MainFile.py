@@ -169,7 +169,7 @@ def button(text, x, y, width, height, inactive_color, active_color, action=None)
                 quit()
 
             if action == show_main_menu:
-                paused = False
+                
                 show_main_menu()
 
             if action == show_instructions_menu:
