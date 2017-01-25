@@ -15,7 +15,7 @@ class Vector2: # Vector Class
         self.Y = y
 
 class Player: # Player Class
-    def __init__(self, playerID=0, name="", icon=None, category="", posX=0, posY=0, correctanswers=0, iconX=0, iconY=0, direction = ""):
+    def __init__(self, playerID=0, name="", icon=None, category="", posX=0, posY=0, correctanswers=0, iconX=X_1_2 + 40, iconY=660):
         self.PlayerID = playerID
         self.PlayerName = name
         self.PlayerIcon = icon
@@ -23,28 +23,24 @@ class Player: # Player Class
         self.Position = Vector2(posX, posY)
         self.CorrectAnswers = correctanswers
         self.IconPosition = Vector2(iconX, iconY)
-        self.Direction = direction
+        self.Direction = "UP"
         self.Score = 0
 
-    def move_right(self):
-        # self.Position.X += Tools1.steps()
-        self.Position.X += 1
-        self.icon_match()
+    def movement(self):
+        if self.Direction == "UP":
+            self.Position.Y -= Tools1.steps()
+            self.icon_match()
+        elif self.Direction == "DOWN":
+            self.Position.Y += Tools1.steps()
+            self.icon_match()
+        elif self.Direction == "RIGHT":
+            self.Position.X += Tools1.steps()
+            self.icon_match()
+        elif self.Direction == "LEFT":
+            self.Position -= Tools1.steps()
+            self.icon_match()
 
-    def move_left(self):
-        # self.Position.X -= Tools1.steps()
-        self.Position.X -= 1
-        self.icon_match()
 
-    def move_up(self):
-        # self.Position.Y -= Tools1.steps()
-        self.Position.Y += 1
-        self.icon_match()
-
-    def move_down(self):
-        # self.Position.Y += Tools1.steps()
-        self.Position.Y -= 1
-        self.icon_match()
 
     def get_rekt(self, down):
         self.Position.Y -= down
@@ -99,6 +95,7 @@ class Tools(): #Tools class
         self.DiceResult = random.randint(1, 6)
 
     def steps(self):
+        self.dice()
         if self.DiceResult == 1 or self.DiceResult == 2:
             return 1
         elif self.DiceResult == 3 or self.DiceResult == 4:
@@ -117,7 +114,7 @@ class Tools(): #Tools class
             time.sleep(1)
 
     def show_dice_image(self):
-        self.dice()
+        self.steps()
         if self.DiceResult == 1:
             self.DiceImage = diceImage1
         elif self.DiceResult == 2:
@@ -157,25 +154,6 @@ class Tile: # tiles for the map
 
     def get_attributes(self):
         return self.Category, self.Position.X, self.Position.Y, self.DrawPos.X, self.DrawPos.Y
-
-
-
-def text_to_button(msg, color, buttonX, buttonY, buttonWidth, buttonHeight, size="small"): # puts text in buttons
-    textSurf, textRect = text_objects(msg, color, size)
-    textRect.center = ((buttonX + (buttonWidth / 2)), buttonY + (buttonHeight / 2))
-    DISPLAYSURF.blit(textSurf, textRect)
-
-
-def text_objects(text, color, size="small"): # makes textboxes
-    global textSurface
-    if size == "small":
-        textSurface = fontObjSmall.render(text, True, color)
-    elif size == "medium":
-        textSurface = fontObjMedium.render(text, True, color)
-    elif size == "large":
-        textSurface = fontObjLarge.render(text, True, color)
-
-    return textSurface, textSurface.get_rect()
 
 
 def generate_tiles(): # Function that generates tiles on the map
@@ -232,7 +210,7 @@ def show_turn(currentPlayer): # shows whose turn it is
                 if event.key == pygame.K_ESCAPE:
                     showed = False
 
-        textYourTurn = fontObjLarge.render("Hey {} it's your turn!".format(abc), True, BLACK, None)
+        textYourTurn = fontObjLarge.render("Hey {} it's your turn!".format(abc), True, BLACK, LIGHT_CORAL)
         textYourTurnRect = textYourTurn.get_rect()
         textYourTurnRect.center = (WINDOWWIDTH / 2, WINDOWHEIGHT / 5)
 
@@ -296,27 +274,88 @@ def choose_icon(): # loops show_icon_menu for all active players
             PlayerList[players].PlayerIcon = show_icon_menu(players)
 
         chosen = False
+
+
+def choose_category(currentPlayer):
+    cat = True
+    textButtonCategory = fontObjLarge.render("Choose your Category", True, BLACK, LIGHT_CORAL)
+    textButton = fontObjLarge.render("  UP  ", True, BLACK, GREEN)
+    textButtonDown = fontObjLarge.render("DOWN", True, BLACK, GREEN)
+    textButtonRight = fontObjLarge.render("RIGHT", True, BLACK, GREEN)
+    textButtonLeft = fontObjLarge.render("LEFT", True, BLACK, GREEN)
+
+
+    while cat:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    cat = False
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x, y = event.pos
+                if textButtonUp.get_rect(center=(X_1_2 - 50, Y_1_2 - 100)).collidepoint(x, y):
+                    PlayerList[currentPlayer].Direction = "UP"
+                    cat = False
+
+                elif textButtonDown.get_rect(center=(X_1_2 - 50, Y_1_2)).collidepoint(x, y):
+                    PlayerList[currentPlayer].Direction = "DOWN"
+                    cat = False
+
+                elif textButtonRight.get_rect(center=(X_1_2 + 25, Y_1_2 - 50)).collidepoint(x, y):
+                    PlayerList[currentPlayer].Direction = "RIGHT"
+                    directed = False
+
+                elif textButtonLeft.get_rect(center=(X_1_2 - 125, Y_1_2 - 50)).collidepoint(x, y):
+                    PlayerList[currentPlayer].Direction = "LEFT"
+                    directed = False
+
 #
 # def who_starts():
 
-def pick_direction():
+def pick_direction(currentPlayer):
     directed = True
+
+    textButtonUp = fontObjLarge.render("  UP  ", True, BLACK, GREEN)
+    textButtonDown = fontObjLarge.render("DOWN", True, BLACK, GREEN)
+    textButtonRight = fontObjLarge.render("RIGHT", True, BLACK, GREEN)
+    textButtonLeft = fontObjLarge.render("LEFT", True, BLACK, GREEN)
 
     while directed:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
-
             if event.type == pygame.KEYDOWN:
-
                 if event.key == pygame.K_ESCAPE:
                     directed = False
 
-        # button("Up", X_1_2 - 50, Y_1_2 - 100, 150, 50, GREEN, LIGHT_GREEN, action=show_gameplay)
-        # button("Down", X_1_2 - 50, Y_1_2, 150, 50, GREEN, LIGHT_GREEN, action=show_gameplay)
-        # button("Right", X_1_2 + 25, Y_1_2 - 50, 150, 50, GREEN, LIGHT_GREEN, action=show_gameplay)
-        # button("Left", X_1_2 - 125, Y_1_2 - 50, 150, 50, GREEN, LIGHT_GREEN, action=show_gameplay)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x, y = event.pos
+                if textButtonUp.get_rect(center=(X_1_2 - 50, Y_1_2 - 100)).collidepoint(x, y):
+                    PlayerList[currentPlayer].Direction = "UP"
+                    directed = False
+
+                elif textButtonDown.get_rect(center=(X_1_2 - 50, Y_1_2)).collidepoint(x, y):
+                    PlayerList[currentPlayer].Direction = "DOWN"
+                    directed = False
+
+                elif textButtonRight.get_rect(center=(X_1_2 + 25, Y_1_2 - 50)).collidepoint(x, y):
+                    PlayerList[currentPlayer].Direction = "RIGHT"
+                    directed = False
+
+                elif textButtonLeft.get_rect(center=(X_1_2 - 125, Y_1_2 - 50)).collidepoint(x, y):
+                    PlayerList[currentPlayer].Direction = "LEFT"
+                    directed = False
+
+
+        DISPLAYSURF.blit(textButtonUp, (X_1_2 - 50, Y_1_2 - 100))
+        DISPLAYSURF.blit(textButtonDown, (X_1_2 - 50, Y_1_2))
+        DISPLAYSURF.blit(textButtonRight, (X_1_2 + 25, Y_1_2 - 50))
+        DISPLAYSURF.blit(textButtonLeft, (X_1_2 - 125, Y_1_2 - 50))
+
 
 
         pygame.display.update()
@@ -518,7 +557,6 @@ def show_instructions_menu3(): # instruction screen 4
 def show_players_menu(): # choose amount of players u want to play with
     chooseplayers = True
 
-
     global AmountOfPlayers
 
     textChoosePlayers = fontObjLarge.render('How many players?', True, BLACK, CORAL)
@@ -565,8 +603,9 @@ def show_players_menu(): # choose amount of players u want to play with
 
 
 def show_icon_menu(players): # shows screen where players pick their icons
-    global iconed
+    global iconed, fem1, fem2, male1, male2
     iconed = True
+
 
     playerName = PlayerList[players].PlayerName
 
@@ -578,11 +617,14 @@ def show_icon_menu(players): # shows screen where players pick their icons
     textPlayerIconRect.center = (WINDOWWIDTH / 2, (WINDOWHEIGHT / 4 - 100))
 
     DISPLAYSURF.blit(textPlayerIcon, textPlayerIconRect)
-
-    DISPLAYSURF.blit(playerIcon_female1, (X_1_5 - 100, Y_1_2 - 100))
-    DISPLAYSURF.blit(playerIcon_female2, (X_2_5 - 100, Y_1_2 - 100))
-    DISPLAYSURF.blit(playerIcon_male1, (X_3_5 - 100, Y_1_2 - 100))
-    DISPLAYSURF.blit(playerIcon_male2, (X_4_5 - 100, Y_1_2 - 100))
+    if fem1 == True:
+        DISPLAYSURF.blit(playerIcon_female1, (X_1_5 - 100, Y_1_2 - 100))
+    if fem2 == True:
+        DISPLAYSURF.blit(playerIcon_female2, (X_2_5 - 100, Y_1_2 - 100))
+    if male1 == True:
+        DISPLAYSURF.blit(playerIcon_male1, (X_3_5 - 100, Y_1_2 - 100))
+    if male2 == True:
+        DISPLAYSURF.blit(playerIcon_male2, (X_4_5 - 100, Y_1_2 - 100))
 
     pygame.display.update()
 
@@ -596,18 +638,22 @@ def show_icon_menu(players): # shows screen where players pick their icons
                 x, y = event.pos
                 if playerIcon_female1.get_rect(center=(X_1_5 - 100, Y_1_2 - 100)).collidepoint(x, y):
                     playerIcon = "a"
+                    fem1 = False
                     iconed = False
 
                 if playerIcon_female2.get_rect(center=(X_2_5 - 100, Y_1_2 - 100)).collidepoint(x, y):
                     playerIcon = "b"
+                    fem2 = False
                     iconed = False
 
                 if playerIcon_male1.get_rect(center=(X_3_5 - 100, Y_1_2 - 100)).collidepoint(x, y):
                     playerIcon = "c"
+                    male1 = False
                     iconed = False
 
                 if playerIcon_male2.get_rect(center=(X_4_5 - 100, Y_1_2 - 100)).collidepoint(x, y):
                     playerIcon = "d"
+                    male2 = False
                     iconed = False
 
 
@@ -646,13 +692,12 @@ timer()
 def show_gameplay(): # loop for gameplay
     global gameplayed
     gameplayed = True
+    currentPlayer = 0
 
     show_players_menu()
     enter_name()
     choose_icon()
     how_many_icons(AmountOfPlayers)
-
-    currentPlayer = 0
 
     while gameplayed:
 
@@ -672,12 +717,12 @@ def show_gameplay(): # loop for gameplay
                     if currentPlayer < len(ActivePlayers) - 1:
                         currentPlayer += 1
                         show_turn(currentPlayer)
-                        pick_direction()
+                        pick_direction(currentPlayer)
 
                     else:
                         currentPlayer = 0
                         show_turn(currentPlayer)
-                        pick_direction()
+                        pick_direction(currentPlayer)
 
         generate_tiles()
 

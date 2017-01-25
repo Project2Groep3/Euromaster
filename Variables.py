@@ -22,6 +22,10 @@ FPSCLOCK = pygame.time.Clock()
 
 AmountOfPlayers = 0
 paused = False
+fem1 = True
+fem2 = True
+male1 = True
+male2 = True
 
 # Resolution
 WINDOWWIDTH = 1024
