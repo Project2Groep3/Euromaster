@@ -87,7 +87,6 @@ player4 = Player()
 
 PlayerList = [player1, player2, player3, player4] # List of playerobjects
 
-
 class Tools(): #Tools class
     def __init__(self):
         self.Value = 0
@@ -163,7 +162,6 @@ def button(text, x, y, width, height, inactive_color, active_color, action=None)
     cur = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
 
-    # print(click)
     if x + width > cur[0] > x and y + height > cur[1] > y:
         pygame.draw.rect(DISPLAYSURF, active_color, (x, y, width, height))
         if click[0] == 1 and action != None:
@@ -206,7 +204,6 @@ def text_objects(text, color, size="small"): # makes textboxes
         textSurface = fontObjLarge.render(text, True, color)
 
     return textSurface, textSurface.get_rect()
-
 
 
 def generate_tiles(): # Function that generates tiles on the map
@@ -252,8 +249,6 @@ def how_many_icons(AmountOfPlayers): # amount of players screen
 
     for k in range(len(ActivePlayers)):
         PlayerList[k].update_icon()
-        # print(PlayerList[k].PlayerID, PlayerList[k].PlayerName, PlayerList[k].PlayerIcon)
-
 
 
 def show_turn(currentPlayer): # shows whose turn it is
@@ -269,7 +264,6 @@ def show_turn(currentPlayer): # shows whose turn it is
         textYourTurn = fontObjLarge.render("Hey {} it's your turn!".format(abc), True, BLACK, None)
         textYourTurnRect = textYourTurn.get_rect()
         textYourTurnRect.center = (WINDOWWIDTH / 2, WINDOWHEIGHT / 5)
-
 
 
         DISPLAYSURF.blit(textYourTurn, textYourTurnRect)
@@ -320,10 +314,8 @@ def enter_name(): #loops input_name() for all active players
     while entered:
         for players in range(AmountOfPlayers):
             PlayerList[players].PlayerName = input_name(players)
-            # print(PlayerList[players].PlayerName)
 
         entered = False
-
 
 def choose_icon(): # loops show_icon_menu for all active players
     chosen = True
@@ -331,11 +323,8 @@ def choose_icon(): # loops show_icon_menu for all active players
     while chosen:
         for players in range(AmountOfPlayers):
             PlayerList[players].PlayerIcon = show_icon_menu(players)
-            # print(PlayerList[players].PlayerName)
 
         chosen = False
-
-
 #
 # def who_starts():
 
@@ -378,29 +367,6 @@ def show_dice(): # shows dice result on screen
 
         time.sleep(1)
         diced = False
-        FPSCLOCK.tick(FPS / 2)
-
-
-def show_buttons():  # shows buttons on screen
-    buttoned = True
-
-    while buttoned:
-
-        DISPLAYSURF.fill(WHITE)
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-
-        cur = pygame.mouse.get_pos()
-
-        if 140 + 120 > cur[0] > 140 and 500 + 50 > cur[1] > 500:
-            pygame.draw.rect(DISPLAYSURF, LIGHT_GREEN, (140, 500, 120, 50))
-        else:
-            pygame.draw.rect(DISPLAYSURF, GREEN, (140, 500, 120, 50))
-
-        pygame.display.update()
         FPSCLOCK.tick(FPS / 2)
 
 
@@ -462,15 +428,13 @@ def show_main_menu():  # shows main menu
                 elif event.key == pygame.K_s:
                     menud = False
 
-                elif event.key == pygame.K_l:
-                    show_buttons()
+                # elif event.key == pygame.K_l:
 
                 elif event.key == pygame.K_h:
                     show_highscore_menu()
 
         pygame.display.update()
         FPSCLOCK.tick(FPS)
-
 
 
 def show_instructions_menu(): # instruction screen 1
@@ -611,13 +575,16 @@ def show_players_menu(): # choose amount of players u want to play with
             if event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = event.pos
                 if textChoosePlayers1.get_rect(center=(X_1_2, Y_1_2)).collidepoint(x, y):
-
+                    AmountOfPlayers = 1
                     chooseplayers = False
                 if textChoosePlayers2.get_rect(center=(X_1_2, Y_1_2+50)).collidepoint(x, y):
+                    AmountOfPlayers = 2
                     chooseplayers = False
                 if textChoosePlayers3.get_rect(center=(X_1_2, Y_1_2+100)).collidepoint(x, y):
+                    AmountOfPlayers = 3
                     chooseplayers = False
                 if textChoosePlayers4.get_rect(center=(X_1_2, Y_1_2+150)).collidepoint(x, y):
+                    AmountOfPlayers = 4
                     chooseplayers = False
 
 
@@ -633,7 +600,6 @@ def show_players_menu(): # choose amount of players u want to play with
 
         pygame.display.update()
         FPSCLOCK.tick(FPS / 2)
-
 
 
 def show_icon_menu(players): # shows screen where players pick their icons
@@ -759,10 +725,6 @@ def show_gameplay(): # loop for gameplay
                         show_turn(currentPlayer)
                         pick_direction()
 
-
-
-
-
         generate_tiles()
         # DISPLAYSURF.fill(WHITE)
         DISPLAYSURF.blit(gameBackground, (0, 0))
@@ -811,7 +773,6 @@ def show_highscore_menu(): # shows highscore screen
                 quit()
 
             if event.type == pygame.KEYDOWN:
-                # print(event.unicode)
                 if event.key == pygame.K_ESCAPE:
                     highscored = False
 
