@@ -87,3 +87,5 @@ instructionsImageEN1 = pygame.image.load('images/ENGELS-instructionsimg1.png')
 instructionsImageEN2 = pygame.image.load('images/ENGELS-instructionsimg2.png')
 instructionsImageEN3 = pygame.image.load('images/ENGELS-instructionsimg3.png')
 
+
+
