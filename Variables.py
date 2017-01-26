@@ -26,13 +26,17 @@ fem1 = True
 fem2 = True
 male1 = True
 male2 = True
+sport = True
+geog = True
+entert = True
+hist = True
 
 # Resolution
 WINDOWWIDTH = 1024
 WINDOWHEIGHT = 768
 
 # Declaring displaysurf
-DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH,WINDOWHEIGHT), pygame.FULLSCREEN)
+DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH,WINDOWHEIGHT))
 
 
 # scales of the screen
