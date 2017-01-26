@@ -5,22 +5,51 @@ def op_questions_Historie():
     x = random.randint(0,14)
     con = p.connect("dbname='euromast' user='postgres' host='localhost' password='Drakenadem97'")
     cur = con.cursor()
+    cor = con.cursor()
     cur.execute("select question from op_questions where category = 'Historie' and questionID > 15 and questionID < 31")
-
+    cor.execute("select correctanswer from op_questions where category = 'Historie' and questionID > 15 and questionID < 31")
     rows = cur.fetchall()
+    raws = cor.fetchall()
+
     for r in rows[x]:
         print(r)
-op_questions_Historie()
+    for i in raws[x]:
+        a = input("")
+        print(i)
+        if len(a) < 3:
+            return("Answer is incorrect :(")
+        elif a in i.lower():
+            return("Answer is correct!")
+        else:
+            return("Answer is incorrect :(")
+adq = op_questions_Historie()
+print(adq)
 
 def mc_questions_Historie():
+    x = random.randint(0,14)
     con = p.connect("dbname='euromast' user='postgres' host='localhost' password='Drakenadem97'")
     cur = con.cursor()
-    cur.execute("select * from mc_questions where category = 'Historie' and questionID > 0 and questionID < 16")
-
+    cor = con.cursor()
+    car = con.cursor()
+    cur.execute("select question from mc_questions where category = 'Historie' and questionID > 0 and questionID < 16")
+    cor.execute("select answera,answerb,answerc from mc_questions where category = 'Historie' and questionID > 0 and questionID < 16")
+    car.execute("select correctanswer from mc_questions where category = 'Historie' and questionID > 0 and questionID < 16")
     rows = cur.fetchall()
-    for r in rows:
+    raws = cor.fetchall()
+    roews = car.fetchall()
+
+    for r in rows[x]:
         print(r)
-#mc_questions_Historie()
+        for i in raws[x]:
+            print(i)
+        for q in roews[x]:
+            a = input("")
+            if a in q.lower():
+                return("Answer is correct!")
+            else:
+                return("Answer is incorrect :(")
+adf = mc_questions_Historie()
+print(adf)
 
 def op_questions_Sport():
     con = p.connect("dbname='euromast' user='postgres' host='localhost' password='Drakenadem97'")
