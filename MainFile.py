@@ -729,6 +729,7 @@ def show_icon_menu(players):  # shows screen where players pick their icons
 
         pygame.display.update()
         FPSCLOCK.tick(FPS / 2)
+
     return playerIcon
 
 
