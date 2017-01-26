@@ -40,21 +40,28 @@ class Player:  # Player Class
             self.Position.Y -= Tools1.Steps
             self.icon_match()
         elif self.Direction == "RIGHT":
-            if self.Position.X == 7 and Tools1.Steps == 2:
+            if self.Position.X == 5 and Tools1.Steps == 3:
+                self.Position -= 5
+                self.icon_match()
+            elif self.Position.X == 6 and Tools1.Steps == 2:
+                self.Position.X -= 6
+                self.icon_match()
+            elif self.Position.X == 6 and Tools1.Steps == 3:
+                self.Position.X -= 5
+                self.icon_match()
+            elif self.Position.X == 6 and Tools1.Steps == 1:
+                self.Position.X -= 7
+                self.icon_match()
+            elif self.Position.X == 7 and Tools1.Steps == 2:
                 self.Position.X -= 6
                 self.icon_match()
             elif self.Position.X == 7 and Tools1.Steps == 3:
                 self.Position.X -= 5
                 self.icon_match()
-            elif self.Position.X == 8 and Tools1.Steps == 1:
-                self.Position.X -= 7
-                self.icon_match()
-            elif self.Position.X == 8 and Tools1.Steps == 2:
-                self.Position.X -= 6
-                self.icon_match()
-            elif self.Position.X == 8 and Tools1.Steps == 3:
-                self.Position.X -= 5
-                self.icon_match()
+
+
+
+
             else:
                 self.Position.X += Tools1.Steps
                 self.icon_match()
@@ -78,13 +85,13 @@ class Player:  # Player Class
 
     def update_startPos(self):
         if self.Category == "Sport":
-            self.Position.X = 1
+            self.Position.X = 0
         elif self.Category == "Geografie":
-            self.Position.X = 3
+            self.Position.X = 2
         elif self.Category == "Entertainment":
-            self.Position.X = 5
+            self.Position.X = 4
         elif self.Category == "Historie":
-            self.Position.X = 7
+            self.Position.X = 6
 
     def icon_match(self):
         for key in tile_list:
@@ -156,9 +163,6 @@ class Tools():  # Tools class
 
 Tools1 = Tools()  # making tools object
 
-Tools1 = Tools()  # making tools object
-
-
 class Tile:  # tiles for the map
     def __init__(self, category, posX, posY, drawX, drawY):
         self.Category = category
@@ -174,11 +178,11 @@ class Tile:  # tiles for the map
         elif self.Category == "Entertainment":
             pygame.draw.circle(DISPLAYSURF, RED, (self.DrawPos.X, self.DrawPos.Y), 10, 0)
         elif self.Category == "Historie":
-            pygame.draw.circle(DISPLAYSURF, YELLOW, (self.DrawPos.X, self.DrawPos.Y), 10, 0)
+            pygame.draw.circle(DISPLAYSURF, LIGHT_YELLOW, (self.DrawPos.X, self.DrawPos.Y), 10, 0)
         elif self.Category == "Win":
             pygame.draw.circle(DISPLAYSURF, BLACK, (self.DrawPos.X, self.DrawPos.Y), 13, 0)
         elif self.Category == "Bottom":
-            pygame.draw.circle(DISPLAYSURF, BLACK, (self.DrawPos.X, self.DrawPos.Y), 10, 0)
+            pygame.draw.circle(DISPLAYSURF, WHITE, (self.DrawPos.X, self.DrawPos.Y), 10, 0)
 
     def get_attributes(self):
         return self.Category, self.Position.X, self.Position.Y, self.DrawPos.X, self.DrawPos.Y
@@ -189,35 +193,41 @@ def generate_tiles():  # Function that generates tiles on the map
     i = 60
     global tile_list
     tile_list = {}
-    for x in range(0, 10):
-        tile_list["tile_{}_{}_{}".format('blauw', x, 'a')] = Tile("Sport", 1, x, X_1_3, n)
-        tile_list["tile_{}_{}_{}".format('blauw', x, 'b')] = Tile("Sport", 2, x, X_1_3 + i, n)
-        tile_list["tile_{}_{}_{}".format('groen', x, 'a')] = Tile("Geografie", 3, x, X_1_3 + (2 * i), n)
-        tile_list["tile_{}_{}_{}".format('groen', x, 'b')] = Tile("Geografie", 4, x, X_1_3 + (3 * i), n)
-        tile_list["tile_{}_{}_{}".format('rood', x, 'a')] = Tile("Entertainment", 5, x, X_1_3 + (4 * i), n)
-        tile_list["tile_{}_{}_{}".format('rood', x, 'b')] = Tile("Entertainment", 6, x, X_1_3 + (5 * i), n)
-        tile_list["tile_{}_{}_{}".format('geel', x, 'a')] = Tile("Historie", 7, x, X_1_3 + (6 * i), n)
-        tile_list["tile_{}_{}_{}".format('geel', x, 'b')] = Tile("Historie", 8, x, X_1_3 + (7 * i), n)
+    for x in range(1, 11):
+        tile_list["tile_{}_{}_{}".format('blauw', x, 'a')] = Tile("Sport", 0, x, X_1_3, n)
+        tile_list["tile_{}_{}_{}".format('blauw', x, 'b')] = Tile("Sport", 1, x, X_1_3 + i, n)
+        tile_list["tile_{}_{}_{}".format('groen', x, 'a')] = Tile("Geografie", 2, x, X_1_3 + (2 * i), n)
+        tile_list["tile_{}_{}_{}".format('groen', x, 'b')] = Tile("Geografie", 3, x, X_1_3 + (3 * i), n)
+        tile_list["tile_{}_{}_{}".format('rood', x, 'a')] = Tile("Entertainment", 4, x, X_1_3 + (4 * i), n)
+        tile_list["tile_{}_{}_{}".format('rood', x, 'b')] = Tile("Entertainment", 5, x, X_1_3 + (5 * i), n)
+        tile_list["tile_{}_{}_{}".format('geel', x, 'a')] = Tile("Historie", 6, x, X_1_3 + (6 * i), n)
+        tile_list["tile_{}_{}_{}".format('geel', x, 'b')] = Tile("Historie", 7, x, X_1_3 + (7 * i), n)
         n -= 40
 
     i = 30
 
-    for y in range(11, 16):
-        tile_list["tile_{}_{}_{}".format('blauw', y, 'a')] = Tile("Sport", 1, y, X_1_3 + i, n)
-        tile_list["tile_{}_{}_{}".format('blauw', y, 'b')] = Tile("Sport", 2, y, X_1_3 + i, n)
-        tile_list["tile_{}_{}_{}".format('groen', y, 'a')] = Tile("Geografie", 3, y, X_1_3 + (i * 5), n)
-        tile_list["tile_{}_{}_{}".format('groen', y, 'b')] = Tile("Geografie", 4, y, X_1_3 + (i * 5), n)
-        tile_list["tile_{}_{}_{}".format('rood', y, 'a')] = Tile("Entertainment", 5, y, X_1_3 + (i * 9), n)
-        tile_list["tile_{}_{}_{}".format('rood', y, 'b')] = Tile("Entertainment", 6, y, X_1_3 + (i * 9), n)
-        tile_list["tile_{}_{}_{}".format('geel', y, 'a')] = Tile("Historie", 7, y, X_1_3 + (i * 13), n)
-        tile_list["tile_{}_{}_{}".format('geel', y, 'b')] = Tile("Historie", 8, y, X_1_3 + (i * 13), n)
+    for y in range(12, 17):
+        tile_list["tile_{}_{}_{}".format('blauw', y, 'a')] = Tile("Sport", 0, y, X_1_3 + i, n)
+        tile_list["tile_{}_{}_{}".format('blauw', y, 'b')] = Tile("Sport", 1, y, X_1_3 + i, n)
+        tile_list["tile_{}_{}_{}".format('groen', y, 'a')] = Tile("Geografie", 2, y, X_1_3 + (i * 5), n)
+        tile_list["tile_{}_{}_{}".format('groen', y, 'b')] = Tile("Geografie", 3, y, X_1_3 + (i * 5), n)
+        tile_list["tile_{}_{}_{}".format('rood', y, 'a')] = Tile("Entertainment", 4, y, X_1_3 + (i * 9), n)
+        tile_list["tile_{}_{}_{}".format('rood', y, 'b')] = Tile("Entertainment", 5, y, X_1_3 + (i * 9), n)
+        tile_list["tile_{}_{}_{}".format('geel', y, 'a')] = Tile("Historie", 6, y, X_1_3 + (i * 13), n)
+        tile_list["tile_{}_{}_{}".format('geel', y, 'b')] = Tile("Historie", 7, y, X_1_3 + (i * 13), n)
         n -= 40
 
     for z in range(0, 9):
         tile_list["tile_{}_{}".format('Top', z)] = Tile("Win", z, 16, X_1_2 + 40, 30)
 
-    tile_list.update(
-        {'bottom_tile': Tile("Bottom", 0, 0, X_1_2 + 40, 660)})
+    i = 60
+
+    n = 680
+    for u in range(0, 8):
+        if u % 2 == 0:
+            tile_list["tile_{}_{}".format('Bottom', u)] = Tile("Bottom", u, 0, X_1_3 + (u*i), n)
+
+
 
 
 def how_many_icons(AmountOfPlayers):  # amount of players screen
@@ -359,25 +369,25 @@ def choose_category(currentPlayer):
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = event.pos
-                if textButtonSport.get_rect(center=(X_1_3 - 50, Y_1_3)).collidepoint(x, y):
+                if sport == True and textButtonSport.get_rect(center=(X_1_3 - 50, Y_1_3)).collidepoint(x, y):
                     PlayerList[currentPlayer].Category = "Sport"
                     PlayerList[currentPlayer].update_startPos()
                     sport = False
                     cat = False
 
-                elif textButtonGeografie.get_rect(center=(X_1_3 - 50, Y_2_3)).collidepoint(x, y):
+                elif geog == True and textButtonGeografie.get_rect(center=(X_1_3 - 50, Y_2_3)).collidepoint(x, y):
                     PlayerList[currentPlayer].Category = "Geografie"
                     PlayerList[currentPlayer].update_startPos()
                     geog = False
                     cat = False
 
-                elif textButtonEntertainment.get_rect(center=(X_2_3 - 50, Y_1_3)).collidepoint(x, y):
+                elif entert == True and textButtonEntertainment.get_rect(center=(X_2_3 - 50, Y_1_3)).collidepoint(x, y):
                     PlayerList[currentPlayer].Category = "Entertainment"
                     PlayerList[currentPlayer].update_startPos()
                     entert = False
                     cat = False
 
-                elif textButtonHistorie.get_rect(center=(X_2_3 - 50, Y_2_3)).collidepoint(x, y):
+                elif hist == True and textButtonHistorie.get_rect(center=(X_2_3 - 50, Y_2_3)).collidepoint(x, y):
                     PlayerList[currentPlayer].Category = "Historie"
                     PlayerList[currentPlayer].update_startPos()
                     hist = False
@@ -702,22 +712,22 @@ def show_icon_menu(players):  # shows screen where players pick their icons
                 quit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = event.pos
-                if playerIcon_female1.get_rect(center=(X_1_5 - 100, Y_1_2 - 100)).collidepoint(x, y):
+                if fem1 == True and playerIcon_female1.get_rect(center=(X_1_5 - 100, Y_1_2 - 100)).collidepoint(x, y):
                     playerIcon = "a"
                     fem1 = False
                     iconed = False
 
-                if playerIcon_female2.get_rect(center=(X_2_5 - 100, Y_1_2 - 100)).collidepoint(x, y):
+                if fem2 == True and playerIcon_female2.get_rect(center=(X_2_5 - 100, Y_1_2 - 100)).collidepoint(x, y):
                     playerIcon = "b"
                     fem2 = False
                     iconed = False
 
-                if playerIcon_male1.get_rect(center=(X_3_5 - 100, Y_1_2 - 100)).collidepoint(x, y):
+                if male1 == True and playerIcon_male1.get_rect(center=(X_3_5 - 100, Y_1_2 - 100)).collidepoint(x, y):
                     playerIcon = "c"
                     male1 = False
                     iconed = False
 
-                if playerIcon_male2.get_rect(center=(X_4_5 - 100, Y_1_2 - 100)).collidepoint(x, y):
+                if male2 == True and playerIcon_male2.get_rect(center=(X_4_5 - 100, Y_1_2 - 100)).collidepoint(x, y):
                     playerIcon = "d"
                     male2 = False
                     iconed = False
@@ -731,7 +741,7 @@ def show_gameplay():  # loop for gameplay
     global gameplayed
     gameplayed = True
     currentPlayer = 0
-    turn = 0
+    currentRound = 1
     show_players_menu()
     enter_name()
     choose_icon()
@@ -770,14 +780,14 @@ def show_gameplay():  # loop for gameplay
                     if currentPlayer < len(ActivePlayers) - 1:
                         currentPlayer += 1
                         show_turn(currentPlayer)
-                        if turn > 0:
+                        if currentRound > 1:
                             pick_direction(currentPlayer)
 
                     else:
-                        turn += 1
+                        currentRound+= 1
                         currentPlayer = 0
                         show_turn(currentPlayer)
-                        if turn > 0:
+                        if currentRound > 1:
                             pick_direction(currentPlayer)
 
         generate_tiles()
@@ -786,56 +796,69 @@ def show_gameplay():  # loop for gameplay
 
         abc = PlayerList[currentPlayer].PlayerName
 
-        textWhoseTurn = fontObjLarge.render("It's:  {}'s turn!".format(abc), True, BLACK, None)
-
-        textWhoseTurn = fontObjLarge.render("It's:  {} turn!".format(abc), True, BLACK, LIGHT_CORAL)
-
+        textWhoseTurn = fontObjLarge.render("It's:  {} turn".format(abc), True, BLACK, WHITE)
         textWhoseTurnRect = textWhoseTurn.get_rect()
-        textWhoseTurnRect.center = (X_1_4 - 130, Y_1_4 - 100)
+        textWhoseTurnRect.center = (X_1_4 - 130, Y_1_4 - 40)
 
-        textPlayer1Name = fontObjMedium.render(
-            "P1: {} Direction: {}".format(PlayerList[0].PlayerName, PlayerList[0].Direction), True, BLACK, LIGHT_CORAL)
-        textPlayer2Name = fontObjMedium.render(
-            "P2: {} Direction: {}".format(PlayerList[1].PlayerName, PlayerList[1].Direction), True, BLACK, LIGHT_CORAL)
-        textPlayer3Name = fontObjMedium.render(
-            "P3: {} Direction: {}".format(PlayerList[2].PlayerName, PlayerList[2].Direction), True, BLACK, LIGHT_CORAL)
-        textPlayer4Name = fontObjMedium.render(
-            "P4: {} Direction: {}".format(PlayerList[3].PlayerName, PlayerList[3].Direction), True, BLACK, LIGHT_CORAL)
+        textCurrentRound = fontObjLarge.render("Round: {}".format(currentRound), True, BLACK, WHITE)
+        textCurrentRoundRect = textCurrentRound.get_rect()
+        textCurrentRoundRect.center = (X_1_4-180, Y_1_4 - 80)
+
+
+        textPlayer1Name = fontObjMedium.render("P1: {}".format(PlayerList[0].PlayerName), True, BLACK, WHITE)
+        textPlayer1Dir = fontObjSmall.render("Direction: {}".format(PlayerList[0].Direction), True, BLACK, WHITE)
+        textPlayer2Name = fontObjMedium.render("P2: {}".format(PlayerList[1].PlayerName), True, BLACK, WHITE)
+        textPlayer2Dir = fontObjSmall.render("Direction: {}".format(PlayerList[1].Direction), True, BLACK, WHITE)
+        textPlayer3Name = fontObjMedium.render("P3: {}".format(PlayerList[2].PlayerName), True, BLACK, WHITE)
+        textPlayer3Dir = fontObjSmall.render("Direction: {}".format(PlayerList[2].Direction), True, BLACK, WHITE)
+        textPlayer4Name = fontObjMedium.render("P4: {}".format(PlayerList[3].PlayerName), True, BLACK, WHITE)
+        textPlayer4Dir = fontObjSmall.render("Direction: {}".format(PlayerList[3].Direction), True, BLACK, WHITE)
 
         DISPLAYSURF.blit(textWhoseTurn, textWhoseTurnRect)
+        DISPLAYSURF.blit(textCurrentRound, textCurrentRoundRect)
 
         if AmountOfPlayers == 1:
             DISPLAYSURF.blit(textPlayer1Name, (50, Y_1_3 - 50))
+            DISPLAYSURF.blit(textPlayer1Dir, (50, Y_1_3 - 25))
             DISPLAYSURF.blit(player1.PlayerIcon, (0, Y_1_3))
 
         elif AmountOfPlayers == 2:
             DISPLAYSURF.blit(textPlayer1Name, (50, Y_1_3 - 50))
+            DISPLAYSURF.blit(textPlayer1Dir, (50, Y_1_3 - 25))
             DISPLAYSURF.blit(player1.PlayerIcon, (0, Y_1_3))
 
             DISPLAYSURF.blit(textPlayer2Name, (50, Y_2_3 - 50))
+            DISPLAYSURF.blit(textPlayer2Dir, (50, Y_2_3 - 25))
             DISPLAYSURF.blit(player2.PlayerIcon, (0, Y_2_3))
 
         elif AmountOfPlayers == 3:
             DISPLAYSURF.blit(textPlayer1Name, (50, Y_1_3 - 50))
+            DISPLAYSURF.blit(textPlayer1Dir, (50, Y_1_3 - 25))
             DISPLAYSURF.blit(player1.PlayerIcon, (0, Y_1_3))
 
             DISPLAYSURF.blit(textPlayer2Name, (50, Y_2_3 - 50))
+            DISPLAYSURF.blit(textPlayer2Dir, (50, Y_2_3 - 25))
             DISPLAYSURF.blit(player2.PlayerIcon, (0, Y_2_3))
 
             DISPLAYSURF.blit(textPlayer3Name, (WINDOWWIDTH - 200, Y_1_3))
+            DISPLAYSURF.blit(textPlayer3Dir, (WINDOWWIDTH-200, Y_1_3 + 25))
             DISPLAYSURF.blit(player3.PlayerIcon, (WINDOWWIDTH - 200, Y_1_3))
 
         elif AmountOfPlayers == 4:
             DISPLAYSURF.blit(textPlayer1Name, (50, Y_1_3 - 50))
+            DISPLAYSURF.blit(textPlayer1Dir, (50, Y_1_3 - 25))
             DISPLAYSURF.blit(player1.PlayerIcon, (0, Y_1_3))
 
             DISPLAYSURF.blit(textPlayer2Name, (50, Y_2_3 - 50))
+            DISPLAYSURF.blit(textPlayer2Dir, (50, Y_2_3 - 25))
             DISPLAYSURF.blit(player2.PlayerIcon, (0, Y_2_3))
 
-            DISPLAYSURF.blit(textPlayer3Name, (WINDOWWIDTH - 200, Y_1_3 - 50))
+            DISPLAYSURF.blit(textPlayer3Name, (WINDOWWIDTH - 170, Y_1_3 - 50))
+            DISPLAYSURF.blit(textPlayer3Dir, (WINDOWWIDTH - 170, Y_1_3 - 25))
             DISPLAYSURF.blit(player3.PlayerIcon, (WINDOWWIDTH - 200, Y_1_3))
 
-            DISPLAYSURF.blit(textPlayer4Name, (WINDOWWIDTH - 200, Y_2_3 - 50))
+            DISPLAYSURF.blit(textPlayer4Name, (WINDOWWIDTH - 170, Y_2_3 - 50))
+            DISPLAYSURF.blit(textPlayer4Dir, (WINDOWWIDTH - 170, Y_2_3 - 25))
             DISPLAYSURF.blit(player4.PlayerIcon, (WINDOWWIDTH - 200, Y_2_3))
 
         pygame.display.update()
@@ -844,6 +867,7 @@ def show_gameplay():  # loop for gameplay
             tile_list[key].draw_tile()
 
         for k in range(len(ActivePlayers)):
+            PlayerList[k].icon_match()
             PlayerList[k].draw_icon()
 
         for j in range(len(ActivePlayers)):
