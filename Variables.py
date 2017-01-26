@@ -66,6 +66,12 @@ playerIcon_male2 = pygame.image.load("images/icon_male2.png")
 playerIcon_female1 = pygame.image.load("images/icon_female1.png")
 playerIcon_female2 = pygame.image.load("images/icon_female2.png")
 
+player1IconSmall = pygame.image.load("images/playericon1Small.png")
+player2IconSmall = pygame.image.load("images/playericon2Small.png")
+player3IconSmall = pygame.image.load("images/playericon3Small.png")
+player4IconSmall = pygame.image.load("images/playericon4Small.png")
+
+
 diceImage1 = pygame.image.load('images/dice1.jpg')
 diceImage2 = pygame.image.load('images/dice2.jpg')
 diceImage3 = pygame.image.load('images/dice3.jpg')

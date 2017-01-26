@@ -17,8 +17,8 @@ class Vector2:  # Vector Class
 
 
 class Player:  # Player Class
-    def __init__(self, playerID=0, name="", icon=None, category="", posX=0, posY=0, correctanswers=0, iconX=X_1_2 + 40,
-                 iconY=660):
+    def __init__(self, playercircleicon, playerID=0, name="", icon=None, category="", posX=0, posY=0, correctanswers=0, iconX=X_1_2 + 40,
+                 iconY=660, circleX = 0, circleY = 0):
         self.PlayerID = playerID
         self.PlayerName = name
         self.PlayerIcon = icon
@@ -26,8 +26,10 @@ class Player:  # Player Class
         self.Position = Vector2(posX, posY)
         self.CorrectAnswers = correctanswers
         self.IconPosition = Vector2(iconX, iconY)
+        self.PlayerCirclePosition = Vector2(circleX, circleY)
         self.Direction = "UP"
         self.Score = 0
+        self.PlayerCircleIcon = playercircleicon
 
     def movement(self):
         if self.Direction == "UP":
@@ -86,17 +88,19 @@ class Player:  # Player Class
     def icon_match(self):
         for key in tile_list:
             if self.Position.X == tile_list[key].Position.X and self.Position.Y == tile_list[key].Position.Y:
-                self.IconPosition.X = tile_list[key].DrawPos.X
-                self.IconPosition.Y = tile_list[key].DrawPos.Y
+                self.PlayerCirclePosition.X = tile_list[key].DrawPos.X-12
+                self.PlayerCirclePosition.Y = tile_list[key].DrawPos.Y-12
+
+    # def player_circle(self):
 
     def draw_icon(self):
-        DISPLAYSURF.blit(self.PlayerIcon, (self.IconPosition.X, self.IconPosition.Y))
+        DISPLAYSURF.blit(self.PlayerCircleIcon, (self.PlayerCirclePosition.X, self.PlayerCirclePosition.Y))
 
 
-player1 = Player()  # Making objects of playerclass
-player2 = Player()
-player3 = Player()
-player4 = Player()
+player1 = Player(player1IconSmall)  # Making objects of playerclass
+player2 = Player(player2IconSmall)
+player3 = Player(player3IconSmall)
+player4 = Player(player4IconSmall)
 
 PlayerList = [player1, player2, player3, player4]  # List of playerobjects
 
@@ -627,7 +631,7 @@ def show_players_menu():  # choose amount of players u want to play with
 
     global AmountOfPlayers
 
-    textChoosePlayers = fontObjLarge.render('How many players?', True, BLACK, CORAL)
+    textChoosePlayers = fontObjLarge.render('How many players?', True, BLACK, None)
     textChoosePlayers1 = fontObjMedium.render('1 Player', True, BLACK, LIGHT_CORAL)
     textChoosePlayers2 = fontObjMedium.render('2 Players', True, BLACK, LIGHT_CORAL)
     textChoosePlayers3 = fontObjMedium.render('3 Players', True, BLACK, LIGHT_CORAL)
@@ -760,7 +764,7 @@ def show_gameplay():  # loop for gameplay
     global gameplayed
     gameplayed = True
     currentPlayer = 0
-
+    turn = 0
     show_players_menu()
     enter_name()
     choose_icon()
@@ -788,12 +792,16 @@ def show_gameplay():  # loop for gameplay
                     if currentPlayer < len(ActivePlayers) - 1:
                         currentPlayer += 1
                         show_turn(currentPlayer)
-                        pick_direction(currentPlayer)
+                        if turn > 0:
+                            pick_direction(currentPlayer)
 
                     else:
+                        turn += 1
                         currentPlayer = 0
                         show_turn(currentPlayer)
-                        pick_direction(currentPlayer)
+                        if turn > 0:
+                            pick_direction(currentPlayer)
+
 
         generate_tiles()
 
@@ -801,12 +809,54 @@ def show_gameplay():  # loop for gameplay
 
         abc = PlayerList[currentPlayer].PlayerName
 
+
         textWhoseTurn = fontObjLarge.render("It's:  {} turn!".format(abc), True, BLACK, LIGHT_CORAL)
 
         textWhoseTurnRect = textWhoseTurn.get_rect()
         textWhoseTurnRect.center = (X_1_4 - 130, Y_1_4 - 100)
 
+        textPlayer1Name = fontObjMedium.render("P1:{}".format(PlayerList[0].PlayerName), True, BLACK, LIGHT_CORAL)
+        textPlayer2Name = fontObjMedium.render("P2{}".format(PlayerList[1].PlayerName), True, BLACK, LIGHT_CORAL)
+        textPlayer3Name = fontObjMedium.render("P3{}".format(PlayerList[2].PlayerName), True, BLACK, LIGHT_CORAL)
+        textPlayer4Name = fontObjMedium.render("P4{}".format(PlayerList[3].PlayerName), True, BLACK, LIGHT_CORAL)
+
+
         DISPLAYSURF.blit(textWhoseTurn, textWhoseTurnRect)
+
+        if AmountOfPlayers == 1:
+            DISPLAYSURF.blit(textPlayer1Name, (0+50,Y_1_3-50))
+            DISPLAYSURF.blit(player1.PlayerIcon, (0, Y_1_3))
+
+        elif AmountOfPlayers == 2:
+            DISPLAYSURF.blit(textPlayer1Name, (0+50, Y_1_3 - 50))
+            DISPLAYSURF.blit(player1.PlayerIcon, (0 , Y_1_3))
+
+            DISPLAYSURF.blit(textPlayer2Name, (0+50, Y_2_3 - 50))
+            DISPLAYSURF.blit(player2.PlayerIcon, (0, Y_2_3))
+
+        elif AmountOfPlayers == 3:
+            DISPLAYSURF.blit(textPlayer1Name, (0+50, Y_1_3 - 50))
+            DISPLAYSURF.blit(player1.PlayerIcon, (0, Y_1_3))
+
+            DISPLAYSURF.blit(textPlayer2Name, (0+50, Y_2_3 - 50))
+            DISPLAYSURF.blit(player2.PlayerIcon, (0 , Y_2_3))
+
+            DISPLAYSURF.blit(textPlayer3Name, (WINDOWWIDTH-200, Y_1_3))
+            DISPLAYSURF.blit(player3.PlayerIcon, (WINDOWWIDTH-200, Y_1_3))
+
+        elif AmountOfPlayers == 4:
+            DISPLAYSURF.blit(textPlayer1Name, (0+50, Y_1_3 - 50))
+            DISPLAYSURF.blit(player1.PlayerIcon, (0 , Y_1_3))
+
+            DISPLAYSURF.blit(textPlayer2Name, (0+50, Y_2_3 - 50))
+            DISPLAYSURF.blit(player2.PlayerIcon, (0 , Y_2_3))
+
+            DISPLAYSURF.blit(textPlayer3Name, (WINDOWWIDTH - 200, Y_1_3-50))
+            DISPLAYSURF.blit(player3.PlayerIcon, (WINDOWWIDTH-200, Y_1_3))
+
+            DISPLAYSURF.blit(textPlayer4Name, (WINDOWWIDTH - 200, Y_2_3-50))
+            DISPLAYSURF.blit(player4.PlayerIcon, (WINDOWWIDTH-200, Y_2_3))
+
 
         pygame.display.update()
 
