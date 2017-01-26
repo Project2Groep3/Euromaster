@@ -17,8 +17,8 @@ class Vector2:  # Vector Class
 
 
 class Player:  # Player Class
-    def __init__(self, playercircleicon, playerID=0, name="", icon=None, category="", posX=0, posY=0, correctanswers=0, iconX=X_1_2 + 40,
-                 iconY=660, circleX = 0, circleY = 0):
+    def __init__(self, playercircleicon, playerID=0, name="", icon=None, category="", posX=0, posY=0, correctanswers=0, iconX=0,
+                 iconY=0, circleX = 0, circleY = 0):
         self.PlayerID = playerID
         self.PlayerName = name
         self.PlayerIcon = icon
@@ -95,12 +95,13 @@ class Player:  # Player Class
 
     def draw_icon(self):
         DISPLAYSURF.blit(self.PlayerCircleIcon, (self.PlayerCirclePosition.X, self.PlayerCirclePosition.Y))
+        # pygame.draw.line(DISPLAYSURF, CORAL, (self.IconPosition.X,self.IconPosition.Y), (self.PlayerCirclePosition.X, self.PlayerCirclePosition.Y), 3)
 
+player1 = Player(player1IconSmall, iconX = 50, iconY = Y_1_3-50) # Making objects of playerclass
+player2 = Player(player2IconSmall, iconX= 50, iconY = Y_2_3-50)
+player3 = Player(player3IconSmall, iconX = WINDOWWIDTH-200, iconY = Y_1_3-50)
+player4 = Player(player4IconSmall, iconX = WINDOWWIDTH - 200, iconY = Y_2_3-50)
 
-player1 = Player(player1IconSmall)  # Making objects of playerclass
-player2 = Player(player2IconSmall)
-player3 = Player(player3IconSmall)
-player4 = Player(player4IconSmall)
 
 PlayerList = [player1, player2, player3, player4]  # List of playerobjects
 
@@ -805,7 +806,7 @@ def show_gameplay():  # loop for gameplay
 
         generate_tiles()
 
-        DISPLAYSURF.blit(gameBackground, (0, 0))
+        DISPLAYSURF.blit(backGroundImage, (0, 0))
 
         abc = PlayerList[currentPlayer].PlayerName
 
@@ -815,40 +816,40 @@ def show_gameplay():  # loop for gameplay
         textWhoseTurnRect = textWhoseTurn.get_rect()
         textWhoseTurnRect.center = (X_1_4 - 130, Y_1_4 - 100)
 
-        textPlayer1Name = fontObjMedium.render("P1:{}".format(PlayerList[0].PlayerName), True, BLACK, LIGHT_CORAL)
-        textPlayer2Name = fontObjMedium.render("P2{}".format(PlayerList[1].PlayerName), True, BLACK, LIGHT_CORAL)
-        textPlayer3Name = fontObjMedium.render("P3{}".format(PlayerList[2].PlayerName), True, BLACK, LIGHT_CORAL)
-        textPlayer4Name = fontObjMedium.render("P4{}".format(PlayerList[3].PlayerName), True, BLACK, LIGHT_CORAL)
+        textPlayer1Name = fontObjMedium.render("P1: {} Direction: {}".format(PlayerList[0].PlayerName,PlayerList[0].Direction), True, BLACK, LIGHT_CORAL)
+        textPlayer2Name = fontObjMedium.render("P2: {} Direction: {}".format(PlayerList[1].PlayerName,PlayerList[1].Direction), True, BLACK, LIGHT_CORAL)
+        textPlayer3Name = fontObjMedium.render("P3: {} Direction: {}".format(PlayerList[2].PlayerName,PlayerList[2].Direction), True, BLACK, LIGHT_CORAL)
+        textPlayer4Name = fontObjMedium.render("P4: {} Direction: {}".format(PlayerList[3].PlayerName,PlayerList[3].Direction), True, BLACK, LIGHT_CORAL)
 
 
         DISPLAYSURF.blit(textWhoseTurn, textWhoseTurnRect)
 
         if AmountOfPlayers == 1:
-            DISPLAYSURF.blit(textPlayer1Name, (0+50,Y_1_3-50))
+            DISPLAYSURF.blit(textPlayer1Name, (50,Y_1_3-50))
             DISPLAYSURF.blit(player1.PlayerIcon, (0, Y_1_3))
 
         elif AmountOfPlayers == 2:
-            DISPLAYSURF.blit(textPlayer1Name, (0+50, Y_1_3 - 50))
+            DISPLAYSURF.blit(textPlayer1Name, (50, Y_1_3 - 50))
             DISPLAYSURF.blit(player1.PlayerIcon, (0 , Y_1_3))
 
-            DISPLAYSURF.blit(textPlayer2Name, (0+50, Y_2_3 - 50))
+            DISPLAYSURF.blit(textPlayer2Name, (50, Y_2_3 - 50))
             DISPLAYSURF.blit(player2.PlayerIcon, (0, Y_2_3))
 
         elif AmountOfPlayers == 3:
-            DISPLAYSURF.blit(textPlayer1Name, (0+50, Y_1_3 - 50))
+            DISPLAYSURF.blit(textPlayer1Name, (50, Y_1_3 - 50))
             DISPLAYSURF.blit(player1.PlayerIcon, (0, Y_1_3))
 
-            DISPLAYSURF.blit(textPlayer2Name, (0+50, Y_2_3 - 50))
+            DISPLAYSURF.blit(textPlayer2Name, (50, Y_2_3 - 50))
             DISPLAYSURF.blit(player2.PlayerIcon, (0 , Y_2_3))
 
             DISPLAYSURF.blit(textPlayer3Name, (WINDOWWIDTH-200, Y_1_3))
             DISPLAYSURF.blit(player3.PlayerIcon, (WINDOWWIDTH-200, Y_1_3))
 
         elif AmountOfPlayers == 4:
-            DISPLAYSURF.blit(textPlayer1Name, (0+50, Y_1_3 - 50))
+            DISPLAYSURF.blit(textPlayer1Name, (50, Y_1_3 - 50))
             DISPLAYSURF.blit(player1.PlayerIcon, (0 , Y_1_3))
 
-            DISPLAYSURF.blit(textPlayer2Name, (0+50, Y_2_3 - 50))
+            DISPLAYSURF.blit(textPlayer2Name, (50, Y_2_3 - 50))
             DISPLAYSURF.blit(player2.PlayerIcon, (0 , Y_2_3))
 
             DISPLAYSURF.blit(textPlayer3Name, (WINDOWWIDTH - 200, Y_1_3-50))
