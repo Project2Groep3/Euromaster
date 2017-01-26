@@ -126,6 +126,7 @@ class Tools():  # Tools class
 
     def steps(self):
         self.dice()
+        self.question_type()
         if self.DiceResult == 1 or self.DiceResult == 2:
             self.Steps = 1
         elif self.DiceResult == 3 or self.DiceResult == 4:
@@ -145,6 +146,7 @@ class Tools():  # Tools class
 
     def show_dice_image(self):
         self.steps()
+
         if self.DiceResult == 1:
             self.DiceImage = diceImage1
         elif self.DiceResult == 2:
@@ -254,7 +256,7 @@ def show_turn(currentPlayer):  # shows whose turn it is
                 if event.key == pygame.K_ESCAPE:
                     showed = False
 
-        textYourTurn = fontObjLarge.render("Hey {} it's your turn!".format(abc), True, BLACK, LIGHT_CORAL)
+        textYourTurn = fontObjLarge.render("Hey {} it's your turn!".format(abc), True, BLACK, WHITE)
         textYourTurnRect = textYourTurn.get_rect()
         textYourTurnRect.center = (WINDOWWIDTH / 2, WINDOWHEIGHT / 5)
 
@@ -335,7 +337,7 @@ def choose_category(currentPlayer):
     playerName = PlayerList[currentPlayer].PlayerName
 
     DISPLAYSURF.blit(backGroundImage, (0, 0))
-    textCategory = fontObjLarge.render("Hey {} pick your Category".format(playerName), True, BLACK, LIGHT_CORAL)
+    textCategory = fontObjLarge.render("Hey {} pick your Category".format(playerName), True, BLACK, WHITE)
     textCategoryRect = textCategory.get_rect()
     textCategoryRect.center = (X_1_2, (Y_1_4 - 100))
 
@@ -403,10 +405,10 @@ def choose_category(currentPlayer):
 def pick_direction(currentPlayer):
     directed = True
 
-    textButtonUp = fontObjLarge.render("  UP  ", True, BLACK, GREEN)
-    textButtonDown = fontObjLarge.render("DOWN", True, BLACK, GREEN)
-    textButtonRight = fontObjLarge.render("RIGHT", True, BLACK, GREEN)
-    textButtonLeft = fontObjLarge.render("LEFT", True, BLACK, GREEN)
+    textButtonUp = fontObjLarge.render("  UP  ", True, BLACK, LIGHT_CORAL)
+    textButtonDown = fontObjLarge.render("DOWN", True, BLACK, LIGHT_CORAL)
+    textButtonRight = fontObjLarge.render("RIGHT", True, BLACK, LIGHT_CORAL)
+    textButtonLeft = fontObjLarge.render("LEFT", True, BLACK, LIGHT_CORAL)
 
     while directed:
 
@@ -446,28 +448,7 @@ def pick_direction(currentPlayer):
 
 
 def show_dice():  # shows dice result on screen
-    diced = True
-
-    while diced:
-        textDiceResult = fontObjLarge.render('The result of your dice is:', True, BLACK, WHITE)
-
-        textDiceResultRect = textDiceResult.get_rect()
-        textDiceResultRect.center = (X_1_2, Y_1_4)
-
-        DISPLAYSURF.blit(Tools1.show_dice_image(), (X_1_2 - 56, Y_1_2))
-
-        textStepsResult = fontObjLarge.render('Amount of steps u can take: {}'.format(Tools1.Steps), True, BLACK, WHITE)
-        textStepsResultRect = textStepsResult.get_rect()
-        textStepsResultRect.center = (X_1_2, Y_1_4 + 100)
-
-        DISPLAYSURF.blit(textDiceResult, textDiceResultRect)
-        DISPLAYSURF.blit(textStepsResult, textStepsResultRect)
-
-        pygame.display.update()
-
-        time.sleep(1)
-        diced = False
-        FPSCLOCK.tick(FPS / 2)
+    return Tools1.show_dice_image()
 
 
 def show_main_menu():  # shows main menu
@@ -738,7 +719,8 @@ def show_icon_menu(players):  # shows screen where players pick their icons
 
 
 def show_gameplay():  # loop for gameplay
-    global gameplayed
+    global gameplayed, berlp
+    berlp = show_dice()
     gameplayed = True
     currentPlayer = 0
     currentRound = 1
@@ -750,31 +732,15 @@ def show_gameplay():  # loop for gameplay
 
     while gameplayed:
 
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP:
-                    PlayerList[currentPlayer].move_up()
 
-                elif event.key == pygame.K_DOWN:
-                    PlayerList[currentPlayer].move_down()
-
-                elif event.key == pygame.K_RIGHT:
-                    PlayerList[currentPlayer].move_right()
-
-                elif event.key == pygame.K_LEFT:
-                    PlayerList[currentPlayer].move_left()
-
-                elif event.key == pygame.K_p:
+                if event.key == pygame.K_p:
                     show_pause()
-
-                elif event.key == pygame.K_r:
-                    show_dice()
-
-                    PlayerList[currentPlayer].movement()
-                    PlayerList[currentPlayer].draw_icon()
 
                 elif event.key == pygame.K_d:
                     if currentPlayer < len(ActivePlayers) - 1:
@@ -782,6 +748,8 @@ def show_gameplay():  # loop for gameplay
                         show_turn(currentPlayer)
                         if currentRound > 1:
                             pick_direction(currentPlayer)
+                            berlp = show_dice()
+                            pygame.display.update()
 
                     else:
                         currentRound+= 1
@@ -789,6 +757,10 @@ def show_gameplay():  # loop for gameplay
                         show_turn(currentPlayer)
                         if currentRound > 1:
                             pick_direction(currentPlayer)
+                            berlp = show_dice()
+
+                            PlayerList[currentPlayer].movement()
+                            PlayerList[currentPlayer].draw_icon()
 
         generate_tiles()
 
@@ -796,13 +768,32 @@ def show_gameplay():  # loop for gameplay
 
         abc = PlayerList[currentPlayer].PlayerName
 
-        textWhoseTurn = fontObjLarge.render("It's:  {} turn".format(abc), True, BLACK, WHITE)
+        textWhoseTurn = fontObjLarge.render("It's {}'s turn".format(abc), True, BLACK, WHITE)
         textWhoseTurnRect = textWhoseTurn.get_rect()
         textWhoseTurnRect.center = (X_1_4 - 130, Y_1_4 - 40)
 
         textCurrentRound = fontObjLarge.render("Round: {}".format(currentRound), True, BLACK, WHITE)
         textCurrentRoundRect = textCurrentRound.get_rect()
         textCurrentRoundRect.center = (X_1_4-180, Y_1_4 - 80)
+
+        textDiceResult = fontObjSmall.render("{}'s Dice Result:".format(abc), True, BLACK, WHITE)
+        textDiceResultRect = textDiceResult.get_rect()
+        textDiceResultRect.center = (WINDOWWIDTH-150, 20)
+
+        DISPLAYSURF.blit(berlp, (WINDOWWIDTH - 200, 40))
+
+        textStepsResult = fontObjSmall.render('Steps Result: {}'.format(Tools1.Steps),True, BLACK, WHITE)
+        textStepsResultRect = textStepsResult.get_rect()
+        textStepsResultRect.center = (WINDOWWIDTH - 150, 170)
+
+        textQuestionType = fontObjSmall.render('Question Type: {}'.format(Tools1.QuestionType), True, BLACK, WHITE)
+        textQuestionTypeRect = textQuestionType.get_rect()
+        textQuestionTypeRect.center = (WINDOWWIDTH - 150, 200)
+
+        DISPLAYSURF.blit(textDiceResult, textDiceResultRect)
+        DISPLAYSURF.blit(textStepsResult, textStepsResultRect)
+        DISPLAYSURF.blit(textQuestionType, textQuestionTypeRect)
+
 
 
         textPlayer1Name = fontObjMedium.render("P1: {}".format(PlayerList[0].PlayerName), True, BLACK, WHITE)
@@ -813,6 +804,9 @@ def show_gameplay():  # loop for gameplay
         textPlayer3Dir = fontObjSmall.render("Direction: {}".format(PlayerList[2].Direction), True, BLACK, WHITE)
         textPlayer4Name = fontObjMedium.render("P4: {}".format(PlayerList[3].PlayerName), True, BLACK, WHITE)
         textPlayer4Dir = fontObjSmall.render("Direction: {}".format(PlayerList[3].Direction), True, BLACK, WHITE)
+
+
+
 
         DISPLAYSURF.blit(textWhoseTurn, textWhoseTurnRect)
         DISPLAYSURF.blit(textCurrentRound, textCurrentRoundRect)
@@ -870,6 +864,7 @@ def show_gameplay():  # loop for gameplay
             PlayerList[k].icon_match()
             PlayerList[k].draw_icon()
 
+
         for j in range(len(ActivePlayers)):
             if PlayerList[j].Position.Y >= 16:
                 PlayerList[j].Score += 1
@@ -917,9 +912,9 @@ def show_pause():  # shows pause menu, is bugged atm
     textPauseMenuRect = textPauseMenu.get_rect()
     textPauseMenuRect.center = (X_1_2, WINDOWHEIGHT / 4)
 
-    textResumeGame = fontObjMedium.render('Resume Game', True, BLACK, LIGHT_CORAL)
-    textMainMenu = fontObjMedium.render('Main Menu', True, BLACK, LIGHT_CORAL)
-    textExitGame = fontObjMedium.render("Exit Game", True, BLACK, LIGHT_CORAL)
+    textResumeGame = fontObjLarge.render('Resume Game', True, BLACK, LIGHT_CORAL)
+    textMainMenu = fontObjLarge.render('Main Menu', True, BLACK, LIGHT_CORAL)
+    textExitGame = fontObjLarge.render("Exit Game", True, BLACK, LIGHT_CORAL)
 
     while paused:
         DISPLAYSURF.fill(WHITE)
@@ -939,20 +934,20 @@ def show_pause():  # shows pause menu, is bugged atm
                 if textResumeGame.get_rect(center=(X_1_2 - 50, Y_1_2)).collidepoint(x, y):
                     paused = False
 
-                elif textMainMenu.get_rect(center=(X_1_2 - 50, Y_1_2 + 50)).collidepoint(x, y):
+                elif textMainMenu.get_rect(center=(X_1_2 - 50, Y_1_2 + 75)).collidepoint(x, y):
                     show_main_menu()
                     paused = False
                     gameplayed = False
 
 
-                elif textExitGame.get_rect(center=(X_1_2 - 50, Y_1_2 + 100)).collidepoint(x, y):
+                elif textExitGame.get_rect(center=(X_1_2 - 50, Y_1_2 + 150)).collidepoint(x, y):
                     pygame.quit()
                     quit()
 
         DISPLAYSURF.blit(textPauseMenu, textPauseMenuRect)
         DISPLAYSURF.blit(textResumeGame, (X_1_2 - 50, Y_1_2))
-        DISPLAYSURF.blit(textMainMenu, (X_1_2 - 50, Y_1_2 + 50))
-        DISPLAYSURF.blit(textExitGame, (X_1_2 - 50, Y_1_2 + 100))
+        DISPLAYSURF.blit(textMainMenu, (X_1_2 - 50, Y_1_2 + 75))
+        DISPLAYSURF.blit(textExitGame, (X_1_2 - 50, Y_1_2 + 150))
 
         pygame.display.update()
         FPSCLOCK.tick(FPS / 2)
