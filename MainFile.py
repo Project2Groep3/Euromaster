@@ -153,6 +153,9 @@ class Tools():  # Tools class
 
         return self.DiceImage
 
+Tools1 = Tools() # making tools object
+
+
 
 Tools1 = Tools()  # making tools object
 
@@ -165,6 +168,7 @@ class Tile:  # tiles for the map
 
     def draw_tile(self):
         if self.Category == "Sport":
+
             pygame.draw.circle(DISPLAYSURF, BLUE, (self.DrawPos.X, self.DrawPos.Y), 10, 0)
         elif self.Category == "Geografie":
             pygame.draw.circle(DISPLAYSURF, LIGHT_GREEN, (self.DrawPos.X, self.DrawPos.Y), 10, 0)
@@ -732,35 +736,6 @@ def show_icon_menu(players):  # shows screen where players pick their icons
     return playerIcon
 
 
-def timer():
-    frame_count = 0
-    start_time = 50
-    total_seconds = frame_count // FPS
-    minutes = total_seconds // 60
-    seconds = total_seconds % 60
-
-    output_string = ""
-
-    text = fontObjLarge.render(output_string, True, BLACK)
-    DISPLAYSURF.blit(text, [910, 10])
-
-    total_seconds = start_time - (frame_count // FPS)
-    if total_seconds < 0:
-        total_seconds = 0
-
-    minutes = total_seconds // 60
-    seconds = total_seconds % 60
-    output_string = "{0:02}:{1:02}".format(minutes, seconds)
-
-    text = fontObjLarge.render(output_string, True, BLACK)
-    DISPLAYSURF.blit(text, [960, 10])
-
-    frame_count += 1
-
-
-timer()
-
-
 def show_gameplay():  # loop for gameplay
     global gameplayed
     gameplayed = True
@@ -778,14 +753,25 @@ def show_gameplay():  # loop for gameplay
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
-
             if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP:
+                    PlayerList[currentPlayer].move_up()
 
-                if event.key == pygame.K_p:
+                elif event.key == pygame.K_DOWN:
+                    PlayerList[currentPlayer].move_down()
+
+                elif event.key == pygame.K_RIGHT:
+                    PlayerList[currentPlayer].move_right()
+
+                elif event.key == pygame.K_LEFT:
+                    PlayerList[currentPlayer].move_left()
+
+                elif event.key == pygame.K_p:
                     show_pause()
 
                 elif event.key == pygame.K_r:
                     show_dice()
+
                     PlayerList[currentPlayer].movement()
                     PlayerList[currentPlayer].draw_icon()
 
@@ -810,6 +796,7 @@ def show_gameplay():  # loop for gameplay
 
         abc = PlayerList[currentPlayer].PlayerName
 
+        textWhoseTurn = fontObjLarge.render("It's:  {}'s turn!".format(abc), True, BLACK, None)
 
         textWhoseTurn = fontObjLarge.render("It's:  {} turn!".format(abc), True, BLACK, LIGHT_CORAL)
 
