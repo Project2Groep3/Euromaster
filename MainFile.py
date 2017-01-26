@@ -17,8 +17,9 @@ class Vector2:  # Vector Class
 
 
 class Player:  # Player Class
-    def __init__(self, playercircleicon, playerID=0, name="", icon=None, category="", posX=0, posY=0, correctanswers=0, iconX=0,
-                 iconY=0, circleX = 0, circleY = 0):
+    def __init__(self, playercircleicon, playerID=0, name="", icon=None, category="", posX=0, posY=0, correctanswers=0,
+                 iconX=0,
+                 iconY=0, circleX=0, circleY=0):
         self.PlayerID = playerID
         self.PlayerName = name
         self.PlayerIcon = icon
@@ -74,7 +75,7 @@ class Player:  # Player Class
             self.PlayerIcon = playerIcon_male1
         elif self.PlayerIcon == "d":
             self.PlayerIcon = playerIcon_male2
-            
+
     def update_startPos(self):
         if self.Category == "Sport":
             self.Position.X = 1
@@ -88,20 +89,19 @@ class Player:  # Player Class
     def icon_match(self):
         for key in tile_list:
             if self.Position.X == tile_list[key].Position.X and self.Position.Y == tile_list[key].Position.Y:
-                self.PlayerCirclePosition.X = tile_list[key].DrawPos.X-12
-                self.PlayerCirclePosition.Y = tile_list[key].DrawPos.Y-12
+                self.PlayerCirclePosition.X = tile_list[key].DrawPos.X - 12
+                self.PlayerCirclePosition.Y = tile_list[key].DrawPos.Y - 12
 
-    # def player_circle(self):
 
     def draw_icon(self):
         DISPLAYSURF.blit(self.PlayerCircleIcon, (self.PlayerCirclePosition.X, self.PlayerCirclePosition.Y))
         # pygame.draw.line(DISPLAYSURF, CORAL, (self.IconPosition.X,self.IconPosition.Y), (self.PlayerCirclePosition.X, self.PlayerCirclePosition.Y), 3)
 
-player1 = Player(player1IconSmall, iconX = 50, iconY = Y_1_3-50) # Making objects of playerclass
-player2 = Player(player2IconSmall, iconX= 50, iconY = Y_2_3-50)
-player3 = Player(player3IconSmall, iconX = WINDOWWIDTH-200, iconY = Y_1_3-50)
-player4 = Player(player4IconSmall, iconX = WINDOWWIDTH - 200, iconY = Y_2_3-50)
 
+player1 = Player(player1IconSmall, iconX=50, iconY=Y_1_3 - 50)  # Making objects of playerclass
+player2 = Player(player2IconSmall, iconX=50, iconY=Y_2_3 - 50)
+player3 = Player(player3IconSmall, iconX=WINDOWWIDTH - 200, iconY=Y_1_3 - 50)
+player4 = Player(player4IconSmall, iconX=WINDOWWIDTH - 200, iconY=Y_2_3 - 50)
 
 PlayerList = [player1, player2, player3, player4]  # List of playerobjects
 
@@ -156,6 +156,8 @@ class Tools():  # Tools class
 
 Tools1 = Tools()  # making tools object
 
+Tools1 = Tools()  # making tools object
+
 
 class Tile:  # tiles for the map
     def __init__(self, category, posX, posY, drawX, drawY):
@@ -165,6 +167,7 @@ class Tile:  # tiles for the map
 
     def draw_tile(self):
         if self.Category == "Sport":
+
             pygame.draw.circle(DISPLAYSURF, BLUE, (self.DrawPos.X, self.DrawPos.Y), 10, 0)
         elif self.Category == "Geografie":
             pygame.draw.circle(DISPLAYSURF, LIGHT_GREEN, (self.DrawPos.X, self.DrawPos.Y), 10, 0)
@@ -306,6 +309,7 @@ def choose_icon():  # loops show_icon_menu for all active players
 
         chosen = False
 
+
 def choose_category_loop(AmountOfPlayers):
     cater = True
 
@@ -313,6 +317,7 @@ def choose_category_loop(AmountOfPlayers):
         for players in range(AmountOfPlayers):
             PlayerList[players].Category = choose_category(players)
         cater = False
+
 
 def choose_category(currentPlayer):
     cat = True
@@ -378,8 +383,6 @@ def choose_category(currentPlayer):
                     hist = False
                     cat = False
 
-
-
         pygame.display.update()
         FPSCLOCK.tick(FPS / 2)
 
@@ -436,25 +439,19 @@ def show_dice():  # shows dice result on screen
     diced = True
 
     while diced:
-
-
         textDiceResult = fontObjLarge.render('The result of your dice is:', True, BLACK, WHITE)
-
 
         textDiceResultRect = textDiceResult.get_rect()
         textDiceResultRect.center = (X_1_2, Y_1_4)
 
-        DISPLAYSURF.blit(Tools1.show_dice_image(), (X_1_2-56, Y_1_2))
+        DISPLAYSURF.blit(Tools1.show_dice_image(), (X_1_2 - 56, Y_1_2))
 
         textStepsResult = fontObjLarge.render('Amount of steps u can take: {}'.format(Tools1.Steps), True, BLACK, WHITE)
         textStepsResultRect = textStepsResult.get_rect()
-        textStepsResultRect.center = (X_1_2, Y_1_4+100)
-
+        textStepsResultRect.center = (X_1_2, Y_1_4 + 100)
 
         DISPLAYSURF.blit(textDiceResult, textDiceResultRect)
         DISPLAYSURF.blit(textStepsResult, textStepsResultRect)
-
-
 
         pygame.display.update()
 
@@ -587,7 +584,6 @@ def show_instructions_menu2():  # instructionscreen 3
                     instructions2 = False
                     show_main_menu()
 
-
             if event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = event.pos
                 if instructionsImageNED2.get_rect().collidepoint(x, y):
@@ -613,7 +609,6 @@ def show_instructions_menu3():  # instruction screen 4
                 if event.key == pygame.K_ESCAPE:
                     instructions3 = False
                     show_main_menu()
-
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = event.pos
@@ -732,35 +727,6 @@ def show_icon_menu(players):  # shows screen where players pick their icons
     return playerIcon
 
 
-def timer():
-    frame_count = 0
-    start_time = 50
-    total_seconds = frame_count // FPS
-    minutes = total_seconds // 60
-    seconds = total_seconds % 60
-
-    output_string = ""
-
-    text = fontObjLarge.render(output_string, True, BLACK)
-    DISPLAYSURF.blit(text, [910, 10])
-
-    total_seconds = start_time - (frame_count // FPS)
-    if total_seconds < 0:
-        total_seconds = 0
-
-    minutes = total_seconds // 60
-    seconds = total_seconds % 60
-    output_string = "{0:02}:{1:02}".format(minutes, seconds)
-
-    text = fontObjLarge.render(output_string, True, BLACK)
-    DISPLAYSURF.blit(text, [960, 10])
-
-    frame_count += 1
-
-
-timer()
-
-
 def show_gameplay():  # loop for gameplay
     global gameplayed
     gameplayed = True
@@ -778,14 +744,25 @@ def show_gameplay():  # loop for gameplay
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
-
             if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP:
+                    PlayerList[currentPlayer].move_up()
 
-                if event.key == pygame.K_p:
+                elif event.key == pygame.K_DOWN:
+                    PlayerList[currentPlayer].move_down()
+
+                elif event.key == pygame.K_RIGHT:
+                    PlayerList[currentPlayer].move_right()
+
+                elif event.key == pygame.K_LEFT:
+                    PlayerList[currentPlayer].move_left()
+
+                elif event.key == pygame.K_p:
                     show_pause()
 
                 elif event.key == pygame.K_r:
                     show_dice()
+
                     PlayerList[currentPlayer].movement()
                     PlayerList[currentPlayer].draw_icon()
 
@@ -803,34 +780,37 @@ def show_gameplay():  # loop for gameplay
                         if turn > 0:
                             pick_direction(currentPlayer)
 
-
         generate_tiles()
 
         DISPLAYSURF.blit(backGroundImage, (0, 0))
 
         abc = PlayerList[currentPlayer].PlayerName
 
+        textWhoseTurn = fontObjLarge.render("It's:  {}'s turn!".format(abc), True, BLACK, None)
 
         textWhoseTurn = fontObjLarge.render("It's:  {} turn!".format(abc), True, BLACK, LIGHT_CORAL)
 
         textWhoseTurnRect = textWhoseTurn.get_rect()
         textWhoseTurnRect.center = (X_1_4 - 130, Y_1_4 - 100)
 
-        textPlayer1Name = fontObjMedium.render("P1: {} Direction: {}".format(PlayerList[0].PlayerName,PlayerList[0].Direction), True, BLACK, LIGHT_CORAL)
-        textPlayer2Name = fontObjMedium.render("P2: {} Direction: {}".format(PlayerList[1].PlayerName,PlayerList[1].Direction), True, BLACK, LIGHT_CORAL)
-        textPlayer3Name = fontObjMedium.render("P3: {} Direction: {}".format(PlayerList[2].PlayerName,PlayerList[2].Direction), True, BLACK, LIGHT_CORAL)
-        textPlayer4Name = fontObjMedium.render("P4: {} Direction: {}".format(PlayerList[3].PlayerName,PlayerList[3].Direction), True, BLACK, LIGHT_CORAL)
-
+        textPlayer1Name = fontObjMedium.render(
+            "P1: {} Direction: {}".format(PlayerList[0].PlayerName, PlayerList[0].Direction), True, BLACK, LIGHT_CORAL)
+        textPlayer2Name = fontObjMedium.render(
+            "P2: {} Direction: {}".format(PlayerList[1].PlayerName, PlayerList[1].Direction), True, BLACK, LIGHT_CORAL)
+        textPlayer3Name = fontObjMedium.render(
+            "P3: {} Direction: {}".format(PlayerList[2].PlayerName, PlayerList[2].Direction), True, BLACK, LIGHT_CORAL)
+        textPlayer4Name = fontObjMedium.render(
+            "P4: {} Direction: {}".format(PlayerList[3].PlayerName, PlayerList[3].Direction), True, BLACK, LIGHT_CORAL)
 
         DISPLAYSURF.blit(textWhoseTurn, textWhoseTurnRect)
 
         if AmountOfPlayers == 1:
-            DISPLAYSURF.blit(textPlayer1Name, (50,Y_1_3-50))
+            DISPLAYSURF.blit(textPlayer1Name, (50, Y_1_3 - 50))
             DISPLAYSURF.blit(player1.PlayerIcon, (0, Y_1_3))
 
         elif AmountOfPlayers == 2:
             DISPLAYSURF.blit(textPlayer1Name, (50, Y_1_3 - 50))
-            DISPLAYSURF.blit(player1.PlayerIcon, (0 , Y_1_3))
+            DISPLAYSURF.blit(player1.PlayerIcon, (0, Y_1_3))
 
             DISPLAYSURF.blit(textPlayer2Name, (50, Y_2_3 - 50))
             DISPLAYSURF.blit(player2.PlayerIcon, (0, Y_2_3))
@@ -840,24 +820,23 @@ def show_gameplay():  # loop for gameplay
             DISPLAYSURF.blit(player1.PlayerIcon, (0, Y_1_3))
 
             DISPLAYSURF.blit(textPlayer2Name, (50, Y_2_3 - 50))
-            DISPLAYSURF.blit(player2.PlayerIcon, (0 , Y_2_3))
+            DISPLAYSURF.blit(player2.PlayerIcon, (0, Y_2_3))
 
-            DISPLAYSURF.blit(textPlayer3Name, (WINDOWWIDTH-200, Y_1_3))
-            DISPLAYSURF.blit(player3.PlayerIcon, (WINDOWWIDTH-200, Y_1_3))
+            DISPLAYSURF.blit(textPlayer3Name, (WINDOWWIDTH - 200, Y_1_3))
+            DISPLAYSURF.blit(player3.PlayerIcon, (WINDOWWIDTH - 200, Y_1_3))
 
         elif AmountOfPlayers == 4:
             DISPLAYSURF.blit(textPlayer1Name, (50, Y_1_3 - 50))
-            DISPLAYSURF.blit(player1.PlayerIcon, (0 , Y_1_3))
+            DISPLAYSURF.blit(player1.PlayerIcon, (0, Y_1_3))
 
             DISPLAYSURF.blit(textPlayer2Name, (50, Y_2_3 - 50))
-            DISPLAYSURF.blit(player2.PlayerIcon, (0 , Y_2_3))
+            DISPLAYSURF.blit(player2.PlayerIcon, (0, Y_2_3))
 
-            DISPLAYSURF.blit(textPlayer3Name, (WINDOWWIDTH - 200, Y_1_3-50))
-            DISPLAYSURF.blit(player3.PlayerIcon, (WINDOWWIDTH-200, Y_1_3))
+            DISPLAYSURF.blit(textPlayer3Name, (WINDOWWIDTH - 200, Y_1_3 - 50))
+            DISPLAYSURF.blit(player3.PlayerIcon, (WINDOWWIDTH - 200, Y_1_3))
 
-            DISPLAYSURF.blit(textPlayer4Name, (WINDOWWIDTH - 200, Y_2_3-50))
-            DISPLAYSURF.blit(player4.PlayerIcon, (WINDOWWIDTH-200, Y_2_3))
-
+            DISPLAYSURF.blit(textPlayer4Name, (WINDOWWIDTH - 200, Y_2_3 - 50))
+            DISPLAYSURF.blit(player4.PlayerIcon, (WINDOWWIDTH - 200, Y_2_3))
 
         pygame.display.update()
 
