@@ -91,7 +91,7 @@ class Player:  # Player Class
                 self.PlayerCirclePosition.X = tile_list[key].DrawPos.X-12
                 self.PlayerCirclePosition.Y = tile_list[key].DrawPos.Y-12
 
-    # def player_circle(self):
+
 
     def draw_icon(self):
         DISPLAYSURF.blit(self.PlayerCircleIcon, (self.PlayerCirclePosition.X, self.PlayerCirclePosition.Y))
