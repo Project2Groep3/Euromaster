@@ -635,7 +635,6 @@ def show_gameplay(): # loop for gameplay
                 pygame.quit()
                 quit()
             if event.type == pygame.KEYDOWN:
-<<<<<<< HEAD
                 if event.key == pygame.K_UP:
                     PlayerList[currentPlayer].move_up()
 
@@ -649,10 +648,6 @@ def show_gameplay(): # loop for gameplay
                     PlayerList[currentPlayer].move_left()
 
                 elif event.key == pygame.K_p:
-=======
-
-                if event.key == pygame.K_p:
->>>>>>> refs/remotes/origin/master
                     show_pause()
 
                 elif event.key == pygame.K_r:
