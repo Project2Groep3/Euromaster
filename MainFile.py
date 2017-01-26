@@ -151,11 +151,10 @@ class Tools():  # Tools class
             self.DiceImage = diceImage6
 
         return self.DiceImage
-<<<<<<< HEAD
-Tools1 = Tools() # making tools object
-=======
 
->>>>>>> refs/remotes/origin/master
+Tools1 = Tools() # making tools object
+
+
 
 Tools1 = Tools()  # making tools object
 
@@ -736,40 +735,7 @@ def show_icon_menu(players):  # shows screen where players pick their icons
     return playerIcon
 
 
-<<<<<<< HEAD
-def show_gameplay(): # loop for gameplay
-=======
-def timer():
-    frame_count = 0
-    start_time = 50
-    total_seconds = frame_count // FPS
-    minutes = total_seconds // 60
-    seconds = total_seconds % 60
-
-    output_string = ""
-
-    text = fontObjLarge.render(output_string, True, BLACK)
-    DISPLAYSURF.blit(text, [910, 10])
-
-    total_seconds = start_time - (frame_count // FPS)
-    if total_seconds < 0:
-        total_seconds = 0
-
-    minutes = total_seconds // 60
-    seconds = total_seconds % 60
-    output_string = "{0:02}:{1:02}".format(minutes, seconds)
-
-    text = fontObjLarge.render(output_string, True, BLACK)
-    DISPLAYSURF.blit(text, [960, 10])
-
-    frame_count += 1
-
-
-timer()
-
-
 def show_gameplay():  # loop for gameplay
->>>>>>> refs/remotes/origin/master
     global gameplayed
     gameplayed = True
     currentPlayer = 0
@@ -804,11 +770,9 @@ def show_gameplay():  # loop for gameplay
 
                 elif event.key == pygame.K_r:
                     show_dice()
-<<<<<<< HEAD
-=======
+
                     PlayerList[currentPlayer].movement()
                     PlayerList[currentPlayer].draw_icon()
->>>>>>> refs/remotes/origin/master
 
                 elif event.key == pygame.K_d:
                     if currentPlayer < len(ActivePlayers) - 1:
@@ -831,13 +795,10 @@ def show_gameplay():  # loop for gameplay
 
         abc = PlayerList[currentPlayer].PlayerName
 
-<<<<<<< HEAD
         textWhoseTurn = fontObjLarge.render("It's:  {}'s turn!".format(abc), True, BLACK, None)
-=======
 
         textWhoseTurn = fontObjLarge.render("It's:  {} turn!".format(abc), True, BLACK, LIGHT_CORAL)
 
->>>>>>> refs/remotes/origin/master
         textWhoseTurnRect = textWhoseTurn.get_rect()
         textWhoseTurnRect.center = (X_1_4 - 130, Y_1_4 - 100)
 
