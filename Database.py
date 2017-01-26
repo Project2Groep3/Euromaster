@@ -22,7 +22,7 @@ def op_questions_Historie():
             return("Answer is correct!")
         else:
             return("Answer is incorrect :(")
-#op_questions_Historie()
+op_questions_Historie()
 
 
 def mc_questions_Historie():
@@ -48,7 +48,7 @@ def mc_questions_Historie():
                 return("Answer is correct!")
             else:
                 return("Answer is incorrect :(")
-#mc_questions_Historie()
+mc_questions_Historie()
 
 
 def op_questions_Sport():
@@ -72,7 +72,7 @@ def op_questions_Sport():
             return("Answer is correct!")
         else:
             return("Answer is incorrect :(")
-#op_questions_Sport()
+op_questions_Sport()
 
 def mc_questions_Sport():
     x = random.randint(0,14)
@@ -96,7 +96,7 @@ def mc_questions_Sport():
                 return("Answer is correct!")
             else:
                 return("Answer is incorrect :(")
-#mc_questions_Sport()
+mc_questions_Sport()
 
 def op_questions_Entertainment():
     x = random.randint(0,14)
@@ -119,7 +119,7 @@ def op_questions_Entertainment():
             return("Answer is correct!")
         else:
             return("Answer is incorrect :(")
-#op_questions_Entertainment()
+op_questions_Entertainment()
 
 def mc_questions_Entertainment():
     x = random.randint(0,14)
@@ -143,7 +143,7 @@ def mc_questions_Entertainment():
                 return("Answer is correct!")
             else:
                 return("Answer is incorrect :(")
-#mc_questions_Entertainment()
+mc_questions_Entertainment()
 
 def op_questions_Geografie():
     x = random.randint(0,14)
@@ -166,7 +166,7 @@ def op_questions_Geografie():
             return("Answer is correct!")
         else:
             return("Answer is incorrect :(")
-#op_questions_Geografie()
+op_questions_Geografie()
 
 def mc_questions_Geografie():
     x = random.randint(0,14)
@@ -190,5 +190,5 @@ def mc_questions_Geografie():
                 return("Answer is correct!")
             else:
                 return("Answer is incorrect :(")
-ac =mc_questions_Geografie()
-print(ac)
+mc_questions_Geografie()
+
