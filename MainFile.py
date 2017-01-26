@@ -185,7 +185,7 @@ class Tile:  # tiles for the map
         return self.Category, self.Position.X, self.Position.Y, self.DrawPos.X, self.DrawPos.Y
 
 
-def generate_tiles():  # Function that generates tiles on the map
+
     n = 640
     i = 60
     global tile_list
@@ -217,8 +217,10 @@ def generate_tiles():  # Function that generates tiles on the map
     for z in range(0, 9):
         tile_list["tile_{}_{}".format('Top', z)] = Tile("Win", z, 16, X_1_2 + 40, 30)
 
+
     tile_list.update(
         {'bottom_tile': Tile("Bottom", 0, 0, X_1_2 + 40, 660)})
+
 
 
 def how_many_icons(AmountOfPlayers):  # amount of players screen
@@ -537,7 +539,6 @@ def show_instructions_menu():  # instruction screen 1
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     instructions = False
-                    show_main_menu()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = event.pos
@@ -563,7 +564,7 @@ def show_instructions_menu1():  # instructionscreen 2
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     instructions1 = False
-                    show_main_menu()
+
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = event.pos
@@ -589,7 +590,6 @@ def show_instructions_menu2():  # instructionscreen 3
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     instructions2 = False
-                    show_main_menu()
 
 
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -615,8 +615,6 @@ def show_instructions_menu3():  # instruction screen 4
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    instructions3 = False
-                    show_main_menu()
 
 
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -631,7 +629,10 @@ def show_instructions_menu3():  # instruction screen 4
         FPSCLOCK.tick(FPS / 2)
 
 
+
+
 def show_players_menu():  # choose amount of players u want to play with
+
     chooseplayers = True
 
     global AmountOfPlayers
