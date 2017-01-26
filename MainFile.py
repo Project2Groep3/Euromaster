@@ -58,16 +58,33 @@ class Player:  # Player Class
             elif self.Position.X == 7 and Tools1.Steps == 3:
                 self.Position.X -= 5
                 self.icon_match()
-
-
-
-
             else:
                 self.Position.X += Tools1.Steps
                 self.icon_match()
+
         elif self.Direction == "LEFT":
-            self.Position -= Tools1.Steps
-            self.icon_match()
+            if self.Position.X == 0 and Tools1.Steps == 1:
+                self.Position.X += 7
+                self.icon_match()
+            elif self.Position.X == 0 and Tools1.Steps == 2:
+                self.Position.X += 6
+                self.icon_match()
+            elif self.Position.X == 0 and Tools1.Steps == 3:
+                self.Position.X += 5
+                self.icon_match()
+            elif self.Position.X == 1 and Tools1.Steps == 2:
+                self.Position.X += 6
+                self.icon_match()
+            elif self.Position.X == 1 and Tools1.Steps == 3:
+                self.Position.X += 5
+                self.icon_match()
+            elif self.Position.X == 2 and Tools1.Steps == 3:
+                self.Position.X += 5
+                self.icon_match()
+            else:
+                self.Position.X -= Tools1.Steps
+                self.icon_match()
+
 
     def get_rekt(self, down):
         self.Position.Y -= down
@@ -774,7 +791,7 @@ def show_gameplay():  # loop for gameplay
 
         textCurrentRound = fontObjLarge.render("Round: {}".format(currentRound), True, BLACK, WHITE)
         textCurrentRoundRect = textCurrentRound.get_rect()
-        textCurrentRoundRect.center = (X_1_4-180, Y_1_4 - 80)
+        textCurrentRoundRect.center = (X_1_4-150, Y_1_4 - 80)
 
         textDiceResult = fontObjSmall.render("{}'s Dice Result:".format(abc), True, BLACK, WHITE)
         textDiceResultRect = textDiceResult.get_rect()
