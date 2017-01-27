@@ -557,6 +557,8 @@ def pick_direction(currentPlayer):
         pygame.display.update()
         FPSCLOCK.tick(FPS / 2)
 
+
+
 def compare_dices():
     comparing = True
     currentPlayer = 0
