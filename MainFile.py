@@ -418,7 +418,7 @@ def choose_category(currentPlayer):
 def who_starts_loop():
     startsloop = True
     while startsloop:
-        for players in range(len(ActivePlayers)):
+        for players in range(AmountOfPlayers):
             who_starts(players)
 
         startsloop = False
