@@ -132,8 +132,16 @@ class Tools():  # Tools class
             self.QuestionType = "MC"
 
     def timer(self):
-        for i in range(50, 0, -1):
+        i = 50
+
+        while 1:
+            i -= 1
+            output = "\rTimer:%s" % str(i)
+            sys.stdout.write(output)
+            sys.stdout.flush()
             time.sleep(1)
+            if i == 0:
+                break
 
     def show_dice_image(self):
         self.steps()
