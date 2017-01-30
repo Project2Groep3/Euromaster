@@ -3,26 +3,26 @@ import random, time
 import pygame
 global cool
 from Variables import *
-def Openvragen_Historie():
+def Openvragen_Entertainment():
     questionID = (random.randint(0,14))
     con = p.connect("dbname='euromast' user='postgres' host='localhost' password='Drakenadem97'")
 
 
-    def op_questions_Historie():
+    def op_questions_Entertainment():
         cur = con.cursor()
-        cur.execute("select question from op_questions where category = 'Historie' and questionID > 15 and questionID < 31")
+        cur.execute("select question from op_questions where category = 'Entertainment' and questionID > 75 and questionID < 91")
         rows = cur.fetchall()
         for r in rows[questionID]:
             return(r)
-    output_questions = op_questions_Historie()
+    output_questions = op_questions_Entertainment()
     pygame.init()
     screen = pygame.display.set_mode((1024, 768))
     font = pygame.font.Font(None, 25)
     font2 = pygame.font.Font(None, 35)
 
-    def op_answers_Historie(name):
+    def op_answers_Entertainment(name):
         cor = con.cursor()
-        cor.execute("select correctanswer from op_questions where category = 'Historie' and questionID > 15 and questionID < 31")
+        cor.execute("select correctanswer from op_questions where category = 'Entertainment' and questionID > 75 and questionID < 91")
         raws = cor.fetchall()
         for i in raws[questionID]:
             if len(name) < 3:
@@ -47,7 +47,7 @@ def Openvragen_Historie():
                     elif evt.key == pygame.K_SPACE:
                         name = name + " "
                     elif evt.key == pygame.K_RETURN:
-                        check_answer = op_answers_Historie(name)
+                        check_answer = op_answers_Entertainment(name)
                         DISPLAYSURF.blit(backGroundImage, (0, 0))
                         answer = font2.render(check_answer, True, (0, 0, 0))
                         screen.blit(answer, (412, 364))
@@ -64,4 +64,4 @@ def Openvragen_Historie():
             screen.blit(show_input, (412, 464))
             pygame.display.flip()
     insert_answer()
-Openvragen_Historie()
+Openvragen_Entertainment()

@@ -884,6 +884,7 @@ def show_gameplay():  # loop for gameplay
                         show_turn(currentPlayer)
                         PlayerList[currentPlayer].movement()
                         PlayerList[currentPlayer].draw_icon()
+                        pygame.display.update()
                         Openvragen_Historie()
                         pygame.display.update()
 
@@ -1029,10 +1030,6 @@ def show_winnerscreen(photo):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_p:
-                    show_pause()
-
 
 
         DISPLAYSURF.blit(winnerscreen, (0, 0))
