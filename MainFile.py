@@ -1029,6 +1029,10 @@ def show_winnerscreen(photo):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_p:
+                    show_pause()
+
 
 
         DISPLAYSURF.blit(winnerscreen, (0, 0))
