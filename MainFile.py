@@ -2,7 +2,7 @@ import sys, time, random
 from Variables import *
 # from Database import *
 from pygame.locals import *
-
+from OP_Historie_Questions import *
 pygame.init()
 
 fontObjLarge = pygame.font.Font('freesansbold.ttf', 32)  # declaring fonts
@@ -884,6 +884,7 @@ def show_gameplay():  # loop for gameplay
                         show_turn(currentPlayer)
                         PlayerList[currentPlayer].movement()
                         PlayerList[currentPlayer].draw_icon()
+                        Openvragen_Historie()
                         pygame.display.update()
 
                         if currentRound > 1:
@@ -902,6 +903,7 @@ def show_gameplay():  # loop for gameplay
                         if currentRound > 1:
                             pick_direction(currentPlayer)
                             berlp = show_dice()
+                            Openvragen_Historie()
                             pygame.display.update()
 
                         PlayerList[currentPlayer].movement()
@@ -1024,7 +1026,6 @@ def show_winnerscreen(photo):
     winnerscreened = True
     while winnerscreened:
         for event in pygame.event.get():
-            print(event)
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
