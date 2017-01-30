@@ -95,4 +95,4 @@ def Meerkeuzevragen_Entertainment():
             screen.blit(show_input, (412, 464))
             pygame.display.flip()
     insert_answer()
-Meerkeuzevragen_Entertainment()
+
