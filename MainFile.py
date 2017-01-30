@@ -2,7 +2,7 @@ import sys, time, random
 from Variables import *
 # from Database import *
 from pygame.locals import *
-
+from OP_Historie_Questions import *
 pygame.init()
 
 fontObjLarge = pygame.font.Font('freesansbold.ttf', 32)  # declaring fonts
@@ -158,8 +158,16 @@ class Tools():  # Tools class
             self.QuestionType = "MC"
 
     def timer(self):
-        for i in range(50, 0, -1):
+        i = 50
+
+        while 1:
+            i -= 1
+            output = "\rTimer:%s" % str(i)
+            sys.stdout.write(output)
+            sys.stdout.flush()
             time.sleep(1)
+            if i == 0:
+                break
 
     def show_dice_image(self):
         self.steps()
@@ -892,6 +900,8 @@ def show_gameplay():  # loop for gameplay
                         PlayerList[currentPlayer].movement()
                         PlayerList[currentPlayer].draw_icon()
                         pygame.display.update()
+                        Openvragen_Historie()
+                        pygame.display.update()
 
                         if currentRound > 1:
                             pick_direction(currentPlayer)
@@ -909,6 +919,7 @@ def show_gameplay():  # loop for gameplay
                         if currentRound > 1:
                             pick_direction(currentPlayer)
                             berlp = show_dice()
+                            Openvragen_Historie()
                             pygame.display.update()
 
                         PlayerList[currentPlayer].movement()
@@ -1036,10 +1047,6 @@ def show_winnerscreen(photo):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_p:
-                    show_pause()
-
 
 
         DISPLAYSURF.blit(winnerscreen, (0, 0))
