@@ -1016,10 +1016,13 @@ def show_winnerscreen(photo):
     winnerscreened = True
     while winnerscreened:
         for event in pygame.event.get():
-            print(event)
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_p:
+                    show_pause()
+
 
 
         DISPLAYSURF.blit(winnerscreen, (0, 0))
