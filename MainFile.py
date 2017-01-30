@@ -654,6 +654,8 @@ def show_instructions_menu():  # instruction screen 1
                     show_main_menu()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
+                pygame.mixer.music.load('music/nextpage.mp3')
+                pygame.mixer.music.play(1)
                 x, y = event.pos
                 if instructionsImage.get_rect().collidepoint(x, y):
                     instructions = False
@@ -680,6 +682,8 @@ def show_instructions_menu1():  # instructionscreen 2
                     show_main_menu()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
+                pygame.mixer.music.load('music/nextpage.mp3')
+                pygame.mixer.music.play(1)
                 x, y = event.pos
                 if instructionsImageNED1.get_rect().collidepoint(x, y):
                     instructions1 = False
@@ -706,6 +710,8 @@ def show_instructions_menu2():  # instructionscreen 3
                     show_main_menu()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
+                pygame.mixer.music.load('music/nextpage.mp3')
+                pygame.mixer.music.play(1)
                 x, y = event.pos
                 if instructionsImageNED2.get_rect().collidepoint(x, y):
                     instructions2 = False
@@ -732,6 +738,8 @@ def show_instructions_menu3():  # instruction screen 4
                     show_main_menu()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
+                pygame.mixer.music.load('music/nextpage.mp3')
+                pygame.mixer.music.play(1)
                 x, y = event.pos
                 if instructionsImageNED3.get_rect().collidepoint(x, y):
                     instructions3 = False
