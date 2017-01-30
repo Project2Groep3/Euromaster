@@ -615,17 +615,22 @@ def show_main_menu():  # shows main menu
                     sys.exit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
+                pygame.mixer.music.load('music/button.mp3')
                 x, y = event.pos
                 if menuKnopStart.get_rect(center=(X_1_2 - 50, Y_1_2)).collidepoint(x, y):
+                    pygame.mixer.music.play(1)
                     menud = False
                     show_gameplay()
                 elif menuKnopInstructions.get_rect(center=(X_1_2 - 50, Y_1_2 + 100)).collidepoint(x, y):
+                    pygame.mixer.music.play(1)
                     menud = False
                     show_instructions_menu()
                 elif menuKnopHighscores.get_rect(center=(X_1_2 - 50, Y_1_2 + 150)).collidepoint(x, y):
+                    pygame.mixer.music.play(1)
                     menud = False
                     show_highscore_menu()
                 elif menuKnopExitGame.get_rect(center=(X_1_2 - 50, Y_1_2 + 200)).collidepoint(x, y):
+                    pygame.mixer.music.play(1)
                     pygame.quit()
                     sys.exit()
 
@@ -845,6 +850,8 @@ def show_icon_menu(players):  # shows screen where players pick their icons
 
 def show_gameplay():  # loop for gameplay
     global gameplayed, berlp, currentPlayer
+    pygame.mixer.music.load('music/maingamemusic.mp3')
+    pygame.mixer.music.play(-1)
     berlp = show_dice()
     gameplayed = True
     currentPlayer = compare_dices()
@@ -1013,6 +1020,8 @@ def show_gameplay():  # loop for gameplay
         FPSCLOCK.tick(FPS / 2)
 
 def show_winnerscreen(photo):
+    pygame.mixer.music.load('music/winnermusic.mp3')
+    pygame.mixer.music.play(-1)
     winnerscreened = True
     while winnerscreened:
         for event in pygame.event.get():
@@ -1061,6 +1070,9 @@ def show_highscore_menu():  # shows highscore screen
 def show_pause():  # shows pause menu, is bugged atm
     global paused
     global gameplayed
+
+    pygame.mixer.music.pause()
+
     paused = True
 
     textPauseMenu = fontObjLarge.render('Welcome to the Pause Menu', True, BLACK, None)
@@ -1088,6 +1100,7 @@ def show_pause():  # shows pause menu, is bugged atm
                 x, y = event.pos
                 if textResumeGame.get_rect(center=(X_1_2 - 50, Y_1_2)).collidepoint(x, y):
                     paused = False
+                    pygame.mixer.music.unpause()
 
                 elif textMainMenu.get_rect(center=(X_1_2 - 50, Y_1_2 + 75)).collidepoint(x, y):
                     show_main_menu()
