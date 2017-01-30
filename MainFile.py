@@ -39,6 +39,8 @@ class Player:  # Player Class
             self.icon_match()
         elif self.Direction == "DOWN":
             self.Position.Y -= Tools1.Steps
+            if self.Position.Y < 1:
+                self.Position.Y = 1
             self.icon_match()
         elif self.Direction == "RIGHT":
             if self.Position.X == 5 and Tools1.Steps == 3:
@@ -783,7 +785,6 @@ def show_gameplay():  # loop for gameplay
     currentPlayer = dice_start()
     choose_icon()
     how_many_icons(AmountOfPlayers)
-
     choose_category_loop(AmountOfPlayers)
 
 
