@@ -86,7 +86,6 @@ class Player:  # Player Class
                 self.Position.X -= Tools1.Steps
                 self.icon_match()
 
-
     def get_rekt(self, down):
         self.Position.Y -= down
         self.icon_match()
@@ -960,8 +959,9 @@ def show_gameplay():  # loop for gameplay
             if PlayerList[j].Position.Y >= 16:
                 PlayerList[j].Score += 1
                 gameplayed = False
+                show_winnerscreen(PlayerList[j].PlayerIcon)
                 print(PlayerList[j].Score)
-                show_main_menu()
+
 
         pygame.display.update()
 
@@ -1009,6 +1009,21 @@ def show_gameplay():  # loop for gameplay
             DISPLAYSURF.blit(textPlayer4Dir, (WINDOWWIDTH - 170, Y_2_3 - 25))
             DISPLAYSURF.blit(player4.PlayerIcon, (WINDOWWIDTH - 200, Y_2_3))
 
+        pygame.display.update()
+        FPSCLOCK.tick(FPS / 2)
+
+def show_winnerscreen(photo):
+    winnerscreened = True
+    while winnerscreened:
+        for event in pygame.event.get():
+            print(event)
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+
+        DISPLAYSURF.blit(winnerscreen, (0, 0))
+        DISPLAYSURF.blit((photo),(190,300))
         pygame.display.update()
         FPSCLOCK.tick(FPS / 2)
 
@@ -1099,5 +1114,4 @@ p3Dice = show_dice()
 player3.StartingDice = Tools1.DiceResult
 p4Dice = show_dice()
 player4.StartingDice = Tools1.DiceResult
-
 show_main_menu()
