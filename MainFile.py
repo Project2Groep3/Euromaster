@@ -87,7 +87,10 @@ class Player:  # Player Class
                 self.icon_match()
 
     def get_rekt(self, down):
-        self.Position.Y -= down
+        Tools1.show_dice_image()
+        self.Position.Y -= Tools1.DiceResult
+        if self.Position.Y < 0:
+            self.Position.Y = 1
         self.icon_match()
 
     def update_icon(self):
@@ -422,103 +425,22 @@ def choose_category(currentPlayer):
         pygame.display.update()
         FPSCLOCK.tick(FPS / 2)
 
-def who_starts_loop():
-    startsloop = True
-    while startsloop:
-        for players in range(AmountOfPlayers):
-            who_starts(players)
+def dice_start():
+    a = 0
+    if AmountOfPlayers == 2:
+        a = random.randint(1, 2)
+    elif AmountOfPlayers == 3:
+        a = random.randint(1, 3)
+    elif AmountOfPlayers == 4:
+        a = random.randint(1, 4)
+    print(a)
+    return a
 
-        startsloop = False
-
-
-def who_starts(players):
-    starts = True
-    global currentPlayer
-    p1DiceCheck = False
-    p2DiceCheck = False
-    p3DiceCheck = False
-    p4DiceCheck = False
-
-    textWhoStarts = fontObjLarge.render("Click your name to roll the dice and decide who starts", True, BLACK, WHITE)
-    textWhoStartsRect = textWhoStarts.get_rect()
-    textWhoStartsRect.center = (X_1_2, Y_1_4)
-
-    textButtonContinue = fontObjMedium.render("Click to Continue", True, BLACK, LIGHT_CORAL)
-    textButtonDice1 = fontObjMedium.render("Player1: {}".format(PlayerList[0].PlayerName), True, BLACK, LIGHT_CORAL)
-    textButtonDice2 = fontObjMedium.render("Player2: {}".format(PlayerList[1].PlayerName), True, BLACK, LIGHT_CORAL)
-    textButtonDice3 = fontObjMedium.render("Player3: {}".format(PlayerList[2].PlayerName), True, BLACK, LIGHT_CORAL)
-    textButtonDice4 = fontObjMedium.render("Player4: {}".format(PlayerList[3].PlayerName), True, BLACK,LIGHT_CORAL)
-
-    while starts:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                x, y = event.pos
-                if textButtonDice1.get_rect(center=(X_1_4-200, Y_1_2)).collidepoint(x, y):
-                    p1DiceCheck = True
-                    print(PlayerList[players].StartingDice)
-
-                elif textButtonDice2.get_rect(center=(X_1_4+50, Y_1_2)).collidepoint(x, y):
-                    p2DiceCheck = True
-                    print(PlayerList[players].StartingDice)
-
-                elif textButtonDice3.get_rect(center=(X_1_4+300, Y_1_2)).collidepoint(x, y):
-                    p3DiceCheck = True
-                    print(PlayerList[players].StartingDice)
-
-                elif textButtonDice4.get_rect(center=(X_1_4+550, Y_1_2)).collidepoint(x, y):
-                    p4DiceCheck = True
-                    print(PlayerList[players].StartingDice)
-
-                elif p1DiceCheck == True or p2DiceCheck == True or p3DiceCheck == True or p4DiceCheck == True and textButtonContinue.get_rect(center=(X_1_2-100, X_1_4+100)).collidepoint(x, y):
-                    starts = False
-
-        DISPLAYSURF.blit(backGroundImage, (0,0))
-        DISPLAYSURF.blit(textWhoStarts, textWhoStartsRect)
-
-        if p1DiceCheck:
-            DISPLAYSURF.blit(p1Dice, (X_1_4-200, Y_1_2+100))
-            DISPLAYSURF.blit(textButtonContinue, (X_1_2-100, Y_1_4 - 100))
-        elif p2DiceCheck:
-            DISPLAYSURF.blit(p1Dice, (X_1_4 - 200, Y_1_2 + 100))
-            DISPLAYSURF.blit(p2Dice, (X_1_4 + 50, Y_1_2 + 100))
-            DISPLAYSURF.blit(textButtonContinue, (X_1_2-100, Y_1_4 - 100))
-        elif p3DiceCheck:
-            DISPLAYSURF.blit(p1Dice, (X_1_4 - 200, Y_1_2 + 100))
-            DISPLAYSURF.blit(p2Dice, (X_1_4 + 50, Y_1_2 + 100))
-            DISPLAYSURF.blit(p3Dice, (X_1_4 + 300, Y_1_2 + 100))
-            DISPLAYSURF.blit(textButtonContinue, (X_1_2-100, Y_1_4 - 100))
-        elif p4DiceCheck:
-            DISPLAYSURF.blit(p1Dice, (X_1_4 - 200, Y_1_2 + 100))
-            DISPLAYSURF.blit(p2Dice, (X_1_4 + 50, Y_1_2 + 100))
-            DISPLAYSURF.blit(p3Dice, (X_1_4 + 300, Y_1_2 + 100))
-            DISPLAYSURF.blit(p4Dice, (X_1_4 + 550, Y_1_2 + 100))
-            DISPLAYSURF.blit(textButtonContinue, (X_1_2-100, Y_1_4 - 100))
-
-        if AmountOfPlayers == 1:
-            DISPLAYSURF.blit(textButtonDice1, (X_1_4-200, Y_1_2))
-
-        elif AmountOfPlayers == 2:
-            DISPLAYSURF.blit(textButtonDice1, (X_1_4-200 , Y_1_2))
-            DISPLAYSURF.blit(textButtonDice2, (X_1_4+50, Y_1_2))
-
-        elif AmountOfPlayers == 3:
-            DISPLAYSURF.blit(textButtonDice1, (X_1_4 - 200, Y_1_2))
-            DISPLAYSURF.blit(textButtonDice2, (X_1_4+50, Y_1_2))
-            DISPLAYSURF.blit(textButtonDice3, (X_1_4 + 300, Y_1_2))
-
-        elif AmountOfPlayers == 4:
-            DISPLAYSURF.blit(textButtonDice1, (X_1_4 - 200, Y_1_2))
-            DISPLAYSURF.blit(textButtonDice2, (X_1_4+50, Y_1_2))
-            DISPLAYSURF.blit(textButtonDice3, (X_1_4 + 300, Y_1_2))
-            DISPLAYSURF.blit(textButtonDice4, (X_1_4 + 550, Y_1_2))
-
-
-        pygame.display.update()
-        FPSCLOCK.tick(FPS / 2)
-
+def move_down(currentPlayer):
+    for players in range(AmountOfPlayers):
+        if players != currentPlayer:
+            if PlayerList[currentPlayer].Position.X == PlayerList[players].Position.X and PlayerList[currentPlayer].Position.Y == PlayerList[players].Position.Y:
+                PlayerList[players].get_rekt(Tools1.show_dice_image())
 
 def pick_direction(currentPlayer):
     directed = True
@@ -563,21 +485,6 @@ def pick_direction(currentPlayer):
 
         pygame.display.update()
         FPSCLOCK.tick(FPS / 2)
-
-
-
-def compare_dices():
-    comparing = True
-    currentPlayer = 0
-    while comparing:
-        for players in range(AmountOfPlayers):
-            if PlayerList[players].StartingDice > PlayerList[players+1].StartingDice:
-                currentPlayer = players
-
-        comparing = False
-        return currentPlayer
-
-
 
 
 def show_dice():  # shows dice result on screen
@@ -870,13 +777,13 @@ def show_gameplay():  # loop for gameplay
     pygame.mixer.music.play(-1)
     berlp = show_dice()
     gameplayed = True
-    currentPlayer = compare_dices()
     currentRound = 1
     show_players_menu()
     enter_name()
+    currentPlayer = dice_start()
     choose_icon()
     how_many_icons(AmountOfPlayers)
-    who_starts_loop()
+
     choose_category_loop(AmountOfPlayers)
 
 
@@ -893,38 +800,56 @@ def show_gameplay():  # loop for gameplay
                     show_pause()
 
                 elif event.key == pygame.K_d:
-                    if currentPlayer < len(ActivePlayers) - 1:
-                        currentPlayer += 1
-                        berlp = show_dice()
-                        show_turn(currentPlayer)
-                        PlayerList[currentPlayer].movement()
-                        PlayerList[currentPlayer].draw_icon()
-                        pygame.display.update()
-                        Openvragen_Historie()
-                        pygame.display.update()
-
-                        if currentRound > 1:
-                            pick_direction(currentPlayer)
+                    if currentRound == 1:
+                        if currentPlayer < len(ActivePlayers) - 1:
+                            currentPlayer += 1
                             berlp = show_dice()
+                            show_turn(currentPlayer)
+                            # Openvragen_Historie()
+                            pygame.display.update()
+                            PlayerList[currentPlayer].movement()
+                            PlayerList[currentPlayer].draw_icon()
+                            move_down(currentPlayer)
+                            pygame.display.update()
+                        else:
+                            currentRound += 1
+                            currentPlayer = 0
+                            show_turn(currentPlayer)
+                            berlp = show_dice()
+                            # Openvragen_Historie()
+                            pygame.display.update()
+                            PlayerList[currentPlayer].movement()
+                            PlayerList[currentPlayer].draw_icon()
+                            move_down(currentPlayer)
                             pygame.display.update()
 
-                        PlayerList[currentPlayer].movement()
-                        PlayerList[currentPlayer].draw_icon()
-                        pygame.display.update()
 
-                    else:
-                        currentRound+= 1
-                        currentPlayer = 0
-                        show_turn(currentPlayer)
-                        if currentRound > 1:
+                    elif currentRound > 1:
+                        if currentPlayer < len(ActivePlayers) - 1:
+                            currentPlayer += 1
+                            show_turn(currentPlayer)
                             pick_direction(currentPlayer)
                             berlp = show_dice()
-                            Openvragen_Historie()
+                            # Openvragen_Historie()
+                            pygame.display.update()
+                            PlayerList[currentPlayer].movement()
+                            PlayerList[currentPlayer].draw_icon()
+                            move_down(currentPlayer)
+                            pygame.display.update()
+                        else:
+                            currentRound += 1
+                            currentPlayer = 0
+                            show_turn(currentPlayer)
+                            pick_direction(currentPlayer)
+                            berlp = show_dice()
+                            # Openvragen_Historie()
+                            pygame.display.update()
+                            PlayerList[currentPlayer].movement()
+                            PlayerList[currentPlayer].draw_icon()
+                            move_down(currentPlayer)
                             pygame.display.update()
 
-                        PlayerList[currentPlayer].movement()
-                        PlayerList[currentPlayer].draw_icon()
-                        pygame.display.update()
+
 
         generate_tiles()
 
@@ -1136,13 +1061,4 @@ def show_pause():  # shows pause menu, is bugged atm
         FPSCLOCK.tick(FPS / 2)
 
 
-
-p1Dice = show_dice()
-player1.StartingDice = Tools1.DiceResult
-p2Dice = show_dice()
-player2.StartingDice = Tools1.DiceResult
-p3Dice = show_dice()
-player3.StartingDice = Tools1.DiceResult
-p4Dice = show_dice()
-player4.StartingDice = Tools1.DiceResult
 show_main_menu()
