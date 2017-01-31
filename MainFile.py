@@ -1,8 +1,18 @@
 import sys, time, random
 from Variables import *
+import Variables
 # from Database import *
 from pygame.locals import *
 from OP_Historie_Questions import *
+from OP_Entertainment_Questions import *
+from OP_Geografie_Questions import *
+from OP_Sport_Questions import *
+from MC_Entertainment_Questions import *
+from MC_Geografie_Questions import *
+from MC_Historie_Questions import *
+from MC_Sport_Questions import *
+
+
 pygame.init()
 
 fontObjLarge = pygame.font.Font('freesansbold.ttf', 32)  # declaring fonts
@@ -120,6 +130,8 @@ class Player:  # Player Class
             if self.Position.X == tile_list[key].Position.X and self.Position.Y == tile_list[key].Position.Y:
                 self.PlayerCirclePosition.X = tile_list[key].DrawPos.X - 12
                 self.PlayerCirclePosition.Y = tile_list[key].DrawPos.Y - 12
+            if currentRound > 1:
+                self.Category = tile_list[key].Category
 
 
     def draw_icon(self):
@@ -493,6 +505,33 @@ def show_dice():  # shows dice result on screen
     return Tools1.show_dice_image()
 
 
+def decide_question(currentPlayer):
+
+    if PlayerList[currentPlayer].Category == "Entertainment":
+        if Tools1.QuestionType == 'MC':
+            return Meerkeuzevragen_Entertainment()
+        elif Tools1.QuestionType == 'Open':
+            return Openvragen_Entertainment()
+
+    elif PlayerList[currentPlayer].Category == "Geografie":
+        if Tools1.QuestionType == 'MC':
+            return Meerkeuzevragen_Geografie()
+        elif Tools1.QuestionType == 'Open':
+            return Openvragen_Geografie()
+
+    elif PlayerList[currentPlayer].Category == "Historie":
+        if Tools1.QuestionType == 'MC':
+            return Meerkeuzevragen_Historie()
+        elif Tools1.QuestionType == 'Open':
+            return Openvragen_Historie()
+
+    elif PlayerList[currentPlayer].Category == "Sport":
+        if Tools1.QuestionType == 'MC':
+            return Meerkeuzevragen_Sport()
+        elif Tools1.QuestionType == 'Open':
+            return Openvragen_Sport()
+
+
 def show_main_menu():  # shows main menu
 
     pygame.init()
@@ -775,8 +814,9 @@ def show_icon_menu(players):  # shows screen where players pick their icons
 
 def show_gameplay():  # loop for gameplay
     global gameplayed, berlp, currentPlayer
-    pygame.mixer.music.load('music/maingamemusic.mp3')
-    pygame.mixer.music.play(-1)
+    # pygame.mixer.music.load('music/maingamemusic.mp3')
+    # pygame.mixer.music.play(-1)
+    global currentRound, correctAnswer
     berlp = show_dice()
     gameplayed = True
     currentRound = 1
@@ -790,7 +830,6 @@ def show_gameplay():  # loop for gameplay
 
     while gameplayed:
 
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -801,28 +840,35 @@ def show_gameplay():  # loop for gameplay
                     show_pause()
 
                 elif event.key == pygame.K_d:
+                    Variables.correctAnswer = False
+                    print(Variables.correctAnswer)
                     if currentRound == 1:
+
                         if currentPlayer < len(ActivePlayers) - 1:
                             currentPlayer += 1
                             berlp = show_dice()
                             show_turn(currentPlayer)
-                            # Openvragen_Historie()
+                            decide_question(currentPlayer)
                             pygame.display.update()
-                            PlayerList[currentPlayer].movement()
-                            PlayerList[currentPlayer].draw_icon()
-                            move_down(currentPlayer)
-                            pygame.display.update()
+                            if Variables.correctAnswer == True:
+                                print(Variables.correctAnswer)
+                                PlayerList[currentPlayer].movement()
+                                PlayerList[currentPlayer].draw_icon()
+                                move_down(currentPlayer)
+                                pygame.display.update()
                         else:
                             currentRound += 1
                             currentPlayer = 0
                             show_turn(currentPlayer)
                             berlp = show_dice()
-                            # Openvragen_Historie()
+                            decide_question(currentPlayer)
                             pygame.display.update()
-                            PlayerList[currentPlayer].movement()
-                            PlayerList[currentPlayer].draw_icon()
-                            move_down(currentPlayer)
-                            pygame.display.update()
+                            if Variables.correctAnswer == True:
+                                print(Variables.correctAnswer)
+                                PlayerList[currentPlayer].movement()
+                                PlayerList[currentPlayer].draw_icon()
+                                move_down(currentPlayer)
+                                pygame.display.update()
 
 
                     elif currentRound > 1:
@@ -831,24 +877,28 @@ def show_gameplay():  # loop for gameplay
                             show_turn(currentPlayer)
                             pick_direction(currentPlayer)
                             berlp = show_dice()
-                            # Openvragen_Historie()
+                            decide_question(currentPlayer)
                             pygame.display.update()
-                            PlayerList[currentPlayer].movement()
-                            PlayerList[currentPlayer].draw_icon()
-                            move_down(currentPlayer)
-                            pygame.display.update()
+                            if Variables.correctAnswer == True:
+                                print(Variables.correctAnswer)
+                                PlayerList[currentPlayer].movement()
+                                PlayerList[currentPlayer].draw_icon()
+                                move_down(currentPlayer)
+                                pygame.display.update()
                         else:
                             currentRound += 1
                             currentPlayer = 0
                             show_turn(currentPlayer)
                             pick_direction(currentPlayer)
                             berlp = show_dice()
-                            # Openvragen_Historie()
+                            decide_question(currentPlayer)
                             pygame.display.update()
-                            PlayerList[currentPlayer].movement()
-                            PlayerList[currentPlayer].draw_icon()
-                            move_down(currentPlayer)
-                            pygame.display.update()
+                            if Variables.correctAnswer == True:
+                                print(Variables.correctAnswer)
+                                PlayerList[currentPlayer].movement()
+                                PlayerList[currentPlayer].draw_icon()
+                                move_down(currentPlayer)
+                                pygame.display.update()
 
 
 

@@ -2,11 +2,14 @@ import psycopg2 as p
 import random, time
 import pygame
 global cool
+import Variables
 from Variables import *
 
+
 def Meerkeuzevragen_Entertainment():
+
     questionID = (random.randint(0,14))
-    con = p.connect("dbname='euromast' user='postgres' host='localhost' password='Drakenadem97'")
+    con = p.connect("dbname='euromast' user='postgres' host='localhost' password='pgadmin2017'")
 
 
     def op_questions_Entertainment():
@@ -47,15 +50,16 @@ def Meerkeuzevragen_Entertainment():
     font2 = pygame.font.Font(None, 35)
 
     def mc_answers_Entertainment(name):
+
         cor = con.cursor()
         cor.execute("select correctanswer from mc_questions where category = 'Entertainment' and questionID > 60 and questionID < 76")
         raws = cor.fetchall()
         for q in raws[questionID]:
             if name in q.lower():
-                return("Answer is correct!")
+                Variables.correctAnswer = True
+                return("Correct!")
             else:
-                return("Answer is incorrect :(")
-
+                return("Incorrect!")
     def insert_answer():
         name = ""
         Loop = True
