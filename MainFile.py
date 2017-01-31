@@ -3,6 +3,7 @@ from Variables import *
 import Variables
 import Highscores as O
 # from Database import *
+import psycopg2
 from pygame.locals import *
 from OP_Historie_Questions import *
 from OP_Entertainment_Questions import *
@@ -1041,8 +1042,63 @@ def show_highscore_menu():  # shows highscore screen
                     highscored = False
                     show_main_menu()
 
+        def interact_with_database(command):
+            connection = psycopg2.connect(
+            "dbname=euromast user=postgres host='localhost' password='pgadmin2017'")
+            cursor = connection.cursor()
+
+        # Execute the command
+            cursor.execute(command)
+            connection.commit()
+
+        # Save results
+            results = None
+
+            try:
+                results = cursor.fetchall()
+            except psycopg2.ProgrammingError:
+                # Nothing to fetch
+
+                pass
+
+        # Close connection
+            cursor.close()
+            connection.close()
+
+
+            return results
+
+
+
+        def download_top_score():
+            result = interact_with_database("SELECT * FROM highscores ORDER BY score desc")
+
+
+            return result
+
+        topscore = download_top_score()
+        print(topscore)
+        largeText = pygame.font.Font(None, 30)
+        textSurf, textRect = text_objects(str(topscore[0]), largeText)
+        textSurf2, textRect2 = text_objects(str(topscore[1]), largeText)
+        textSurf3, textRect3 = text_objects(str(topscore[2]), largeText)
+        textRect.center = ((WINDOWWIDTH / 2), (300))
+        textRect2.center = ((WINDOWWIDTH / 2), 400)
+        textRect3.center = ((WINDOWWIDTH / 2), 500)
+        DISPLAYSURF.blit(textSurf, textRect)
+        DISPLAYSURF.blit(textSurf2, textRect2)
+        DISPLAYSURF.blit(textSurf3, textRect3)
+        pygame.display.flip()
+        DISPLAYSURF.blit(textSurf, textRect)
+
+
         pygame.display.update()
         FPSCLOCK.tick(FPS / 2)
+
+def text_objects(text,font):
+    textSurface = font.render(text, True, BLACK)
+    return textSurface, textSurface.get_rect()
+
 
 
 def show_pause():  # shows pause menu
