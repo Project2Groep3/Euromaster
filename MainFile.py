@@ -1,6 +1,7 @@
 import sys, time, random
 from Variables import *
 import Variables
+import Highscores as O
 # from Database import *
 from pygame.locals import *
 from OP_Historie_Questions import *
@@ -30,7 +31,7 @@ class Player:  # Player Class
     def __init__(self, playercircleicon, playerID=0, name="", icon=None, category="", posX=0, posY=0, correctanswers=0,
                  iconX=0,
                  iconY=0, circleX=0, circleY=0):
-        self.PlayerID = playerID
+        self.PlayerID = 1
         self.PlayerName = name
         self.PlayerIcon = icon
         self.Category = category
@@ -815,8 +816,8 @@ def show_icon_menu(players):  # shows screen where players pick their icons
 
 def show_gameplay():  # loop for gameplay
     global gameplayed, berlp, currentPlayer
-    # pygame.mixer.music.load('music/maingamemusic.mp3')
-    # pygame.mixer.music.play(-1)
+    pygame.mixer.music.load('music/maingamemusic.mp3')
+    pygame.mixer.music.play(-1)
     global currentRound, correctAnswer
     berlp = show_dice()
     gameplayed = True
@@ -936,9 +937,14 @@ def show_gameplay():  # loop for gameplay
             PlayerList[k].draw_icon()
 
         for j in range(AmountOfPlayers):
-            if PlayerList[j].Position.Y >= 16:
+            if PlayerList[j].Position.Y >= 1:
                 PlayerList[j].Score += 1
                 gameplayed = False
+                # if O.naam_check(PlayerList[j].PlayerName):
+                #     O.upload_score(PlayerList[j].PlayerName, PlayerList[j].Score)
+                # else:
+                #     O.insert_player(PlayerList[j].PlayerName, PlayerList[j].Score)
+                O.insert_player(PlayerList[j].PlayerName, PlayerList[j].Score)
                 show_winnerscreen(PlayerList[j].PlayerIcon)
 
 
