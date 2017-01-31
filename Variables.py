@@ -79,11 +79,13 @@ diceImage4 = pygame.image.load('images/dice4.jpg')
 diceImage5 = pygame.image.load('images/dice5.jpg')
 diceImage6 = pygame.image.load('images/dice6.jpg')
 
-instructionsImage = pygame.image.load('images/Instructions.png')
+instructionsImage = pygame.image.load('images/Instructions.jpg')
 instructionsImageNED1 = pygame.image.load('images/NEDERLANDS-instructionsimg1.png')
 instructionsImageNED2 = pygame.image.load('images/NEDERLANDS-instructionsimg2.png')
 instructionsImageNED3 = pygame.image.load('images/NEDERLANDS-instructionsimg3.png')
 instructionsImageEN1 = pygame.image.load('images/ENGELS-instructionsimg1.png')
 instructionsImageEN2 = pygame.image.load('images/ENGELS-instructionsimg2.png')
 instructionsImageEN3 = pygame.image.load('images/ENGELS-instructionsimg3.png')
+
+winnerscreen = pygame.image.load('images/winnaarscherm.png')
 
