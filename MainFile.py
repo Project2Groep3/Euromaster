@@ -130,8 +130,9 @@ class Player:  # Player Class
             if self.Position.X == tile_list[key].Position.X and self.Position.Y == tile_list[key].Position.Y:
                 self.PlayerCirclePosition.X = tile_list[key].DrawPos.X - 12
                 self.PlayerCirclePosition.Y = tile_list[key].DrawPos.Y - 12
-            if currentRound > 1:
-                self.Category = tile_list[key].Category
+                if currentRound > 0:
+                    self.Category = tile_list[key].Category
+
 
 
     def draw_icon(self):
@@ -447,7 +448,7 @@ def dice_start():
         a = random.randint(1, 3)
     elif AmountOfPlayers == 4:
         a = random.randint(1, 4)
-    print(a)
+
     return a
 
 def move_down(currentPlayer):
@@ -506,6 +507,14 @@ def show_dice():  # shows dice result on screen
 
 
 def decide_question(currentPlayer):
+    if PlayerList[currentPlayer].Category == "Bottom" and PlayerList[currentPlayer].Position.X == 0:
+        PlayerList[currentPlayer].Category = "Sport"
+    elif PlayerList[currentPlayer].Category == "Bottom" and PlayerList[currentPlayer].Position.X == 2:
+        PlayerList[currentPlayer].Category = "Geografie"
+    elif PlayerList[currentPlayer].Category == "Bottom" and PlayerList[currentPlayer].Position.X == 4:
+        PlayerList[currentPlayer].Category = "Entertainment"
+    elif PlayerList[currentPlayer].Category == "Bottom" and PlayerList[currentPlayer].Position.X == 6:
+        PlayerList[currentPlayer].Category = "Historie"
 
     if PlayerList[currentPlayer].Category == "Entertainment":
         if Tools1.QuestionType == 'MC':
@@ -533,7 +542,6 @@ def decide_question(currentPlayer):
 
 
 def show_main_menu():  # shows main menu
-
     pygame.init()
     menud = True
     pygame.display.set_caption('Euromaster')
@@ -819,7 +827,7 @@ def show_gameplay():  # loop for gameplay
     global currentRound, correctAnswer
     berlp = show_dice()
     gameplayed = True
-    currentRound = 1
+    currentRound = 0
     show_players_menu()
     enter_name()
     currentPlayer = dice_start()
@@ -847,37 +855,37 @@ def show_gameplay():  # loop for gameplay
 
                 elif event.key == pygame.K_d:
                     Variables.correctAnswer = False
-                    print(Variables.correctAnswer)
-                    if currentRound == 1:
 
-                        if currentPlayer < len(ActivePlayers) - 1:
-                            currentPlayer += 1
-                            berlp = show_dice()
-                            show_turn(currentPlayer)
-                            decide_question(currentPlayer)
-                            pygame.display.update()
-                            if Variables.correctAnswer == True:
-                                print(Variables.correctAnswer)
-                                PlayerList[currentPlayer].movement()
-                                PlayerList[currentPlayer].draw_icon()
-                                move_down(currentPlayer)
-                                pygame.display.update()
-                        else:
-                            currentRound += 1
-                            currentPlayer = 0
-                            show_turn(currentPlayer)
-                            berlp = show_dice()
-                            decide_question(currentPlayer)
-                            pygame.display.update()
-                            if Variables.correctAnswer == True:
-                                print(Variables.correctAnswer)
-                                PlayerList[currentPlayer].movement()
-                                PlayerList[currentPlayer].draw_icon()
-                                move_down(currentPlayer)
-                                pygame.display.update()
+                    # if currentRound == 9999:
+                    #
+                    #     if currentPlayer < len(ActivePlayers) - 1:
+                    #         currentPlayer += 1
+                    #         berlp = show_dice()
+                    #         show_turn(currentPlayer)
+                    #         decide_question(currentPlayer)
+                    #         pygame.display.update()
+                    #         if Variables.correctAnswer == True:
+                    #
+                    #             PlayerList[currentPlayer].movement()
+                    #             PlayerList[currentPlayer].draw_icon()
+                    #             move_down(currentPlayer)
+                    #             pygame.display.update()
+                    #     else:
+                    #         currentRound += 1
+                    #         currentPlayer = 0
+                    #         show_turn(currentPlayer)
+                    #         berlp = show_dice()
+                    #         decide_question(currentPlayer)
+                    #         pygame.display.update()
+                    #         if Variables.correctAnswer == True:
+                    #
+                    #             PlayerList[currentPlayer].movement()
+                    #             PlayerList[currentPlayer].draw_icon()
+                    #             move_down(currentPlayer)
+                    #             pygame.display.update()
 
 
-                    elif currentRound > 1:
+                    if currentRound > 0:
                         if currentPlayer < len(ActivePlayers) - 1:
                             currentPlayer += 1
                             show_turn(currentPlayer)
@@ -886,7 +894,7 @@ def show_gameplay():  # loop for gameplay
                             decide_question(currentPlayer)
                             pygame.display.update()
                             if Variables.correctAnswer == True:
-                                print(Variables.correctAnswer)
+
                                 PlayerList[currentPlayer].movement()
                                 PlayerList[currentPlayer].draw_icon()
                                 move_down(currentPlayer)
@@ -900,13 +908,14 @@ def show_gameplay():  # loop for gameplay
                             decide_question(currentPlayer)
                             pygame.display.update()
                             if Variables.correctAnswer == True:
-                                print(Variables.correctAnswer)
+
                                 PlayerList[currentPlayer].movement()
                                 PlayerList[currentPlayer].draw_icon()
                                 move_down(currentPlayer)
                                 pygame.display.update()
 
-
+                    else:
+                        currentRound += 1
 
         generate_tiles()
 
@@ -968,7 +977,7 @@ def show_gameplay():  # loop for gameplay
                 PlayerList[j].Score += 1
                 gameplayed = False
                 show_winnerscreen(PlayerList[j].PlayerIcon)
-                print(PlayerList[j].Score)
+
 
 
         pygame.display.update()

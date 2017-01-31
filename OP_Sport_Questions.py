@@ -10,7 +10,6 @@ def Openvragen_Sport():
     questionID = (random.randint(0,14))
     con = p.connect("dbname='euromast' user='postgres' host='localhost' password='pgadmin2017'")
 
-
     def op_questions_Sport():
         cur = con.cursor()
         cur.execute("select question from op_questions where category = 'Sport' and questionID > 45 and questionID < 61")
