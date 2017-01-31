@@ -555,7 +555,6 @@ def show_main_menu():  # shows main menu
         textWelcomeRect.center = (X_1_2, Y_1_4)
 
         menuKnopStart = fontObjMedium.render('Start Game', True, BLACK, LIGHT_CORAL)
-        menuKnopLoadGame = fontObjMedium.render('Load Game', True, BLACK, LIGHT_CORAL)
         menuKnopInstructions = fontObjMedium.render('Instructions', True, BLACK, LIGHT_CORAL)
         menuKnopHighscores = fontObjMedium.render('Highscores', True, BLACK, LIGHT_CORAL)
         menuKnopExitGame = fontObjMedium.render('Exit Game', True, BLACK, LIGHT_CORAL)
@@ -563,10 +562,9 @@ def show_main_menu():  # shows main menu
         DISPLAYSURF.blit(backGroundImage, (0, 0))
         DISPLAYSURF.blit(textWelcome, textWelcomeRect)
         DISPLAYSURF.blit(menuKnopStart, (X_1_2 - 50, Y_1_2))
-        DISPLAYSURF.blit(menuKnopLoadGame, (X_1_2 - 50, Y_1_2 + 50))
-        DISPLAYSURF.blit(menuKnopInstructions, (X_1_2 - 50, Y_1_2 + 100))
-        DISPLAYSURF.blit(menuKnopHighscores, (X_1_2 - 50, Y_1_2 + 150))
-        DISPLAYSURF.blit(menuKnopExitGame, (X_1_2 - 50, Y_1_2 + 200))
+        DISPLAYSURF.blit(menuKnopInstructions, (X_1_2 - 50, Y_1_2 + 50))
+        DISPLAYSURF.blit(menuKnopHighscores, (X_1_2 - 50, Y_1_2 + 100))
+        DISPLAYSURF.blit(menuKnopExitGame, (X_1_2 - 50, Y_1_2 + 150))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -585,15 +583,15 @@ def show_main_menu():  # shows main menu
                     pygame.mixer.music.play(1)
                     menud = False
                     show_gameplay()
-                elif menuKnopInstructions.get_rect(center=(X_1_2 - 50, Y_1_2 + 100)).collidepoint(x, y):
+                elif menuKnopInstructions.get_rect(center=(X_1_2 - 50, Y_1_2 + 50)).collidepoint(x, y):
                     pygame.mixer.music.play(1)
                     menud = False
                     show_instructions_menu()
-                elif menuKnopHighscores.get_rect(center=(X_1_2 - 50, Y_1_2 + 150)).collidepoint(x, y):
+                elif menuKnopHighscores.get_rect(center=(X_1_2 - 50, Y_1_2 + 100)).collidepoint(x, y):
                     pygame.mixer.music.play(1)
                     menud = False
                     show_highscore_menu()
-                elif menuKnopExitGame.get_rect(center=(X_1_2 - 50, Y_1_2 + 200)).collidepoint(x, y):
+                elif menuKnopExitGame.get_rect(center=(X_1_2 - 50, Y_1_2 + 150)).collidepoint(x, y):
                     pygame.mixer.music.play(1)
                     pygame.quit()
                     sys.exit()
@@ -721,7 +719,6 @@ def show_players_menu():  # choose amount of players u want to play with
     global AmountOfPlayers
 
     textChoosePlayers = fontObjLarge.render('How many players?', True, BLACK, None)
-    textChoosePlayers1 = fontObjMedium.render('1 Player', True, BLACK, LIGHT_CORAL)
     textChoosePlayers2 = fontObjMedium.render('2 Players', True, BLACK, LIGHT_CORAL)
     textChoosePlayers3 = fontObjMedium.render('3 Players', True, BLACK, LIGHT_CORAL)
     textChoosePlayers4 = fontObjMedium.render('4 Players', True, BLACK, LIGHT_CORAL)
@@ -735,9 +732,6 @@ def show_players_menu():  # choose amount of players u want to play with
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = event.pos
-                if textChoosePlayers1.get_rect(center=(X_1_2 - 50, Y_1_2)).collidepoint(x, y):
-                    AmountOfPlayers = 1
-                    chooseplayers = False
                 if textChoosePlayers2.get_rect(center=(X_1_2 - 50, Y_1_2 + 50)).collidepoint(x, y):
                     AmountOfPlayers = 2
                     chooseplayers = False
@@ -752,7 +746,6 @@ def show_players_menu():  # choose amount of players u want to play with
         DISPLAYSURF.blit(backGroundImage, (0, 0))
 
         DISPLAYSURF.blit(textChoosePlayers, (X_1_2 - 100, Y_1_4))
-        DISPLAYSURF.blit(textChoosePlayers1, (X_1_2 - 50, Y_1_2))
         DISPLAYSURF.blit(textChoosePlayers2, (X_1_2 - 50, Y_1_2 + 50))
         DISPLAYSURF.blit(textChoosePlayers3, (X_1_2 - 50, Y_1_2 + 100))
         DISPLAYSURF.blit(textChoosePlayers4, (X_1_2 - 50, Y_1_2 + 150))
