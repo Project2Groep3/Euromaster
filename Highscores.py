@@ -38,11 +38,10 @@ def download_scores():
 
 # Downloads the top score from database
 def download_top_score():
-    result = interact_with_database("SELECT * FROM highscores ORDER BY score")[0][1]
+    result = interact_with_database("SELECT * FROM highscores ORDER BY score")
     return result
 def insert_player(name,score):
     interact_with_database("INSERT INTO highscores(name, score) VALUES('{}',{})".format(name,score))
-
 
 
 def naam_check(name):
