@@ -848,36 +848,6 @@ def show_gameplay():  # loop for gameplay
 
                 elif event.key == pygame.K_d:
                     Variables.correctAnswer = False
-
-                    # if currentRound == 9999:
-                    #
-                    #     if currentPlayer < len(ActivePlayers) - 1:
-                    #         currentPlayer += 1
-                    #         berlp = show_dice()
-                    #         show_turn(currentPlayer)
-                    #         decide_question(currentPlayer)
-                    #         pygame.display.update()
-                    #         if Variables.correctAnswer == True:
-                    #
-                    #             PlayerList[currentPlayer].movement()
-                    #             PlayerList[currentPlayer].draw_icon()
-                    #             move_down(currentPlayer)
-                    #             pygame.display.update()
-                    #     else:
-                    #         currentRound += 1
-                    #         currentPlayer = 0
-                    #         show_turn(currentPlayer)
-                    #         berlp = show_dice()
-                    #         decide_question(currentPlayer)
-                    #         pygame.display.update()
-                    #         if Variables.correctAnswer == True:
-                    #
-                    #             PlayerList[currentPlayer].movement()
-                    #             PlayerList[currentPlayer].draw_icon()
-                    #             move_down(currentPlayer)
-                    #             pygame.display.update()
-
-
                     if currentRound > 0:
                         if currentPlayer < len(ActivePlayers) - 1:
                             currentPlayer += 1
@@ -1031,7 +1001,9 @@ def show_winnerscreen(photo):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
-
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_p:
+                    show_pause()
 
         DISPLAYSURF.blit(winnerscreen, (0, 0))
         DISPLAYSURF.blit((photo),(190,300))
