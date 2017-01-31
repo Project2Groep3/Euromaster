@@ -2,11 +2,15 @@ import psycopg2 as p
 import random, time
 import pygame
 global cool
+
+import Variables
 from Variables import *
 
+
 def Meerkeuzevragen_Geografie():
+
     questionID = (random.randint(0,14))
-    con = p.connect("dbname='euromast' user='postgres' host='localhost' password='Drakenadem97'")
+    con = p.connect("dbname='euromast' user='postgres' host='localhost' password='pgadmin2017'")
 
 
     def op_questions_Geografie():
@@ -52,9 +56,10 @@ def Meerkeuzevragen_Geografie():
         raws = cor.fetchall()
         for q in raws[questionID]:
             if name in q.lower():
-                return("Answer is correct!")
+                Variables.correctAnswer = True
+                return("Correct")
             else:
-                return("Answer is incorrect :(")
+                return("Incorrect")
 
     def insert_answer():
         name = ""

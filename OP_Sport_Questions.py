@@ -2,10 +2,13 @@ import psycopg2 as p
 import random, time
 import pygame
 global cool
+import Variables
 from Variables import *
+
+
 def Openvragen_Sport():
     questionID = (random.randint(0,14))
-    con = p.connect("dbname='euromast' user='postgres' host='localhost' password='Drakenadem97'")
+    con = p.connect("dbname='euromast' user='postgres' host='localhost' password='pgadmin2017'")
 
 
     def op_questions_Sport():
@@ -26,11 +29,12 @@ def Openvragen_Sport():
         raws = cor.fetchall()
         for i in raws[questionID]:
             if len(name) < 3:
-                return("Answer is incorrect :(")
+                return("Incorrect!")
             elif name in i.lower():
-                return("Answer is correct!")
+                Variables.correctAnswer = True
+                return("Correct!")
             else:
-                return("Answer is incorrect :(")
+                return("Incorrect!")
 
     def insert_answer():
         name = ""

@@ -38,7 +38,6 @@ WINDOWHEIGHT = 768
 # Declaring displaysurf
 DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH,WINDOWHEIGHT))
 
-
 # scales of the screen
 X_1_2 = int(WINDOWWIDTH / 2)
 X_1_3 = int(WINDOWWIDTH / 3)
@@ -89,3 +88,4 @@ instructionsImageEN3 = pygame.image.load('images/ENGELS-instructionsimg3.png')
 
 winnerscreen = pygame.image.load('images/winnaarscherm.png')
 
+correctAnswer = False
