@@ -3,7 +3,7 @@ import psycopg2
 # Use the database
 def interact_with_database(command):
     # Connect and set up cursor
-    connection = psycopg2.connect("dbname=project2 user=postgres host='localhost' password='Drakenadem97'")
+    connection = psycopg2.connect("dbname=euromast user=postgres host='localhost' password='pgadmin2017'")
     cursor = connection.cursor()
 
     # Execute the command

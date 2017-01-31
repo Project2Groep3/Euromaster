@@ -9,7 +9,7 @@ from Variables import *
 def Openvragen_Entertainment():
 
     questionID = (random.randint(0,14))
-    con = p.connect("dbname='project2' user='postgres' host='localhost' password='Drakenadem97'")
+    con = p.connect("dbname='euromast' user='postgres' host='localhost' password='pgadmin2017'")
 
 
     def op_questions_Entertainment():
@@ -40,15 +40,47 @@ def Openvragen_Entertainment():
                 return("Incorrect!")
 
     def insert_answer():
+        tijd = 50
+        counter, text = tijd, str(tijd).rjust(3)
+        clock = pygame.time.Clock()
+        pygame.time.set_timer(pygame.USEREVENT, 100)
+        clock.tick(30)
         name = ""
         Loop = True
         while Loop:
             for evt in pygame.event.get():
+                if counter < 1:
+                    Loop = False
+                    pygame.display.flip()
+                if evt.type == pygame.USEREVENT:
+                    counter -= 0.1
+                    text = str(round(counter,1)).rjust(3) if counter > 0 else "0".rjust(3)
+                    pygame.display.flip()
                 if evt.type == pygame.KEYDOWN:
                     if evt.type == pygame.QUIT:
                         Loop = False
                     if evt.unicode.isalpha():
                         name += evt.unicode
+                    if evt.key == pygame.K_0:
+                        name = name + "0"
+                    if evt.key == pygame.K_1:
+                        name = name + "1"
+                    if evt.key == pygame.K_2:
+                        name = name + "2"
+                    if evt.key == pygame.K_3:
+                        name = name + "3"
+                    if evt.key == pygame.K_4:
+                        name = name + "4"
+                    if evt.key == pygame.K_5:
+                        name = name + "5"
+                    if evt.key == pygame.K_6:
+                        name = name + "6"
+                    if evt.key == pygame.K_7:
+                        name = name + "7"
+                    if evt.key == pygame.K_8:
+                        name = name + "8"
+                    if evt.key == pygame.K_9:
+                        name = name + "9"
                     elif evt.key == pygame.K_BACKSPACE:
                         name = name[:-1]
                     elif evt.key == pygame.K_SPACE:
@@ -61,6 +93,10 @@ def Openvragen_Entertainment():
                         pygame.display.flip()
                         time.sleep(2)
                         Loop = False
+            else:
+                screen.blit(font2.render(text, True, (255, 255, 255)), (22, 28))
+                pygame.display.flip()
+                clock.tick(30)
 
             DISPLAYSURF.blit(backGroundImage, (0, 0))
             show_input = font2.render(name, 1, (0, 0, 0))
@@ -68,6 +104,6 @@ def Openvragen_Entertainment():
             rect = show_question.get_rect()
             rect.center = screen.get_rect().center
             screen.blit(show_question, rect)
-            screen.blit(show_input, (412, 464))
+            screen.blit(show_input, (412, 164))
             pygame.display.flip()
     insert_answer()

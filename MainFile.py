@@ -132,8 +132,9 @@ class Player:  # Player Class
             if self.Position.X == tile_list[key].Position.X and self.Position.Y == tile_list[key].Position.Y:
                 self.PlayerCirclePosition.X = tile_list[key].DrawPos.X - 12
                 self.PlayerCirclePosition.Y = tile_list[key].DrawPos.Y - 12
-            if currentRound > 1:
-                self.Category = tile_list[key].Category
+                if currentRound > 0:
+                    self.Category = tile_list[key].Category
+
 
 
     def draw_icon(self):
@@ -449,7 +450,7 @@ def dice_start():
         a = random.randint(1, 3)
     elif AmountOfPlayers == 4:
         a = random.randint(1, 4)
-    print(a)
+
     return a
 
 def move_down(currentPlayer):
@@ -508,6 +509,14 @@ def show_dice():  # shows dice result on screen
 
 
 def decide_question(currentPlayer):
+    if PlayerList[currentPlayer].Category == "Bottom" and PlayerList[currentPlayer].Position.X == 0:
+        PlayerList[currentPlayer].Category = "Sport"
+    elif PlayerList[currentPlayer].Category == "Bottom" and PlayerList[currentPlayer].Position.X == 2:
+        PlayerList[currentPlayer].Category = "Geografie"
+    elif PlayerList[currentPlayer].Category == "Bottom" and PlayerList[currentPlayer].Position.X == 4:
+        PlayerList[currentPlayer].Category = "Entertainment"
+    elif PlayerList[currentPlayer].Category == "Bottom" and PlayerList[currentPlayer].Position.X == 6:
+        PlayerList[currentPlayer].Category = "Historie"
 
     if PlayerList[currentPlayer].Category == "Entertainment":
         if Tools1.QuestionType == 'MC':
@@ -535,7 +544,6 @@ def decide_question(currentPlayer):
 
 
 def show_main_menu():  # shows main menu
-
     pygame.init()
     menud = True
     pygame.display.set_caption('Euromaster')
@@ -549,7 +557,6 @@ def show_main_menu():  # shows main menu
         textWelcomeRect.center = (X_1_2, Y_1_4)
 
         menuKnopStart = fontObjMedium.render('Start Game', True, BLACK, LIGHT_CORAL)
-        menuKnopLoadGame = fontObjMedium.render('Load Game', True, BLACK, LIGHT_CORAL)
         menuKnopInstructions = fontObjMedium.render('Instructions', True, BLACK, LIGHT_CORAL)
         menuKnopHighscores = fontObjMedium.render('Highscores', True, BLACK, LIGHT_CORAL)
         menuKnopExitGame = fontObjMedium.render('Exit Game', True, BLACK, LIGHT_CORAL)
@@ -557,10 +564,9 @@ def show_main_menu():  # shows main menu
         DISPLAYSURF.blit(backGroundImage, (0, 0))
         DISPLAYSURF.blit(textWelcome, textWelcomeRect)
         DISPLAYSURF.blit(menuKnopStart, (X_1_2 - 50, Y_1_2))
-        DISPLAYSURF.blit(menuKnopLoadGame, (X_1_2 - 50, Y_1_2 + 50))
-        DISPLAYSURF.blit(menuKnopInstructions, (X_1_2 - 50, Y_1_2 + 100))
-        DISPLAYSURF.blit(menuKnopHighscores, (X_1_2 - 50, Y_1_2 + 150))
-        DISPLAYSURF.blit(menuKnopExitGame, (X_1_2 - 50, Y_1_2 + 200))
+        DISPLAYSURF.blit(menuKnopInstructions, (X_1_2 - 50, Y_1_2 + 50))
+        DISPLAYSURF.blit(menuKnopHighscores, (X_1_2 - 50, Y_1_2 + 100))
+        DISPLAYSURF.blit(menuKnopExitGame, (X_1_2 - 50, Y_1_2 + 150))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -579,15 +585,15 @@ def show_main_menu():  # shows main menu
                     pygame.mixer.music.play(1)
                     menud = False
                     show_gameplay()
-                elif menuKnopInstructions.get_rect(center=(X_1_2 - 50, Y_1_2 + 100)).collidepoint(x, y):
+                elif menuKnopInstructions.get_rect(center=(X_1_2 - 50, Y_1_2 + 50)).collidepoint(x, y):
                     pygame.mixer.music.play(1)
                     menud = False
                     show_instructions_menu()
-                elif menuKnopHighscores.get_rect(center=(X_1_2 - 50, Y_1_2 + 150)).collidepoint(x, y):
+                elif menuKnopHighscores.get_rect(center=(X_1_2 - 50, Y_1_2 + 100)).collidepoint(x, y):
                     pygame.mixer.music.play(1)
                     menud = False
                     show_highscore_menu()
-                elif menuKnopExitGame.get_rect(center=(X_1_2 - 50, Y_1_2 + 200)).collidepoint(x, y):
+                elif menuKnopExitGame.get_rect(center=(X_1_2 - 50, Y_1_2 + 150)).collidepoint(x, y):
                     pygame.mixer.music.play(1)
                     pygame.quit()
                     sys.exit()
@@ -609,7 +615,7 @@ def show_instructions_menu():  # instruction screen 1
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     instructions = False
-                    show_main_menu()
+
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pygame.mixer.music.load('music/nextpage.mp3')
@@ -715,7 +721,6 @@ def show_players_menu():  # choose amount of players u want to play with
     global AmountOfPlayers
 
     textChoosePlayers = fontObjLarge.render('How many players?', True, BLACK, None)
-    textChoosePlayers1 = fontObjMedium.render('1 Player', True, BLACK, LIGHT_CORAL)
     textChoosePlayers2 = fontObjMedium.render('2 Players', True, BLACK, LIGHT_CORAL)
     textChoosePlayers3 = fontObjMedium.render('3 Players', True, BLACK, LIGHT_CORAL)
     textChoosePlayers4 = fontObjMedium.render('4 Players', True, BLACK, LIGHT_CORAL)
@@ -729,9 +734,6 @@ def show_players_menu():  # choose amount of players u want to play with
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = event.pos
-                if textChoosePlayers1.get_rect(center=(X_1_2 - 50, Y_1_2)).collidepoint(x, y):
-                    AmountOfPlayers = 1
-                    chooseplayers = False
                 if textChoosePlayers2.get_rect(center=(X_1_2 - 50, Y_1_2 + 50)).collidepoint(x, y):
                     AmountOfPlayers = 2
                     chooseplayers = False
@@ -746,7 +748,6 @@ def show_players_menu():  # choose amount of players u want to play with
         DISPLAYSURF.blit(backGroundImage, (0, 0))
 
         DISPLAYSURF.blit(textChoosePlayers, (X_1_2 - 100, Y_1_4))
-        DISPLAYSURF.blit(textChoosePlayers1, (X_1_2 - 50, Y_1_2))
         DISPLAYSURF.blit(textChoosePlayers2, (X_1_2 - 50, Y_1_2 + 50))
         DISPLAYSURF.blit(textChoosePlayers3, (X_1_2 - 50, Y_1_2 + 100))
         DISPLAYSURF.blit(textChoosePlayers4, (X_1_2 - 50, Y_1_2 + 150))
@@ -821,7 +822,7 @@ def show_gameplay():  # loop for gameplay
     global currentRound, correctAnswer
     berlp = show_dice()
     gameplayed = True
-    currentRound = 1
+    currentRound = 0
     show_players_menu()
     enter_name()
     currentPlayer = dice_start()
@@ -849,37 +850,7 @@ def show_gameplay():  # loop for gameplay
 
                 elif event.key == pygame.K_d:
                     Variables.correctAnswer = False
-                    print(Variables.correctAnswer)
-                    if currentRound == 1:
-
-                        if currentPlayer < len(ActivePlayers) - 1:
-                            currentPlayer += 1
-                            berlp = show_dice()
-                            show_turn(currentPlayer)
-                            decide_question(currentPlayer)
-                            pygame.display.update()
-                            if Variables.correctAnswer == True:
-                                print(Variables.correctAnswer)
-                                PlayerList[currentPlayer].movement()
-                                PlayerList[currentPlayer].draw_icon()
-                                move_down(currentPlayer)
-                                pygame.display.update()
-                        else:
-                            currentRound += 1
-                            currentPlayer = 0
-                            show_turn(currentPlayer)
-                            berlp = show_dice()
-                            decide_question(currentPlayer)
-                            pygame.display.update()
-                            if Variables.correctAnswer == True:
-                                print(Variables.correctAnswer)
-                                PlayerList[currentPlayer].movement()
-                                PlayerList[currentPlayer].draw_icon()
-                                move_down(currentPlayer)
-                                pygame.display.update()
-
-
-                    elif currentRound > 1:
+                    if currentRound > 0:
                         if currentPlayer < len(ActivePlayers) - 1:
                             currentPlayer += 1
                             show_turn(currentPlayer)
@@ -888,7 +859,7 @@ def show_gameplay():  # loop for gameplay
                             decide_question(currentPlayer)
                             pygame.display.update()
                             if Variables.correctAnswer == True:
-                                print(Variables.correctAnswer)
+
                                 PlayerList[currentPlayer].movement()
                                 PlayerList[currentPlayer].draw_icon()
                                 move_down(currentPlayer)
@@ -902,13 +873,14 @@ def show_gameplay():  # loop for gameplay
                             decide_question(currentPlayer)
                             pygame.display.update()
                             if Variables.correctAnswer == True:
-                                print(Variables.correctAnswer)
+
                                 PlayerList[currentPlayer].movement()
                                 PlayerList[currentPlayer].draw_icon()
                                 move_down(currentPlayer)
                                 pygame.display.update()
 
-
+                    else:
+                        currentRound += 1
 
         generate_tiles()
 
@@ -966,7 +938,7 @@ def show_gameplay():  # loop for gameplay
             PlayerList[k].draw_icon()
 
         for j in range(AmountOfPlayers):
-            if PlayerList[j].Position.Y >= 1:
+            if PlayerList[j].Position.Y >= 6:
                 PlayerList[j].Score += 1
                 gameplayed = False
                 # if O.naam_check(PlayerList[j].PlayerName):
@@ -975,7 +947,7 @@ def show_gameplay():  # loop for gameplay
                 #     O.insert_player(PlayerList[j].PlayerName, PlayerList[j].Score)
                 O.insert_player(PlayerList[j].PlayerName, PlayerList[j].Score)
                 show_winnerscreen(PlayerList[j].PlayerIcon)
-                print(PlayerList[j].Score)
+
 
 
         pygame.display.update()
@@ -1036,7 +1008,9 @@ def show_winnerscreen(photo):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
-
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_p:
+                    show_pause()
 
         DISPLAYSURF.blit(winnerscreen, (0, 0))
         DISPLAYSURF.blit((photo),(190,300))
@@ -1163,7 +1137,6 @@ def show_pause():  # shows pause menu
                 elif textInstructions.get_rect(center=(X_1_2 - 50, Y_1_2 + 150)).collidepoint(x, y):
                     show_instructions_menu()
                     paused = False
-                    gameplayed = False
 
 
                 elif textExitGame.get_rect(center=(X_1_2 - 50, Y_1_2 + 225)).collidepoint(x, y):
