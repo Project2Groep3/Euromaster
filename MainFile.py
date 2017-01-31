@@ -614,7 +614,7 @@ def show_instructions_menu():  # instruction screen 1
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     instructions = False
-                    show_main_menu()
+
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pygame.mixer.music.load('music/nextpage.mp3')
@@ -937,7 +937,7 @@ def show_gameplay():  # loop for gameplay
             PlayerList[k].draw_icon()
 
         for j in range(AmountOfPlayers):
-            if PlayerList[j].Position.Y >= 1:
+            if PlayerList[j].Position.Y >= 6:
                 PlayerList[j].Score += 1
                 gameplayed = False
                 # if O.naam_check(PlayerList[j].PlayerName):
@@ -1090,7 +1090,6 @@ def show_pause():  # shows pause menu
                 elif textInstructions.get_rect(center=(X_1_2 - 50, Y_1_2 + 150)).collidepoint(x, y):
                     show_instructions_menu()
                     paused = False
-                    gameplayed = False
 
 
                 elif textExitGame.get_rect(center=(X_1_2 - 50, Y_1_2 + 225)).collidepoint(x, y):

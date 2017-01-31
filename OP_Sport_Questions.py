@@ -8,7 +8,7 @@ from Variables import *
 
 def Openvragen_Sport():
     questionID = (random.randint(0,14))
-    con = p.connect("dbname='project2' user='postgres' host='localhost' password='Drakenadem97'")
+    con = p.connect("dbname='euromast' user='postgres' host='localhost' password='pgadmin2017'")
 
     def op_questions_Sport():
         cur = con.cursor()
