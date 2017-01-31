@@ -1009,14 +1009,16 @@ def show_highscore_menu():  # shows highscore screen
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     highscored = False
+                    show_main_menu()
 
         pygame.display.update()
         FPSCLOCK.tick(FPS / 2)
 
 
-def show_pause():  # shows pause menu, is bugged atm
+def show_pause():  # shows pause menu
     global paused
     global gameplayed
+    global instructions
 
     pygame.mixer.music.pause()
 
@@ -1028,6 +1030,7 @@ def show_pause():  # shows pause menu, is bugged atm
 
     textResumeGame = fontObjLarge.render('Resume Game', True, BLACK, LIGHT_CORAL)
     textMainMenu = fontObjLarge.render('Main Menu', True, BLACK, LIGHT_CORAL)
+    textInstructions = fontObjLarge.render('Instructions', True, BLACK, LIGHT_CORAL)
     textExitGame = fontObjLarge.render("Exit Game", True, BLACK, LIGHT_CORAL)
 
     while paused:
@@ -1054,15 +1057,21 @@ def show_pause():  # shows pause menu, is bugged atm
                     paused = False
                     gameplayed = False
 
+                elif textInstructions.get_rect(center=(X_1_2 - 50, Y_1_2 + 150)).collidepoint(x, y):
+                    show_instructions_menu()
+                    paused = False
+                    gameplayed = False
 
-                elif textExitGame.get_rect(center=(X_1_2 - 50, Y_1_2 + 150)).collidepoint(x, y):
+
+                elif textExitGame.get_rect(center=(X_1_2 - 50, Y_1_2 + 225)).collidepoint(x, y):
                     pygame.quit()
                     quit()
 
         DISPLAYSURF.blit(textPauseMenu, textPauseMenuRect)
         DISPLAYSURF.blit(textResumeGame, (X_1_2 - 50, Y_1_2))
         DISPLAYSURF.blit(textMainMenu, (X_1_2 - 50, Y_1_2 + 75))
-        DISPLAYSURF.blit(textExitGame, (X_1_2 - 50, Y_1_2 + 150))
+        DISPLAYSURF.blit(textInstructions, (X_1_2 - 50, Y_1_2 + 150))
+        DISPLAYSURF.blit(textExitGame, (X_1_2 - 50, Y_1_2 + 225))
 
         pygame.display.update()
         FPSCLOCK.tick(FPS / 2)
