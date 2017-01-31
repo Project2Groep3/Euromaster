@@ -797,7 +797,13 @@ def show_gameplay():  # loop for gameplay
                 quit()
             if event.type == pygame.KEYDOWN:
 
-                if event.key == pygame.K_p:
+                if event.key == pygame.K_m:
+                     pygame.mixer.music.pause()
+
+                elif event.key == pygame.K_n:
+                    pygame.mixer.music.unpause()
+
+                elif event.key == pygame.K_p:
                     show_pause()
 
                 elif event.key == pygame.K_d:
